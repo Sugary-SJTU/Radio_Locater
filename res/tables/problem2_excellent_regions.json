@@ -1,0 +1,61 @@
+{
+  "file_function": "记录指定第一检测点输入、5%近优区域坐标范围及最佳第二检测点。",
+  "first_measurement": {
+    "x_m": -900.0,
+    "y_m": -500.0,
+    "bearing_deg": 31.363757
+  },
+  "excellent_definition": "expected_gain >= 0.95 * maximum_gain",
+  "excellent_point_count": 164,
+  "overall_bounds_m": {
+    "x_min": -690.0,
+    "x_max": -210.0,
+    "y_min": 210.0,
+    "y_max": 690.0
+  },
+  "components": [
+    {
+      "component": 1,
+      "bounds_m": {
+        "x_min": -690.0,
+        "x_max": -210.0,
+        "y_min": 210.0,
+        "y_max": 690.0
+      },
+      "hull_vertices_m": [
+        [
+          -690.0,
+          210.0
+        ],
+        [
+          -210.0,
+          210.0
+        ],
+        [
+          -210.0,
+          610.0
+        ],
+        [
+          -330.0,
+          690.0
+        ],
+        [
+          -690.0,
+          690.0
+        ]
+      ]
+    }
+  ],
+  "maximum_score_point": {
+    "x_m": -450.0,
+    "y_m": 410.0,
+    "expected_log_diameter_gain_bit": 5.878802484604615
+  },
+  "selected_second_point": {
+    "x_m": -690.0,
+    "y_m": 210.0,
+    "detection_probability": 0.9999999999999999,
+    "geometry_score": 0.8028982203001451,
+    "expected_log_diameter_gain_bit": 5.682093466809924
+  }
+}
