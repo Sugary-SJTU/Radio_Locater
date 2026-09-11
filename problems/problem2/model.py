@@ -72,10 +72,25 @@ class SelectionResult:
     first_measurement: BearingMeasurement
     posterior: PosteriorGrid
     coarse_scores: tuple[CandidateScore, ...]
+    coarse_refinement_centers: tuple[CandidateScore, ...]
     fine_scores: tuple[CandidateScore, ...]
     excellent_scores: tuple[CandidateScore, ...]
     excellent_region_hulls: tuple[FloatArray, ...]
+    maximum_score: CandidateScore
     selected: CandidateScore
+
+
+@dataclass(frozen=True, slots=True)
+class SecondRegionDiameterSample:
+    """固定 M2 后，一个干扰源网格假设和测向误差对应的 S2 直径。"""
+
+    source_point: tuple[float, float]
+    source_posterior_weight: float
+    conditional_detection_probability: float
+    bearing_error_deg: float
+    second_bearing_deg: float
+    diameter_m: float
+    integration_weight: float
 
 
 def reception_probability(distance_m: float | FloatArray) -> float | FloatArray:
@@ -146,7 +161,9 @@ def build_posterior_grid(
     first = np.asarray(first_measurement.station, dtype=float)
     distances = np.linalg.norm(points - first, axis=1)
     likelihood = np.asarray(reception_probability(distances), dtype=float)
-    positive = likelihood > 0.0
+    # X 与检测点完全重合时方向向量为零，示向度没有定义。该单点在连续区域中为
+    # 零测度，密网格偶然命中时必须排除，避免后续生成伪造的 0 m 定位直径。
+    positive = (likelihood > 0.0) & (distances > 1e-9)
     points = points[positive]
     distances = distances[positive]
     likelihood = likelihood[positive]
@@ -299,14 +316,47 @@ def expected_diameter_gain(
     return expected_gain
 
 
-def _refinement_grid(coarse_best: CandidateScore) -> FloatArray:
-    """生成论文式 (53) 中粗网格最优点附近的局部细网格。"""
+def _refinement_grid(coarse_centers: list[CandidateScore]) -> FloatArray:
+    """生成论文式 (53) 中各粗网格近优分量峰值附近的细网格。"""
 
     offsets = np.arange(-REFINE_RADIUS_M, REFINE_RADIUS_M + 1e-9, REFINE_STEP_M)
     local_x, local_y = np.meshgrid(offsets, offsets)
     local_offsets = np.column_stack((local_x.ravel(), local_y.ravel()))
-    points = local_offsets + np.asarray(coarse_best.point)
+    blocks = [local_offsets + np.asarray(score.point) for score in coarse_centers]
+    points = np.unique(np.vstack(blocks), axis=0)
     return points[np.linalg.norm(points, axis=1) <= DOMAIN_RADIUS_M + 1e-9]
+
+
+def _connected_score_components(
+    scores: list[CandidateScore],
+    grid_step_m: float,
+) -> list[list[CandidateScore]]:
+    """按规则网格八邻域划分候选点连通分量。"""
+
+    if not scores:
+        return []
+    points = np.asarray([score.point for score in scores], dtype=float)
+    neighbour_distance = grid_step_m * np.sqrt(2.0) + 1e-8
+    unvisited = set(range(len(points)))
+    components: list[list[CandidateScore]] = []
+    while unvisited:
+        seed = unvisited.pop()
+        component_indices = [seed]
+        frontier = [seed]
+        while frontier:
+            current = frontier.pop()
+            neighbours = [
+                index
+                for index in unvisited
+                if np.linalg.norm(points[index] - points[current])
+                <= neighbour_distance
+            ]
+            for index in neighbours:
+                unvisited.remove(index)
+                component_indices.append(index)
+                frontier.append(index)
+        components.append([scores[index] for index in component_indices])
+    return components
 
 
 def _build_excellent_region_hulls(
@@ -380,12 +430,35 @@ def select_second_point(
             )
         )
     coarse_scores = tuple(coarse_with_gain)
-    coarse_best = max(
-        (score for score in coarse_scores if score.feasible),
-        key=lambda score: score.expected_log_diameter_gain or float("-inf"),
+    coarse_best_gain = max(
+        score.expected_log_diameter_gain or 0.0
+        for score in coarse_scores
+        if score.feasible
     )
+    coarse_near_optimal = [
+        score
+        for score in coarse_scores
+        if score.feasible
+        and (score.expected_log_diameter_gain or 0.0)
+        >= (1.0 - NEAR_OPTIMAL_RELATIVE_GAP) * coarse_best_gain
+    ]
+    coarse_components = _connected_score_components(
+        coarse_near_optimal,
+        COARSE_CANDIDATE_STEP_M,
+    )
+    # 粗网格可能在扇形两侧产生近似对称的多个峰。若只细化唯一全局第一名，网格
+    # 扰动就可能漏掉另一侧，并错误改变式 (59) 的最近点选择。因此每个粗近优
+    # 连通分量保留一个目标函数峰值作为细化中心。
+    coarse_centers = [
+        max(
+            component,
+            key=lambda score: score.expected_log_diameter_gain
+            or float("-inf"),
+        )
+        for component in coarse_components
+    ]
 
-    refined_points = _refinement_grid(coarse_best)
+    refined_points = _refinement_grid(coarse_centers)
     refined_proxy = [
         evaluate_candidate(tuple(point), first_measurement, posterior)
         for point in refined_points
@@ -411,7 +484,11 @@ def select_second_point(
     if not fine_scores:
         raise ValueError("no candidate remains after local refinement")
 
-    best_gain = max(score.expected_log_diameter_gain or 0.0 for score in fine_scores)
+    maximum_score = max(
+        fine_scores,
+        key=lambda score: score.expected_log_diameter_gain or float("-inf"),
+    )
+    best_gain = maximum_score.expected_log_diameter_gain or 0.0
     near_optimal = [
         score
         for score in fine_scores
@@ -428,8 +505,76 @@ def select_second_point(
         first_measurement,
         posterior,
         coarse_scores,
+        tuple(coarse_centers),
         tuple(fine_scores),
         tuple(near_optimal),
         excellent_region_hulls,
+        maximum_score,
         selected,
     )
+
+
+def sample_selected_second_region_diameters(
+    result: SelectionResult,
+    posterior: PosteriorGrid | None = None,
+) -> tuple[SecondRegionDiameterSample, ...]:
+    """对 S1 内全部网格位置及误差样本，计算选定 M2 形成的 S2 直径。
+
+    `integration_weight` 等于论文式 (37) 中每项的 ``π_k q_2k / n_error``；
+    因而该表既能检查单个几何结果，也能直接构造检测条件下的加权直径分布。
+    """
+
+    # 可传入更密的独立后验网格，用于选点完成后的分布验证。默认仍复用选点网格。
+    posterior = result.posterior if posterior is None else posterior
+    candidate = np.asarray(result.selected.point, dtype=float)
+    second_distances = np.linalg.norm(posterior.points - candidate, axis=1)
+    joint = np.asarray(
+        reception_probability(
+            np.maximum(posterior.distances_from_first, second_distances)
+        ),
+        dtype=float,
+    )
+    first_probability = np.asarray(
+        reception_probability(posterior.distances_from_first), dtype=float
+    )
+    conditional = np.divide(
+        joint,
+        first_probability,
+        out=np.zeros_like(joint),
+        where=first_probability > 0.0,
+    )
+    error_weight = 1.0 / len(BEARING_ERROR_SAMPLES_DEG)
+    samples: list[SecondRegionDiameterSample] = []
+    for source, posterior_weight, detect_probability in zip(
+        posterior.points,
+        posterior.weights,
+        conditional,
+        strict=True,
+    ):
+        true_bearing = bearing_deg(result.selected.point, source)
+        for error in BEARING_ERROR_SAMPLES_DEG:
+            measured_bearing = (true_bearing + error) % 360.0
+            second_region = _add_wedge_to_polygon(
+                posterior.first_region,
+                result.selected.point,
+                measured_bearing,
+            )
+            diameter = (
+                rotating_calipers_diameter(second_region).distance
+                if len(second_region)
+                else 0.0
+            )
+            samples.append(
+                SecondRegionDiameterSample(
+                    source_point=(float(source[0]), float(source[1])),
+                    source_posterior_weight=float(posterior_weight),
+                    conditional_detection_probability=float(detect_probability),
+                    bearing_error_deg=float(error),
+                    second_bearing_deg=float(measured_bearing),
+                    diameter_m=float(diameter),
+                    integration_weight=float(
+                        posterior_weight * detect_probability * error_weight
+                    ),
+                )
+            )
+    return tuple(samples)

@@ -35,6 +35,8 @@ MAX_RECEPTION_RADIUS_M: Final[float] = RECEPTION_RADIUS_MAX_M
 # 以下均为离散求解参数，并非题目给定值。粗网格负责覆盖全局，细网格只搜索
 # 粗网格目标函数最优点附近；误差样本覆盖 [-1°, 1°]。
 POSTERIOR_GRID_STEP_M: Final[float] = 45.0
+# 固定 M2 后的直径分布使用更密的独立网格；它只影响验证表和分布图，不改变选点。
+DIAMETER_SAMPLE_GRID_STEP_M: Final[float] = 20.0
 COARSE_CANDIDATE_STEP_M: Final[float] = 150.0
 REFINE_RADIUS_M: Final[float] = 240.0
 REFINE_STEP_M: Final[float] = 40.0
@@ -46,5 +48,7 @@ ARENA_POLYGON_VERTICES: Final[int] = 720
 # 分别保存候选点数据和候选区域示意图；本文件不执行写入。
 RESULT_TABLE = TABLES_DIR / "problem2_candidate_scores.csv"
 REGION_SUMMARY = TABLES_DIR / "problem2_excellent_regions.json"
+DIAMETER_SAMPLE_TABLE = TABLES_DIR / "problem2_selected_m2_diameters.csv"
 SCREENING_FIGURE = FIGURES_DIR / "problem2_screening_principles.png"
 RESULT_FIGURE = FIGURES_DIR / "problem2_candidate_region.png"
+DIAMETER_HISTOGRAM = FIGURES_DIR / "problem2_selected_m2_diameter_histogram.png"

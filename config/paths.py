@@ -27,3 +27,5 @@ FIGURES_DIR = RES_DIR / "figures"
 TABLES_DIR = RES_DIR / "tables"
 # 这里保存程序自己的明文动作日志，不代替模拟器导出的加密正式日志。
 LOGS_DIR = RES_DIR / "logs"
+# 本地仿真案例真值保存于此，仅供演练和复现，不应被问题 3、4 策略读取。
+SIMULATOR_CASES_DIR = RES_DIR / "simulator"

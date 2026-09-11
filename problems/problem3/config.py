@@ -1,48 +1,78 @@
-"""问题 3 的全向干扰源测试配置与结果路径。
+"""问题 3 两种在线策略的集中配置。
 
-配置来自题面、模拟器附件和环境变量。后续搜索策略自行维护已检测频道、定位区域
-和已清除目标；这些动态状态不得写入本配置文件。
+题面物理常量仍保存在 ``config.constants``；本文件只定义路径搜索、粒子近似、MPC
+规模及输出路径等算法参数，避免硬编码散落在策略实现中。
 """
 
+from __future__ import annotations
+
+from dataclasses import dataclass
 from typing import Final
 
 from config.constants import (
+    ARENA_RADIUS_M,
     CHANNELS,
     CLEARANCE_RADIUS_M,
     INITIAL_CHANNEL,
     INITIAL_POSITION,
-    SOURCE_COUNT_MAX,
-    SOURCE_COUNT_MIN,
+    RECEPTION_RADIUS_MIN_M,
 )
-from config.paths import LOGS_DIR, TABLES_DIR
-from config.simulator import ARENA_ID, BASE_URL, HTTP_TIMEOUT_S, ROBOT_ID
+from config.paths import FIGURES_DIR, LOGS_DIR, TABLES_DIR
 
-# range 的右端点不包含在内，因此上界需要加 1；这里表示可能的数量 10 至 16。
-SOURCE_COUNT_RANGE: Final[range] = range(SOURCE_COUNT_MIN, SOURCE_COUNT_MAX + 1)
-# 使用 tuple 防止策略运行时意外增删合法频道。
-AVAILABLE_CHANNELS: Final[tuple[int, ...]] = CHANNELS
-# 每次 /enter 成功后，位置固定为原点，测向机固定为频道 1。
-START_POSITION: Final[tuple[float, float]] = INITIAL_POSITION
-START_CHANNEL: Final[int] = INITIAL_CHANNEL
-# 估计位置与真实干扰源相距不超过 20 m 时，/clear 才能成功。
-TARGET_CLEARANCE_RADIUS_M: Final[float] = CLEARANCE_RADIUS_M
+ROBUST_STRATEGY: Final[str] = "robust_polygon_rolling"
+MPC_STRATEGY: Final[str] = "belief_mpc"
+STRATEGIES: Final[tuple[str, str]] = (ROBUST_STRATEGY, MPC_STRATEGY)
 
-# JSONL 适合逐动作追加一行 JSON，即使程序中途退出也能保留此前记录。
-ACTION_LOG = LOGS_DIR / "problem3_actions.jsonl"
-# 正式测试表应汇总案例编码、清除数量、平均定位清除时间和程序运行时间。
-FORMAL_TEST_TABLE = TABLES_DIR / "problem3_formal_tests.xlsx"
 
-# 显式列出可供问题 3 入口或后续策略模块使用的配置，避免通配导入泄露内部名称。
-__all__ = [
-    "ACTION_LOG",
-    "ARENA_ID",
-    "AVAILABLE_CHANNELS",
-    "BASE_URL",
-    "FORMAL_TEST_TABLE",
-    "HTTP_TIMEOUT_S",
-    "ROBOT_ID",
-    "SOURCE_COUNT_RANGE",
-    "START_CHANNEL",
-    "START_POSITION",
-    "TARGET_CLEARANCE_RADIUS_M",
-]
+@dataclass(frozen=True, slots=True)
+class Problem3Settings:
+    """一次问题 3 运行使用的全部算法参数。"""
+
+    seed: int = 1
+    channels: tuple[int, ...] = CHANNELS
+    arena_radius_m: float = ARENA_RADIUS_M
+    guaranteed_radius_m: float = RECEPTION_RADIUS_MIN_M
+    scan_origin: bool = False
+    polygon_sides: int = 7
+    polygon_radius_m: float = 1_000.0
+    polygon_rotation_deg: float = 0.0
+    # 七边形rho=1000恰在连续覆盖边界上，因此默认余量为0；正式运行可提高此值。
+    robustness_margin_m: float = 0.0
+    optimize_polygon: bool = True
+    polygon_side_candidates: tuple[int, ...] = (6, 7, 8, 9)
+    polygon_radius_candidates_m: tuple[float, ...] = (
+        750.0,
+        800.0,
+        850.0,
+        900.0,
+        950.0,
+        1_000.0,
+    )
+    polygon_rotation_candidates_deg: tuple[float, ...] = (0.0, 7.5, 15.0, 22.5)
+    scan_origin_candidates: tuple[bool, ...] = (False, True)
+    coverage_grid_step_m: float = 40.0
+    coverage_validation_step_m: float = 20.0
+    localization_max_measurements: int = 6
+    insertion_time_limit_s: float = 420.0
+    particle_count_per_channel: int = 480
+    existence_prior: float = 0.65
+    direction_bin_deg: float = 5.0
+    entropy_clear_threshold_bits: float = 0.2
+    mean_information_gain_floor_bits: float = 0.05
+    p0: float = 0.8
+    g0: float = 0.5
+    candidate_action_limit: int = 30
+    coverage_lookahead_nodes: int = 4
+    detected_candidate_count: int = 3
+    horizon: int = 3
+    beam_width: int = 20
+    maximum_noncoverage_actions: int = 6
+    start_position: tuple[float, float] = INITIAL_POSITION
+    start_channel: int = INITIAL_CHANNEL
+    clearance_radius_m: float = CLEARANCE_RADIUS_M
+
+
+ACTION_LOG_DIR = LOGS_DIR / "problem3"
+SUMMARY_DIR = TABLES_DIR / "problem3"
+FORMAL_RESULTS_TABLE = SUMMARY_DIR / "formal_runs.csv"
+TRAJECTORY_FIGURE_DIR = FIGURES_DIR / "problem3"

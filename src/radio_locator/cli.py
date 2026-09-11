@@ -1,14 +1,17 @@
 """项目命令行入口。
 
-当前只负责展示项目帮助，不会运行算法或连接模拟器。问题 1 至问题 4 的子命令将在
-相应算法完成后添加，避免在基础骨架中提供不可用的命令。
+负责运行问题 1、2 数值程序，或启动问题 3、4 共用的附件兼容本地模拟器。
 """
 
 import argparse
+import json
+import os
+from pathlib import Path
+from urllib.parse import urlsplit
 
 
 def main() -> None:
-    """解析命令行，并将 problem1/problem2 转发给对应实现。"""
+    """解析命令行，并转发至数值问题或本地模拟器入口。"""
 
     # prog 与 pyproject.toml 中注册的命令名一致，确保帮助信息不会随启动方式改变。
     parser = argparse.ArgumentParser(
@@ -32,6 +35,110 @@ def main() -> None:
         default=31.363757,
         help="第一检测点示向度 / °（正东为 0°，逆时针为正）",
     )
+    problem3_parser = subparsers.add_parser(
+        "problem3", help="连接附件模拟器运行问题3在线搜索、定位与清除策略"
+    )
+    problem3_parser.add_argument(
+        "--strategy",
+        choices=("robust_polygon_rolling", "belief_mpc"),
+        required=True,
+        help="问题3策略",
+    )
+    default_url = urlsplit(os.getenv("CUMCM_BASE_URL", "http://127.0.0.1:2026"))
+    problem3_parser.add_argument("--host", default=default_url.hostname or "127.0.0.1")
+    problem3_parser.add_argument("--port", type=int, default=default_url.port or 2026)
+    problem3_parser.add_argument(
+        "--robot-id", default=os.getenv("CUMCM_ROBOT_ID", ""), help="参赛队号/本地demo标识"
+    )
+    problem3_parser.add_argument(
+        "--timeout", type=float, default=float(os.getenv("CUMCM_HTTP_TIMEOUT_S", "5"))
+    )
+    problem3_parser.add_argument(
+        "--config", type=Path, default=Path("config/problem3.yaml"), help="算法YAML配置"
+    )
+    problem3_parser.add_argument("--seed", type=int)
+    problem3_parser.add_argument("--grid-step", dest="coverage_grid_step_m", type=float)
+    problem3_parser.add_argument(
+        "--validation-step", dest="coverage_validation_step_m", type=float
+    )
+    problem3_parser.add_argument(
+        "--particles", dest="particle_count_per_channel", type=int
+    )
+    problem3_parser.add_argument(
+        "--candidate-limit", dest="candidate_action_limit", type=int
+    )
+    problem3_parser.add_argument("--horizon", type=int)
+    problem3_parser.add_argument("--beam-width", dest="beam_width", type=int)
+    problem3_parser.add_argument("--p0", type=float)
+    problem3_parser.add_argument("--g0", type=float)
+    problem3_parser.add_argument("--polygon-sides", dest="polygon_sides", type=int)
+    problem3_parser.add_argument(
+        "--polygon-radius", dest="polygon_radius_m", type=float
+    )
+    problem3_parser.add_argument(
+        "--polygon-rotation", dest="polygon_rotation_deg", type=float
+    )
+    problem3_parser.add_argument(
+        "--robustness-margin", dest="robustness_margin_m", type=float
+    )
+    problem3_parser.add_argument(
+        "--scan-origin", action=argparse.BooleanOptionalAction, default=None
+    )
+    problem3_parser.add_argument(
+        "--fixed-polygon", action="store_true", help="使用指定n=7/rho=1000等参数而不搜索"
+    )
+    problem3_parser.add_argument("--runs", type=int, choices=(1, 3), default=1)
+    problem3_parser.add_argument(
+        "--formal", action="store_true", help="正式模式：要求连续三局并追加正式汇总CSV"
+    )
+    problem3_parser.add_argument(
+        "--case-code", action="append", default=[], help="每局案例编号，可重复三次"
+    )
+    problem3_parser.add_argument(
+        "--official-log",
+        action="append",
+        type=Path,
+        default=[],
+        help="模拟器导出的原始日志，可重复三次；仅记录原文件名，不改名",
+    )
+    problem3_parser.add_argument(
+        "--truth-file",
+        action="append",
+        type=Path,
+        default=[],
+        help="可选事后真值JSON，可重复三次；仅用于运行结束后作图",
+    )
+    problem3_parser.add_argument(
+        "--next-run-wait", type=float, default=0.0, help="等待GUI启动下一局的秒数"
+    )
+    simulator_parser = subparsers.add_parser(
+        "simulator", help="启动与附件接口兼容的问题 3/4 本地模拟器"
+    )
+    simulator_parser.add_argument(
+        "--problem",
+        dest="simulation_problem",
+        type=int,
+        choices=(3, 4),
+        required=True,
+        help="仿真题号",
+    )
+    simulator_parser.add_argument(
+        "--seed", type=int, default=2026, help="案例随机种子"
+    )
+    simulator_parser.add_argument(
+        "--robot-id", default="demo", help="接口逐字节校验的本地机器狗标识"
+    )
+    simulator_parser.add_argument(
+        "--host", default="127.0.0.1", help="监听地址，默认仅本机回环"
+    )
+    simulator_parser.add_argument(
+        "--port", type=int, default=2026, help="监听端口"
+    )
+    simulator_parser.add_argument(
+        "--truth-output",
+        type=Path,
+        help="可选案例真值 JSON 路径；默认写入 res/simulator",
+    )
     arguments = parser.parse_args()
 
     # 延迟导入避免仅查看 --help 时加载 Matplotlib 等较重的绘图库。
@@ -43,5 +150,49 @@ def main() -> None:
         from problems.problem2.main import main as run_problem2
 
         run_problem2(arguments.x, arguments.y, arguments.bearing)
+    elif arguments.problem == "problem3":
+        from problems.problem3.main import load_settings, run_problem3
+
+        override_names = (
+            "seed", "coverage_grid_step_m", "coverage_validation_step_m",
+            "particle_count_per_channel", "candidate_action_limit", "horizon",
+            "beam_width", "p0", "g0", "polygon_sides", "polygon_radius_m",
+            "polygon_rotation_deg", "robustness_margin_m", "scan_origin",
+        )
+        overrides = {name: getattr(arguments, name) for name in override_names}
+        if arguments.fixed_polygon:
+            overrides["optimize_polygon"] = False
+        settings = load_settings(arguments.config, overrides)
+        summaries = run_problem3(
+            strategy=arguments.strategy,
+            host=arguments.host,
+            port=arguments.port,
+            robot_id=arguments.robot_id,
+            timeout_s=arguments.timeout,
+            settings=settings,
+            runs=arguments.runs,
+            case_codes=arguments.case_code,
+            official_logs=arguments.official_log,
+            truth_files=arguments.truth_file,
+            formal=arguments.formal,
+            next_run_wait_s=arguments.next_run_wait,
+        )
+        print(json.dumps(summaries, ensure_ascii=False, indent=2))
+    elif arguments.problem == "simulator":
+        from config.paths import SIMULATOR_CASES_DIR
+        from radio_locator.local_simulator import run_local_simulator
+
+        truth_output = arguments.truth_output or (
+            SIMULATOR_CASES_DIR
+            / f"problem{arguments.simulation_problem}_seed{arguments.seed}.json"
+        )
+        run_local_simulator(
+            problem=arguments.simulation_problem,
+            seed=arguments.seed,
+            robot_id=arguments.robot_id,
+            host=arguments.host,
+            port=arguments.port,
+            truth_output=truth_output,
+        )
     else:
         parser.print_help()

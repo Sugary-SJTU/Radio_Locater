@@ -1,0 +1,298 @@
+{
+  "strategy": "belief_mpc",
+  "all_channels_resolved": true,
+  "cleared_count": 15,
+  "clearance_ratio": 1.0,
+  "clearance_ratio_denominator": "inferred completion because all channels resolved or 16 sources cleared",
+  "total_virtual_time_s": 5559.811793,
+  "average_localize_clear_time_s": 2025.3645646000004,
+  "total_movement_distance_m": 24519.05896421502,
+  "measure_count": 97,
+  "switch_count": 96,
+  "clear_success_count": 15,
+  "clear_failure_count": 0,
+  "channels": {
+    "1": {
+      "status": "cleared",
+      "first_detected_time_s": 868.136588,
+      "localized_time_s": 5552.524423,
+      "cleared_time_s": 5559.811793,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "2": {
+      "status": "cleared",
+      "first_detected_time_s": 1632.513854,
+      "localized_time_s": 1906.657548,
+      "cleared_time_s": 3377.52992,
+      "guaranteed_coverage_fraction": 0.43111992071357785
+    },
+    "3": {
+      "status": "cleared",
+      "first_detected_time_s": 224.0,
+      "localized_time_s": 731.77568,
+      "cleared_time_s": 738.910831,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "4": {
+      "status": "cleared",
+      "first_detected_time_s": 212.0,
+      "localized_time_s": 490.691466,
+      "cleared_time_s": 1107.876059,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "5": {
+      "status": "cleared",
+      "first_detected_time_s": 272.0,
+      "localized_time_s": 3533.096593,
+      "cleared_time_s": 3539.145491,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "6": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "7": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "8": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "9": {
+      "status": "cleared",
+      "first_detected_time_s": 838.136588,
+      "localized_time_s": 3036.333107,
+      "cleared_time_s": 3044.34849,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "10": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "11": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "12": {
+      "status": "cleared",
+      "first_detected_time_s": 2353.217152,
+      "localized_time_s": 5013.331225,
+      "cleared_time_s": 5018.331225,
+      "guaranteed_coverage_fraction": 0.8572844400396432
+    },
+    "13": {
+      "status": "cleared",
+      "first_detected_time_s": 2120.154754,
+      "localized_time_s": 4164.570457,
+      "cleared_time_s": 4171.568476,
+      "guaranteed_coverage_fraction": 0.7185332011892963
+    },
+    "14": {
+      "status": "cleared",
+      "first_detected_time_s": 284.0,
+      "localized_time_s": 480.226214,
+      "cleared_time_s": 956.493855,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "15": {
+      "status": "cleared",
+      "first_detected_time_s": 2132.154754,
+      "localized_time_s": 4365.390292,
+      "cleared_time_s": 4372.7009,
+      "guaranteed_coverage_fraction": 0.7185332011892963
+    },
+    "16": {
+      "status": "cleared",
+      "first_detected_time_s": 2114.154754,
+      "localized_time_s": 4038.473372,
+      "cleared_time_s": 4044.931063,
+      "guaranteed_coverage_fraction": 0.7185332011892963
+    },
+    "17": {
+      "status": "cleared",
+      "first_detected_time_s": 290.0,
+      "localized_time_s": 3185.468604,
+      "cleared_time_s": 3191.65304,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "18": {
+      "status": "cleared",
+      "first_detected_time_s": 230.0,
+      "localized_time_s": 535.377123,
+      "cleared_time_s": 972.657835,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "19": {
+      "status": "cleared",
+      "first_detected_time_s": 242.0,
+      "localized_time_s": 1021.898142,
+      "cleared_time_s": 1369.26363,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "20": {
+      "status": "cleared",
+      "first_detected_time_s": 1840.92296,
+      "localized_time_s": 4560.811958,
+      "cleared_time_s": 4568.637265,
+      "guaranteed_coverage_fraction": 0.5738354806739345
+    }
+  },
+  "coverage_plan": {
+    "sides": 7,
+    "radius_m": 1000.0,
+    "rotation_deg": 0.0,
+    "scan_origin": false,
+    "points": [
+      [
+        1000.0,
+        0.0
+      ],
+      [
+        623.4898018587336,
+        781.8314824680298
+      ],
+      [
+        -222.52093395631434,
+        974.9279121818237
+      ],
+      [
+        -900.968867902419,
+        433.8837391175582
+      ],
+      [
+        -900.9688679024191,
+        -433.88373911755804
+      ],
+      [
+        -222.5209339563146,
+        -974.9279121818237
+      ],
+      [
+        623.4898018587334,
+        -781.8314824680299
+      ]
+    ],
+    "route_length_m": 6206.604869410698,
+    "measure_count": 140,
+    "switch_count": 133,
+    "estimated_base_time_s": 2074.3209738821397,
+    "coverage": {
+      "analytic_max_distance_m": 1000.0,
+      "numerical_max_distance_m": 999.9999999999999,
+      "coverage_ratio": 1.0,
+      "worst_point": [
+        0.0,
+        0.0
+      ],
+      "achieved_margin_m": 0.0,
+      "required_margin_m": 0.0,
+      "valid": true
+    }
+  },
+  "official_log_original_names": [],
+  "run_index": 1,
+  "case_code": null,
+  "seed": 2,
+  "host": "127.0.0.1",
+  "port": 2034,
+  "program_wall_time_s": 5.4343281500041485,
+  "action_log": "/home/Lilywhite/PIG/CUMCM/Code/res/logs/problem3/belief_mpc_seed2_run1_20260911_205730_455309.jsonl",
+  "summary_file": "/home/Lilywhite/PIG/CUMCM/Code/res/tables/problem3/belief_mpc_seed2_run1_20260911_205730_455309.json",
+  "polygon_search_file": "/home/Lilywhite/PIG/CUMCM/Code/res/tables/problem3/belief_mpc_seed2_run1_20260911_205730_455309_polygon_search.csv",
+  "settings": {
+    "seed": 2,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": false,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 100.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 120,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 20,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 2,
+    "beam_width": 10,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0
+  }
+}

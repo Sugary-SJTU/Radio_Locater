@@ -7,6 +7,7 @@ from problems.problem2.model import (
     build_posterior_grid,
     evaluate_candidate,
     reception_probability,
+    sample_selected_second_region_diameters,
     select_second_point,
 )
 
@@ -34,3 +35,16 @@ def test_selected_point_belongs_to_reported_excellent_region() -> None:
     result = select_second_point(BearingMeasurement((-900.0, -500.0), 31.363757))
     assert result.selected in result.excellent_scores
     assert result.excellent_region_hulls
+
+
+def test_selected_m2_diameter_samples_cover_whole_posterior_grid() -> None:
+    """每个 S1 网格点都应在三个误差样本下输出对应的 S2 多边形直径。"""
+
+    result = select_second_point(BearingMeasurement((-900.0, -500.0), 31.363757))
+    samples = sample_selected_second_region_diameters(result)
+    assert len(samples) == 3 * len(result.posterior.points)
+    assert all(sample.diameter_m >= 0.0 for sample in samples)
+    assert np.isclose(
+        sum(sample.integration_weight for sample in samples),
+        result.selected.detection_probability,
+    )

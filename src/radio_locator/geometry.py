@@ -27,6 +27,14 @@ class DiameterResult:
     second: FloatArray
 
 
+@dataclass(frozen=True, slots=True)
+class MinimumEnclosingCircle:
+    """二维点集的最小覆盖圆。"""
+
+    center: FloatArray
+    radius: float
+
+
 def cross_2d(first: FloatArray, second: FloatArray) -> float:
     """返回二维向量叉积的标量值。"""
 
@@ -285,6 +293,86 @@ def rotating_calipers_diameter(
         polygon[first_index].copy(),
         polygon[second_index].copy(),
     )
+
+
+def _circle_from_three_points(
+    first: FloatArray,
+    second: FloatArray,
+    third: FloatArray,
+) -> MinimumEnclosingCircle | None:
+    """返回三点外接圆；三点共线时返回 None。"""
+
+    ax, ay = first
+    bx, by = second
+    cx, cy = third
+    denominator = 2.0 * (
+        ax * (by - cy) + bx * (cy - ay) + cx * (ay - by)
+    )
+    if abs(denominator) <= 1e-12:
+        return None
+    first_norm = ax * ax + ay * ay
+    second_norm = bx * bx + by * by
+    third_norm = cx * cx + cy * cy
+    center = np.array(
+        [
+            (
+                first_norm * (by - cy)
+                + second_norm * (cy - ay)
+                + third_norm * (ay - by)
+            )
+            / denominator,
+            (
+                first_norm * (cx - bx)
+                + second_norm * (ax - cx)
+                + third_norm * (bx - ax)
+            )
+            / denominator,
+        ],
+        dtype=float,
+    )
+    return MinimumEnclosingCircle(center, float(np.linalg.norm(center - first)))
+
+
+def minimum_enclosing_circle(
+    points: FloatArray,
+    tolerance: float = 1e-9,
+) -> MinimumEnclosingCircle:
+    """以确定性增量算法求二维点集的最小覆盖圆。
+
+    点先按字典序排列，因此结果不依赖调用次序。算法只在发现圆外点时重建一、二、
+    三点边界圆；对问题中的凸定位多边形规模足够高效。
+    """
+
+    points = np.unique(np.asarray(points, dtype=float), axis=0)
+    if len(points) == 0:
+        raise ValueError("minimum enclosing circle is undefined for no points")
+    ordered = points[np.lexsort((points[:, 1], points[:, 0]))]
+    circle = MinimumEnclosingCircle(ordered[0].copy(), 0.0)
+
+    def outside(point: FloatArray, current: MinimumEnclosingCircle) -> bool:
+        return np.linalg.norm(point - current.center) > current.radius + tolerance
+
+    for first_index, first in enumerate(ordered):
+        if not outside(first, circle):
+            continue
+        circle = MinimumEnclosingCircle(first.copy(), 0.0)
+        for second_index in range(first_index):
+            second = ordered[second_index]
+            if not outside(second, circle):
+                continue
+            center = (first + second) / 2.0
+            circle = MinimumEnclosingCircle(
+                center,
+                float(np.linalg.norm(first - second) / 2.0),
+            )
+            for third_index in range(second_index):
+                third = ordered[third_index]
+                if not outside(third, circle):
+                    continue
+                candidate = _circle_from_three_points(first, second, third)
+                if candidate is not None:
+                    circle = candidate
+    return circle
 
 
 def diameter_circle_coverage(

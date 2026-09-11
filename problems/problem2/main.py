@@ -10,13 +10,22 @@ import numpy as np
 
 from problems.problem1.model import BearingMeasurement
 from problems.problem2.config import (
+    DIAMETER_HISTOGRAM,
+    DIAMETER_SAMPLE_GRID_STEP_M,
+    DIAMETER_SAMPLE_TABLE,
     NEAR_OPTIMAL_RELATIVE_GAP,
     REGION_SUMMARY,
     RESULT_FIGURE,
     RESULT_TABLE,
     SCREENING_FIGURE,
 )
-from problems.problem2.model import CandidateScore, SelectionResult, select_second_point
+from problems.problem2.model import (
+    CandidateScore,
+    SelectionResult,
+    build_posterior_grid,
+    sample_selected_second_region_diameters,
+    select_second_point,
+)
 
 # 可复现实验输入只有第一检测点和实际读到的示向度，不设干扰源真实位置。
 DEFAULT_FIRST_X_M = -900.0
@@ -42,6 +51,7 @@ def main(
     from problems.problem2.plotting import (
         plot_candidate_region,
         plot_screening_principles,
+        plot_selected_m2_diameter_histogram,
     )
 
     result = select_second_point(first_measurement)
@@ -87,13 +97,53 @@ def main(
         writer.writeheader()
         writer.writerows(rows)
 
+    dense_diameter_posterior = build_posterior_grid(
+        first_measurement,
+        grid_step_m=DIAMETER_SAMPLE_GRID_STEP_M,
+    )
+    diameter_samples = sample_selected_second_region_diameters(
+        result,
+        posterior=dense_diameter_posterior,
+    )
+    with DIAMETER_SAMPLE_TABLE.open(
+        "w", encoding="utf-8-sig", newline=""
+    ) as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=[
+                "source_x_m",
+                "source_y_m",
+                "source_posterior_weight",
+                "conditional_detection_probability",
+                "bearing_error_deg",
+                "second_bearing_deg",
+                "polygon_diameter_m",
+                "integration_weight",
+            ],
+        )
+        writer.writeheader()
+        for sample in diameter_samples:
+            writer.writerow(
+                {
+                    "source_x_m": f"{sample.source_point[0]:.6f}",
+                    "source_y_m": f"{sample.source_point[1]:.6f}",
+                    "source_posterior_weight": (
+                        f"{sample.source_posterior_weight:.12f}"
+                    ),
+                    "conditional_detection_probability": (
+                        f"{sample.conditional_detection_probability:.12f}"
+                    ),
+                    "bearing_error_deg": f"{sample.bearing_error_deg:.6f}",
+                    "second_bearing_deg": f"{sample.second_bearing_deg:.9f}",
+                    "polygon_diameter_m": f"{sample.diameter_m:.9f}",
+                    "integration_weight": f"{sample.integration_weight:.12f}",
+                }
+            )
+
     excellent_array = np.asarray(
         [score.point for score in result.excellent_scores], dtype=float
     )
-    maximum_score_point = max(
-        result.fine_scores,
-        key=lambda score: score.expected_log_diameter_gain or float("-inf"),
-    )
+    maximum_score_point = result.maximum_score
     summary = {
         "file_function": "记录指定第一检测点输入、5%近优区域坐标范围及最佳第二检测点。",
         "first_measurement": {
@@ -105,6 +155,9 @@ def main(
             f"expected_gain >= {1.0 - NEAR_OPTIMAL_RELATIVE_GAP:.2f} * maximum_gain"
         ),
         "excellent_point_count": len(result.excellent_scores),
+        "coarse_refinement_centers_m": [
+            list(score.point) for score in result.coarse_refinement_centers
+        ],
         "overall_bounds_m": {
             "x_min": float(np.min(excellent_array[:, 0])),
             "x_max": float(np.max(excellent_array[:, 0])),
@@ -146,6 +199,11 @@ def main(
 
     plot_screening_principles(SCREENING_FIGURE)
     plot_candidate_region(result, RESULT_FIGURE)
+    plot_selected_m2_diameter_histogram(
+        diameter_samples,
+        result.selected.point,
+        DIAMETER_HISTOGRAM,
+    )
     bounds = summary["overall_bounds_m"]
     print(f"第一检测点：{first_measurement.station}")
     print(f"第一示向度：{first_measurement.bearing_deg:.6f}°")
@@ -170,6 +228,12 @@ def main(
     )
     print(f"问题 2 候选表：{RESULT_TABLE}")
     print(f"问题 2 优良区域：{REGION_SUMMARY}")
+    print(
+        f"直径分布密网格：{len(dense_diameter_posterior.points)} 个干扰源位置，"
+        f"共 {len(diameter_samples)} 条位置—误差记录"
+    )
+    print(f"固定 M2 的多边形直径表：{DIAMETER_SAMPLE_TABLE}")
+    print(f"固定 M2 的直径柱状图：{DIAMETER_HISTOGRAM}")
     print(f"问题 2 原理图：{SCREENING_FIGURE}")
     print(f"问题 2 结果图：{RESULT_FIGURE}")
     return result

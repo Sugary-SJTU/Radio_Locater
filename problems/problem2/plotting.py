@@ -17,7 +17,11 @@ from problems.problem2.config import (
     MIN_GEOMETRY_SCORE,
     MIN_SECOND_POINT_DISTANCE_M,
 )
-from problems.problem2.model import SelectionResult, reception_probability
+from problems.problem2.model import (
+    SecondRegionDiameterSample,
+    SelectionResult,
+    reception_probability,
+)
 
 
 def _save_figure(figure: plt.Figure, output: Path) -> None:
@@ -311,6 +315,7 @@ def plot_candidate_region(
         excellent_label_used = True
     first = result.first_measurement.station
     selected = result.selected.point
+    maximum_score_point = result.maximum_score.point
     axis.scatter(
         *first,
         marker="s",
@@ -319,12 +324,30 @@ def plot_candidate_region(
         label="第一检测点 $M_1$",
     )
     axis.scatter(
+        *maximum_score_point,
+        marker="*",
+        s=145,
+        color="#F2B134",
+        edgecolor="#7A4E00",
+        linewidth=0.8,
+        label="得分最大点",
+        zorder=6,
+    )
+    axis.annotate(
+        "目标函数最大",
+        xy=maximum_score_point,
+        xytext=(maximum_score_point[0] + 130.0, maximum_score_point[1] + 120.0),
+        arrowprops={"arrowstyle": "->", "color": "#7A4E00"},
+        color="#7A4E00",
+        fontsize=8.5,
+    )
+    axis.scatter(
         *selected,
         marker="X",
         s=90,
         color="#E15759",
         edgecolor="white",
-        label="选定第二检测点 $M_2^*$",
+        label="式 (59) 最终点 $M_2^*$",
         zorder=6,
     )
     axis.plot(
@@ -398,7 +421,7 @@ def plot_candidate_region(
     gain = result.selected.expected_log_diameter_gain
     axis.set_title(
         "问题 2：粗筛—细化得到的第二检测点候选区域\n"
-        f"选定点={selected}，期望对数直径增益={gain:.3f} bit"
+        f"式 (59) 最终点={selected}，期望对数直径增益={gain:.3f} bit"
     )
     axis.set_xlabel("x / m（正东）")
     axis.set_ylabel("y / m（正北）")
@@ -407,4 +430,89 @@ def plot_candidate_region(
     axis.set_aspect("equal")
     axis.grid(alpha=0.18)
     axis.legend(loc="lower left", fontsize=8, ncol=2)
+    _save_figure(figure, output)
+
+
+def plot_selected_m2_diameter_histogram(
+    samples: tuple[SecondRegionDiameterSample, ...],
+    selected_point: tuple[float, float],
+    output: Path,
+) -> None:
+    """绘制固定 M2 下，S1 密网格形成的 S2 直径柱状图和区间饼图。"""
+
+    configure_chinese_font()
+    diameters = np.asarray([sample.diameter_m for sample in samples], dtype=float)
+    raw_weights = np.asarray(
+        [sample.integration_weight for sample in samples], dtype=float
+    )
+    weights = raw_weights / np.sum(raw_weights)
+    bin_count = min(16, max(8, int(np.sqrt(len(samples)))))
+    counts, edges = np.histogram(diameters, bins=bin_count, weights=weights)
+    centers = (edges[:-1] + edges[1:]) / 2.0
+    widths = np.diff(edges)
+    weighted_mean = float(np.dot(weights, diameters))
+    source_count = len({sample.source_point for sample in samples})
+
+    figure, (axis, pie_axis) = plt.subplots(
+        1,
+        2,
+        figsize=(13.2, 5.8),
+        gridspec_kw={"width_ratios": [1.65, 1.0]},
+    )
+    axis.bar(
+        centers,
+        counts,
+        width=0.88 * widths,
+        color="#4C78A8",
+        edgecolor="white",
+        linewidth=0.8,
+        label="检测条件下的加权概率质量",
+    )
+    axis.axvline(
+        weighted_mean,
+        color="#E15759",
+        linestyle="--",
+        linewidth=2.0,
+        label=f"加权平均直径 {weighted_mean:.2f} m",
+    )
+    axis.set_title("(a) $D_2$ 加权柱状分布")
+    axis.set_xlabel("第二次测向后多边形直径 $D_2$ / m")
+    axis.set_ylabel("归一化概率质量")
+    axis.grid(axis="y", alpha=0.22)
+    axis.legend()
+
+    # 饼图按直径数值区间汇总，而不是给每条记录单独画扇区。分界点覆盖定位中常见
+    # 的小、中、大直径，并将极端长尾单列，方便比较各尺度所占概率质量。
+    pie_edges = np.array([0.0, 40.0, 60.0, 80.0, 120.0, np.inf])
+    pie_labels = ["<40 m", "40–60 m", "60–80 m", "80–120 m", "≥120 m"]
+    pie_values = np.array(
+        [
+            np.sum(
+                weights[
+                    (diameters >= lower)
+                    & (diameters < upper)
+                ]
+            )
+            for lower, upper in zip(pie_edges[:-1], pie_edges[1:], strict=True)
+        ]
+    )
+    nonzero = pie_values > 1e-12
+    pie_axis.pie(
+        pie_values[nonzero],
+        labels=np.asarray(pie_labels)[nonzero],
+        autopct="%1.1f%%",
+        startangle=90,
+        counterclock=False,
+        colors=["#4C78A8", "#72B7B2", "#F2CF5B", "#F28E2B", "#E15759"],
+        wedgeprops={"edgecolor": "white", "linewidth": 1.0},
+        textprops={"fontsize": 9},
+    )
+    pie_axis.set_title("(b) 按直径大小分组的概率占比")
+    figure.suptitle(
+        "选定 $M_2$ 后定位多边形直径分布\n"
+        f"$M_2={selected_point}$；S1 干扰源网格点 {source_count} 个，"
+        f"含测向误差共 {len(samples)} 条记录",
+        fontsize=15,
+    )
+    figure.tight_layout()
     _save_figure(figure, output)
