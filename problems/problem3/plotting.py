@@ -12,6 +12,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from radio_locator.runtime import prepare_matplotlib_config
+
+prepare_matplotlib_config()
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D

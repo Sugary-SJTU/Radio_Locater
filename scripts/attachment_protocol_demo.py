@@ -14,7 +14,7 @@ def post(base_url: str, path: str, payload: dict[str, object]) -> dict[str, obje
     """以附件规定的无 BOM UTF-8 application/json 发送一次 POST。"""
 
     request = Request(
-        base_url + path,
+        base_url.rstrip("/") + path,
         data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST",

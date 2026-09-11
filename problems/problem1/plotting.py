@@ -6,6 +6,10 @@ from math import atan2, degrees
 from pathlib import Path
 from typing import Sequence
 
+from radio_locator.runtime import prepare_matplotlib_config
+
+prepare_matplotlib_config()
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
@@ -22,6 +26,9 @@ def configure_chinese_font() -> None:
     """设置当前环境已有的中文字体，并保证负号正常显示。"""
 
     plt.rcParams["font.sans-serif"] = [
+        # Windows 10/11 自带字体优先，后两项兼容 Conda/Linux 环境。
+        "Microsoft YaHei",
+        "SimHei",
         "Source Han Sans CN",
         "Noto Sans CJK SC",
         "DejaVu Sans",

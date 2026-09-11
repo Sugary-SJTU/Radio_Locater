@@ -11,6 +11,7 @@ import socket
 from dataclasses import dataclass, field
 from typing import Any
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from config.simulator import ARENA_ID, BASE_URL, HTTP_TIMEOUT_S, ROBOT_ID
@@ -48,14 +49,27 @@ class SimulatorClient:
         default=None, init=False, repr=False
     )
 
+    def __post_init__(self) -> None:
+        """规范化本机接口地址，避免 Windows 配置中的尾随斜杠破坏精确端点。"""
+
+        parsed = urlsplit(self.base_url)
+        if (
+            parsed.scheme != "http"
+            or not parsed.hostname
+            or parsed.port is None
+            or parsed.path not in {"", "/"}
+            or parsed.query
+            or parsed.fragment
+            or parsed.username is not None
+            or parsed.password is not None
+        ):
+            raise ValueError("base_url must be an exact http://host:port address")
+        self.base_url = self.base_url.rstrip("/")
+
     def check_connection(self) -> None:
         """在 `/enter` 前验证主机端口可连接，不以伪数据降级。"""
 
-        from urllib.parse import urlsplit
-
         parsed = urlsplit(self.base_url)
-        if parsed.scheme != "http" or not parsed.hostname or parsed.port is None:
-            raise SimulatorClientError("base_url must be http://host:port")
         try:
             with socket.create_connection(
                 (parsed.hostname, parsed.port), timeout=self.timeout_s
@@ -100,7 +114,7 @@ class SimulatorClient:
         except HTTPError as error:
             status = error.code
             raw = error.read()
-        except (URLError, TimeoutError, socket.timeout, ConnectionError) as error:
+        except (URLError, TimeoutError, ConnectionError) as error:
             self._last_ambiguous = (path, payload.copy())
             raise AmbiguousActionError(
                 "transport failed; retry only with retry_last_ambiguous()"

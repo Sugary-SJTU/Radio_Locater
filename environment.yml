@@ -19,5 +19,8 @@ dependencies:
   - jupyterlab
   - ipykernel
   - pip:
+      # 用于读取 reference 中的题面 PDF 和 Word 接口附件。
+      - pypdf
+      - python-docx
       # 可编辑安装使源码修改立即生效，同时读取 pyproject.toml 中的 Python 依赖。
       - -e .

@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from radio_locator.runtime import prepare_matplotlib_config
+
+prepare_matplotlib_config()
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Annulus, Circle, Polygon

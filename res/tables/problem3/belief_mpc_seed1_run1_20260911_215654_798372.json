@@ -1,0 +1,302 @@
+{
+  "strategy": "belief_mpc",
+  "all_channels_resolved": true,
+  "cleared_count": 13,
+  "clearance_ratio": 1.0,
+  "clearance_ratio_denominator": "inferred completion because all channels resolved or 16 sources cleared",
+  "total_virtual_time_s": 4707.189144,
+  "average_localize_clear_time_s": 2493.6472412307694,
+  "total_movement_distance_m": 19980.94571577565,
+  "measure_count": 108,
+  "switch_count": 106,
+  "clear_success_count": 13,
+  "clear_failure_count": 0,
+  "channels": {
+    "1": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "2": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "3": {
+      "status": "cleared",
+      "first_detected_time_s": 988.497159,
+      "localized_time_s": 4562.405621,
+      "cleared_time_s": 4567.405621,
+      "guaranteed_coverage_fraction": 0.42902059424618766
+    },
+    "4": {
+      "status": "cleared",
+      "first_detected_time_s": 301.0,
+      "localized_time_s": 4011.450728,
+      "cleared_time_s": 4018.645235,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "5": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "6": {
+      "status": "cleared",
+      "first_detected_time_s": 504.553496,
+      "localized_time_s": 3051.09904,
+      "cleared_time_s": 3058.015701,
+      "guaranteed_coverage_fraction": 0.286590158780066
+    },
+    "7": {
+      "status": "cleared",
+      "first_detected_time_s": 319.0,
+      "localized_time_s": 655.60402,
+      "cleared_time_s": 3314.986695,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "8": {
+      "status": "cleared",
+      "first_detected_time_s": 241.0,
+      "localized_time_s": 3707.53925,
+      "cleared_time_s": 3837.901117,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "9": {
+      "status": "cleared",
+      "first_detected_time_s": 1730.937951,
+      "localized_time_s": 2127.357069,
+      "cleared_time_s": 2264.404204,
+      "guaranteed_coverage_fraction": 0.8563119006445528
+    },
+    "10": {
+      "status": "cleared",
+      "first_detected_time_s": 510.553496,
+      "localized_time_s": 2927.171657,
+      "cleared_time_s": 2934.644965,
+      "guaranteed_coverage_fraction": 0.286590158780066
+    },
+    "11": {
+      "status": "cleared",
+      "first_detected_time_s": 1228.10001,
+      "localized_time_s": 2736.218913,
+      "cleared_time_s": 2743.299764,
+      "guaranteed_coverage_fraction": 0.5719226536708064
+    },
+    "12": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "13": {
+      "status": "cleared",
+      "first_detected_time_s": 1489.899757,
+      "localized_time_s": 2379.347859,
+      "cleared_time_s": 2386.197903,
+      "guaranteed_coverage_fraction": 0.7145102971230939
+    },
+    "14": {
+      "status": "cleared",
+      "first_detected_time_s": 271.0,
+      "localized_time_s": 3171.788211,
+      "cleared_time_s": 3178.041578,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "15": {
+      "status": "cleared",
+      "first_detected_time_s": 265.0,
+      "localized_time_s": 3446.07794,
+      "cleared_time_s": 3451.07794,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "16": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "17": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "18": {
+      "status": "cleared",
+      "first_detected_time_s": 1174.10001,
+      "localized_time_s": 4700.653399,
+      "cleared_time_s": 4707.189144,
+      "guaranteed_coverage_fraction": 0.5719226536708064
+    },
+    "19": {
+      "status": "cleared",
+      "first_detected_time_s": 1507.899757,
+      "localized_time_s": 2482.145905,
+      "cleared_time_s": 2487.145905,
+      "guaranteed_coverage_fraction": 0.7145102971230939
+    },
+    "20": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    }
+  },
+  "coverage_plan": {
+    "sides": 7,
+    "radius_m": 1000.0,
+    "rotation_deg": 7.5,
+    "scan_origin": false,
+    "points": [
+      [
+        991.4448613738103,
+        130.52619222005157
+      ],
+      [
+        516.1062738075066,
+        856.5245554778514
+      ],
+      [
+        -347.87086458522725,
+        937.5424585439991
+      ],
+      [
+        -949.8941466728459,
+        312.57176794564475
+      ],
+      [
+        -836.6277620064199,
+        -547.771839217871
+      ],
+      [
+        -93.363608452951,
+        -995.6320789411338
+      ],
+      [
+        720.2052465361263,
+        -693.7610560285418
+      ]
+    ],
+    "route_length_m": 6206.604869410697,
+    "measure_count": 140,
+    "switch_count": 133,
+    "estimated_base_time_s": 2074.3209738821392,
+    "coverage": {
+      "analytic_max_distance_m": 1000.0,
+      "numerical_max_distance_m": 999.9999999999999,
+      "coverage_ratio": 1.0,
+      "worst_point": [
+        0.0,
+        0.0
+      ],
+      "achieved_margin_m": 0.0,
+      "required_margin_m": 0.0,
+      "valid": true
+    }
+  },
+  "official_log_original_names": [],
+  "run_index": 1,
+  "case_code": null,
+  "seed": 1,
+  "host": "127.0.0.1",
+  "port": 2026,
+  "program_wall_time_s": 28.815845900000113,
+  "action_log": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\logs\\problem3\\belief_mpc_seed1_run1_20260911_215654_798372.jsonl",
+  "summary_file": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\tables\\problem3\\belief_mpc_seed1_run1_20260911_215654_798372.json",
+  "polygon_search_file": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\tables\\problem3\\belief_mpc_seed1_run1_20260911_215654_798372_polygon_search.csv",
+  "settings": {
+    "seed": 1,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": true,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 40.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 480,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 30,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 3,
+    "beam_width": 20,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0
+  },
+  "postrun_truth_file": null,
+  "plotting_error": null,
+  "trajectory_figure": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\problem3\\belief_mpc_seed1_run1_20260911_215654_798372_trajectory.png",
+  "clearance_detail_figure": null
+}

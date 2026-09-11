@@ -54,7 +54,10 @@ def main() -> None:
         "--timeout", type=float, default=float(os.getenv("CUMCM_HTTP_TIMEOUT_S", "5"))
     )
     problem3_parser.add_argument(
-        "--config", type=Path, default=Path("config/problem3.yaml"), help="算法YAML配置"
+        "--config",
+        type=Path,
+        default=Path(__file__).resolve().parents[2] / "config" / "problem3.yaml",
+        help="算法YAML配置（默认使用项目内配置，与启动目录无关）",
     )
     problem3_parser.add_argument("--seed", type=int)
     problem3_parser.add_argument("--grid-step", dest="coverage_grid_step_m", type=float)
