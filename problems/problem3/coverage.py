@@ -121,16 +121,16 @@ def validate_coverage(
     numerical_max = float(nearest[worst_index])
     threshold = guaranteed_radius_m - robustness_margin_m
     coverage_ratio = float(np.mean(nearest <= threshold + 1e-9))
-    analytic = None
-    if not scan_origin:
+    if scan_origin:
+        # 最近顶点夹角最坏为pi/n。中心与顶点等距处r=a/(2cos(pi/n))；
+        # 其前最近距离为r，其后顶点距离平方为凸二次式，最大值在端点。
+        crossing = min(arena_radius_m, radius_m / (2.0 * cos(pi / sides)))
+        boundary = sqrt(arena_radius_m**2 + radius_m**2
+                        - 2.0 * arena_radius_m * radius_m * cos(pi / sides))
+        analytic = max(crossing, min(arena_radius_m, boundary))
+    else:
         analytic = analytic_polygon_max_distance(sides, radius_m, arena_radius_m)
-    # 不扫描原点时连续解析式是最终证明。扫描原点没有题面给定闭式，网格节点的
-    # 最大值还需加上半个网格单元的对角线，才是对单元内部任意点的连续上界。
-    decisive_max = (
-        analytic
-        if analytic is not None
-        else numerical_max + grid_step_m / sqrt(2.0)
-    )
+    decisive_max = analytic
     valid = decisive_max <= threshold + 1e-9 and coverage_ratio >= 1.0 - 1e-12
     return CoverageMetrics(
         analytic_max_distance_m=analytic,
@@ -277,6 +277,59 @@ def optimize_remaining_route(
                     baseline = candidate_length
                     improved = True
     return route
+
+
+def held_karp_open_path(
+    start: tuple[float, float],
+    points: list[tuple[float, float]],
+) -> list[int]:
+    """返回从 ``start`` 出发、访问全部点且不返航的精确最短顺序。
+
+    返回值是 ``points`` 的索引序列。问题中待清除频道最多16个，因此
+    ``O(K^2 2^K)`` 的 Held--Karp 动态规划可以直接用于末端清除排序。
+    """
+
+    count = len(points)
+    if count <= 1:
+        return list(range(count))
+    costs: dict[tuple[int, int], float] = {}
+    parents: dict[tuple[int, int], int] = {}
+    for last, point in enumerate(points):
+        costs[(1 << last, last)] = math_distance(start, point)
+
+    for size in range(2, count + 1):
+        for mask in range(1, 1 << count):
+            if mask.bit_count() != size:
+                continue
+            for last in range(count):
+                if not mask & (1 << last):
+                    continue
+                previous_mask = mask ^ (1 << last)
+                choices = (
+                    (
+                        costs[(previous_mask, previous)]
+                        + math_distance(points[previous], points[last]),
+                        previous,
+                    )
+                    for previous in range(count)
+                    if previous_mask & (1 << previous)
+                )
+                best_cost, best_previous = min(choices)
+                costs[(mask, last)] = best_cost
+                parents[(mask, last)] = best_previous
+
+    full_mask = (1 << count) - 1
+    last = min(range(count), key=lambda index: costs[(full_mask, index)])
+    reversed_order: list[int] = []
+    mask = full_mask
+    while mask:
+        reversed_order.append(last)
+        previous_mask = mask ^ (1 << last)
+        if not previous_mask:
+            break
+        last = parents[(mask, last)]
+        mask = previous_mask
+    return list(reversed(reversed_order))
 
 
 def math_distance(first: tuple[float, float], second: tuple[float, float]) -> float:

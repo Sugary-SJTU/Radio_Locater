@@ -13,11 +13,20 @@ from problems.problem3.config import Problem3Settings
 from problems.problem3.coverage import (
     analytic_polygon_max_distance,
     evaluate_polygon_plan,
+    held_karp_open_path,
     search_polygon_plans,
 )
 from problems.problem3.plotting import plot_run_replay
-from problems.problem3.shared import JsonlRunLogger, Problem3Executor, Problem3State
-from problems.problem3.strategies import guarantee_route_covers_uncovered
+from problems.problem3.shared import (
+    JsonlRunLogger,
+    Problem3Executor,
+    Problem3State,
+    fallback_clearance_grid,
+)
+from problems.problem3.strategies import (
+    RobustPolygonRollingStrategy,
+    guarantee_route_covers_uncovered,
+)
 from radio_locator.client import ActionExchange
 from radio_locator.geometry import minimum_enclosing_circle
 
@@ -112,6 +121,45 @@ def test_polygon_search_really_compares_sides_radius_rotation_and_origin() -> No
     assert best.estimated_base_time_s == min(
         plan.estimated_base_time_s for plan in plans if plan.coverage.valid
     )
+
+
+def test_robust_strategy_uses_origin_plus_hexagon_independently(tmp_path: Path) -> None:
+    """保守策略固定使用先前确定的原点+1200 m正六边形，不受MPC参数搜索影响。"""
+
+    settings = _small_settings()
+    state = Problem3State(settings)
+    logger = JsonlRunLogger(tmp_path / "robust.jsonl")
+    executor = Problem3Executor(FakeClient("no_signal"), state, logger, "robust")
+    executor.enter()
+    result = RobustPolygonRollingStrategy(settings).run(executor)
+    logger.close()
+    assert result.selected_plan.sides == 6
+    assert result.selected_plan.scan_origin
+    assert math.isclose(result.selected_plan.radius_m, 1200.0)
+    assert len(result.selected_plan.points) == 7
+    assert math.isclose(result.selected_plan.route_length_m, 7200.0, abs_tol=1e-6)
+    assert state.all_resolved()
+
+
+def test_held_karp_returns_shortest_open_clearance_path() -> None:
+    """末端清除路径不返航，并选择比输入顺序更短的精确访问顺序。"""
+
+    points = [(10.0, 0.0), (1.0, 0.0), (2.0, 0.0)]
+    order = held_karp_open_path((0.0, 0.0), points)
+    assert order == [1, 2, 0]
+
+
+def test_28m_fallback_grid_covers_localization_region() -> None:
+    """定位多边形内的密集验证点到某个保留网格中心均严格小于20 m。"""
+
+    region = np.asarray([[0.0, 0.0], [84.0, 0.0], [84.0, 56.0], [0.0, 56.0]])
+    grid = np.asarray(fallback_clearance_grid(region, 28.0, 20.0, (0.0, 0.0)))
+    samples = np.asarray(
+        [(x, y) for x in np.linspace(0.0, 84.0, 22) for y in np.linspace(0.0, 56.0, 15)]
+    )
+    distances = np.linalg.norm(samples[:, None, :] - grid[None, :, :], axis=2)
+    nearest = np.min(distances, axis=1)
+    assert float(np.max(nearest)) < 20.0
 
 
 def test_none_downweights_reachable_particles_and_radius_stays_fixed() -> None:
@@ -221,3 +269,22 @@ def test_replay_plot_contains_main_view_and_clearance_details(tmp_path: Path) ->
     assert main_output.stat().st_size > 10_000
     assert detail_output.stat().st_size > 5_000
     assert paths["clearance_detail_figure"] == str(detail_output)
+
+def test_robust_finishes_station_scan_before_localization(tmp_path: Path) -> None:
+    """发现信号后仍先完成同站其他频道，杜绝逐频道往返覆盖点。"""
+    from unittest.mock import patch
+    from problems.problem3 import strategies
+    state = Problem3State(_small_settings())
+    client = FakeClient('direction')
+    logger = JsonlRunLogger(tmp_path / 'batch.jsonl')
+    executor = Problem3Executor(client, state, logger, 'robust')
+    def finish(executor, channel, *args, **kwargs):
+        assert executor.state.counters.measure_count == len(state.settings.channels)
+        executor.state.tracks[channel].status = 'cleared'
+    try:
+        executor.enter()
+        with patch.object(strategies, 'localize_channel', side_effect=finish):
+            RobustPolygonRollingStrategy(state.settings).run(executor)
+    finally:
+        logger.close()
+    assert state.all_resolved()

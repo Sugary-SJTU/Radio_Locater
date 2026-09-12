@@ -21,17 +21,33 @@ from config.paths import FIGURES_DIR, LOGS_DIR, TABLES_DIR
 
 ROBUST_STRATEGY: Final[str] = "robust_polygon_rolling"
 MPC_STRATEGY: Final[str] = "belief_mpc"
-STRATEGIES: Final[tuple[str, str]] = (ROBUST_STRATEGY, MPC_STRATEGY)
+TOUR_STRATEGY: Final[str] = "integrated_bearing_tour"
+SHARED_STRATEGY: Final[str] = "cooperative_bearing_tour"
+STRATEGIES: Final[tuple[str, ...]] = (ROBUST_STRATEGY, MPC_STRATEGY, TOUR_STRATEGY, SHARED_STRATEGY)
 
 
 @dataclass(frozen=True, slots=True)
 class Problem3Settings:
     """一次问题 3 运行使用的全部算法参数。"""
 
+    tour_polygon_sides: int = 6
+    tour_polygon_radius_m: float = 1150.0
+    tour_scan_origin: bool = True
+    tour_target_radius_m: float = 150.0
+    tour_channel_order: str = "legacy"
+    tour_endgame_mode: str = "probe"
     seed: int = 1
     channels: tuple[int, ...] = CHANNELS
     arena_radius_m: float = ARENA_RADIUS_M
     guaranteed_radius_m: float = RECEPTION_RADIUS_MIN_M
+    # 保守滚动策略固定采用原点+正六边形；下方 polygon_* 参数仍供 belief_mpc
+    # 的覆盖骨架参数搜索使用，确保两套策略可以独立演进。
+    robust_polygon_sides: int = 6
+    robust_polygon_radius_m: float = 1_200.0
+    robust_polygon_rotation_deg: float = 0.0
+    robust_scan_origin: bool = True
+    robust_clear_radius_m: float = 19.8
+    fallback_grid_step_m: float = 28.0
     scan_origin: bool = False
     polygon_sides: int = 7
     polygon_radius_m: float = 1_000.0

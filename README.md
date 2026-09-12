@@ -123,4 +123,18 @@ python -m pytest -q
 ruff check .
 ```
 
-问题 3 常用调参为 `--grid-step`、`--particles`、`--candidate-limit`、`--horizon`、`--beam-width` 和 `--fixed-polygon`。正式测试应先在演练中确认默认或调整后的参数有效。
+问题 3 的两套策略彼此独立：`robust_polygon_rolling` 固定采用原点加半径 1200 m 的正六边形，结合滚动定位插入、19.8 m 安全清除阈值、Held--Karp 末端清除路径和 28 m 网格兜底；`belief_mpc` 继续使用候选正多边形参数搜索和有限时域 Beam Search。常用调参为 `--grid-step`、`--particles`、`--candidate-limit`、`--horizon` 和 `--beam-width`，两套策略的固定参数也可在 `config/problem3.yaml` 中分别修改。正式测试应先在演练中确认参数有效。
+
+### 更快的问题3联合路线策略
+
+新增 `integrated_bearing_tour`：覆盖测站同时为多个频道交会定位，覆盖点与已定位到150m以内的目标一起进行最近邻+2-opt滚动开放路线规划。实际清除仍遵循19.8m判据。26个本地场景均全清，平均3737秒；具体对照与限制见《问题三思路与具体方法》第13节。
+
+```powershell
+python run.py problem3 --strategy integrated_bearing_tour --host 127.0.0.1 --port 2026 --robot-id $env:CUMCM_ROBOT_ID
+```
+
+沿用原模拟器队号；本地demo可将机器人编号改为`demo`。另有`cooperative_bearing_tour`作为共享测站后集中清除的对照方案。两种旧策略仍可使用。
+
+2026-09-12参数更新：联合巡回默认`tour_polygon_radius_m: 1150.0`，仍保留原点扫描。60场景配对中平均总时间由3800.28秒降至3699.96秒；51局更快、9局更慢。新增`--tour-radius 1200`可恢复旧半径，`--channel-order alternating`可试验相邻非空扫描批次升降序交替，默认`legacy`优先当前频道。交替顺序在本地试验中平均增加约2秒，故未启用为默认。完整覆盖证明与分组数据见方法文档第14节。
+
+末段绕行修订：默认`tour_endgame_mode: probe`，在最多剩2个覆盖节点时让已发现的粗定位目标参加排路，并先做一次侧向共享补测。候选节点≤10时使用Held–Karp精确开放路线。`--endgame legacy`可恢复原模式，`--endgame exact`只启用小规模精确排路。120个配对场景中新默认均值3528.87秒，旧模式3717.74秒，83局改善；不保证每局变快。P5真实历史状态复盘见方法文档第15节。

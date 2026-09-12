@@ -31,7 +31,10 @@ from problems.problem3.shared import (
     Problem3State,
     summarize_state,
 )
-from problems.problem3.strategies import BeliefMPCStrategy, RobustPolygonRollingStrategy
+from problems.problem3.strategies import (
+    BeliefMPCStrategy, RobustPolygonRollingStrategy,
+    CooperativeBearingTourStrategy, IntegratedBearingTourStrategy,
+)
 from radio_locator.client import AmbiguousActionError, SimulatorClient
 
 
@@ -68,6 +71,14 @@ def load_settings(path: Path | None, overrides: dict[str, Any]) -> Problem3Setti
 def _validate_settings(settings: Problem3Settings) -> None:
     """在连接模拟器前检查会改变动作含义的配置。"""
 
+    if settings.tour_endgame_mode not in {"legacy", "exact", "probe"}:
+        raise ValueError("tour_endgame_mode must be legacy, exact or probe")
+    if settings.tour_channel_order not in {"legacy", "alternating"}:
+        raise ValueError("tour_channel_order must be legacy or alternating")
+    if settings.tour_polygon_sides < 3 or settings.tour_polygon_radius_m <= 0:
+        raise ValueError("tour polygon requires at least three sides and positive radius")
+    if not 0 < settings.tour_target_radius_m < float("inf"):
+        raise ValueError("tour target radius must be finite and positive")
     if settings.guaranteed_radius_m != 1_000.0:
         raise ValueError("guaranteed_radius_m is fixed by the problem at 1000 m")
     if settings.start_position != (0.0, 0.0) or settings.start_channel != 1:
@@ -80,6 +91,16 @@ def _validate_settings(settings: Problem3Settings) -> None:
         raise ValueError("beam_width must be between 10 and 30")
     if settings.coverage_grid_step_m <= 0 or settings.coverage_validation_step_m <= 0:
         raise ValueError("coverage grid steps must be positive")
+    if (
+        settings.robust_polygon_sides < 3
+        or settings.robust_polygon_radius_m <= 0
+    ):
+        raise ValueError("robust polygon must have at least three sides and positive radius")
+    if not 0.0 < settings.robust_clear_radius_m <= settings.clearance_radius_m:
+        raise ValueError("robust_clear_radius_m must lie in (0, clearance_radius_m]")
+    fallback_cover_radius = settings.fallback_grid_step_m * 2**0.5 / 2.0
+    if fallback_cover_radius >= settings.clearance_radius_m:
+        raise ValueError("fallback grid cells are too large for the 20 m clearance radius")
 
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:
@@ -163,20 +184,22 @@ def run_once(
         request_prefix=f"p3-{strategy_name}-s{settings.seed}-r{run_index}",
     )
     executor = Problem3Executor(client, state, logger, strategy_name)
-    strategy = (
-        RobustPolygonRollingStrategy(settings)
-        if strategy_name == ROBUST_STRATEGY
-        else BeliefMPCStrategy(settings)
-    )
+    strategy_types = {
+        "robust_polygon_rolling": RobustPolygonRollingStrategy,
+        "belief_mpc": BeliefMPCStrategy,
+        "cooperative_bearing_tour": CooperativeBearingTourStrategy,
+        "integrated_bearing_tour": IntegratedBearingTourStrategy,
+    }
+    strategy = strategy_types[strategy_name](settings)
     start = time.monotonic()
     try:
         executor.enter()
         result = strategy.run(executor)
         executor.exit()
-        from problems.problem3.plotting import plot_run_replay
-
         plotting_error: str | None = None
         try:
+            from problems.problem3.plotting import plot_run_replay
+
             figure_paths = plot_run_replay(
                 action_log,
                 TRAJECTORY_FIGURE_DIR / f"{stem}_trajectory.png",

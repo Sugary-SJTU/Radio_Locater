@@ -1,0 +1,184 @@
+[
+  {
+    "seed": 1,
+    "sources": 13,
+    "previous_s": 5464.114547,
+    "integrated_s": 3495.707539,
+    "reduction_percent": 36.024263237320454
+  },
+  {
+    "seed": 2,
+    "sources": 15,
+    "previous_s": 5701.080828,
+    "integrated_s": 3611.953747,
+    "reduction_percent": 36.64440382496538
+  },
+  {
+    "seed": 2026,
+    "sources": 15,
+    "previous_s": 5572.937953,
+    "integrated_s": 3299.068272,
+    "reduction_percent": 40.801991699475856
+  },
+  {
+    "seed": 5,
+    "sources": 14,
+    "previous_s": 5676.811985,
+    "integrated_s": 3910.213518,
+    "reduction_percent": 31.119552165333875
+  },
+  {
+    "seed": 12,
+    "sources": 14,
+    "previous_s": 5582.071924,
+    "integrated_s": 4190.620553,
+    "reduction_percent": 24.927148735176353
+  },
+  {
+    "seed": 19,
+    "sources": 14,
+    "previous_s": 6010.399635,
+    "integrated_s": 3375.320607,
+    "reduction_percent": 43.84199367801273
+  },
+  {
+    "seed": 20,
+    "sources": 16,
+    "previous_s": 5944.90166,
+    "integrated_s": 3617.41411,
+    "reduction_percent": 39.15098487936973
+  },
+  {
+    "seed": 21,
+    "sources": 12,
+    "previous_s": 5505.941298,
+    "integrated_s": 4203.653705,
+    "reduction_percent": 23.65240605585548
+  },
+  {
+    "seed": 22,
+    "sources": 15,
+    "previous_s": 5799.853866,
+    "integrated_s": 3872.781727,
+    "reduction_percent": 33.22621885866668
+  },
+  {
+    "seed": 23,
+    "sources": 10,
+    "previous_s": 4909.494361,
+    "integrated_s": 4010.914007,
+    "reduction_percent": 18.30291040026719
+  },
+  {
+    "seed": 24,
+    "sources": 12,
+    "previous_s": 5349.522427,
+    "integrated_s": 4080.550722,
+    "reduction_percent": 23.721214787235432
+  },
+  {
+    "seed": 25,
+    "sources": 13,
+    "previous_s": 5789.96948,
+    "integrated_s": 4129.024572,
+    "reduction_percent": 28.68659176421081
+  },
+  {
+    "seed": 26,
+    "sources": 16,
+    "previous_s": 6510.90692,
+    "integrated_s": 4152.809096,
+    "reduction_percent": 36.217655281731474
+  },
+  {
+    "seed": 27,
+    "sources": 10,
+    "previous_s": 4956.680161,
+    "integrated_s": 3648.199411,
+    "reduction_percent": 26.398329274810763
+  },
+  {
+    "seed": 28,
+    "sources": 14,
+    "previous_s": 5992.648867,
+    "integrated_s": 3818.161358,
+    "reduction_percent": 36.28591558191157
+  },
+  {
+    "seed": 29,
+    "sources": 16,
+    "previous_s": 5727.698487,
+    "integrated_s": 4026.333788,
+    "reduction_percent": 29.70415958279823
+  },
+  {
+    "seed": 30,
+    "sources": 10,
+    "previous_s": 4187.950217,
+    "integrated_s": 3023.321557,
+    "reduction_percent": 27.809037826487604
+  },
+  {
+    "seed": 31,
+    "sources": 13,
+    "previous_s": 6037.804691,
+    "integrated_s": 3314.740953,
+    "reduction_percent": 45.1002289302107
+  },
+  {
+    "seed": 32,
+    "sources": 16,
+    "previous_s": 6140.654043,
+    "integrated_s": 4443.391901,
+    "reduction_percent": 27.639761662436968
+  },
+  {
+    "seed": 33,
+    "sources": 16,
+    "previous_s": 6709.440803,
+    "integrated_s": 4820.522793,
+    "reduction_percent": 28.153136236859055
+  },
+  {
+    "seed": 34,
+    "sources": 10,
+    "previous_s": 4813.82078,
+    "integrated_s": 3150.444827,
+    "reduction_percent": 34.55417284978358
+  },
+  {
+    "seed": 35,
+    "sources": 10,
+    "previous_s": 4501.194233,
+    "integrated_s": 2848.303733,
+    "reduction_percent": 36.72115475226594
+  },
+  {
+    "seed": 36,
+    "sources": 12,
+    "previous_s": 5406.792169,
+    "integrated_s": 2946.166394,
+    "reduction_percent": 45.50990121477333
+  },
+  {
+    "seed": 37,
+    "sources": 11,
+    "previous_s": 4623.010501,
+    "integrated_s": 3688.449062,
+    "reduction_percent": 20.215429724804768
+  },
+  {
+    "seed": 38,
+    "sources": 11,
+    "previous_s": 5071.569501,
+    "integrated_s": 2844.829637,
+    "reduction_percent": 43.90632650426928
+  },
+  {
+    "seed": 39,
+    "sources": 16,
+    "previous_s": 5649.677593,
+    "integrated_s": 4634.590218,
+    "reduction_percent": 17.967173494248634
+  }
+]

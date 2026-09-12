@@ -479,7 +479,27 @@ def localization_candidate_points(
         return []
     if len(track.measurements) == 1:
         first = track.measurements[0]
-        posterior = build_posterior_grid(first)
+        try:
+            posterior = build_posterior_grid(first)
+        except ValueError:
+            # 示向楔形很窄时，固定笛卡尔网格可能恰好没有节点落入其中。
+            # 此时使用解析保底点 M1+750u±600v；在±1°误差和1500 m
+            # 首次可能距离下，两点到真实源的最坏距离仍小于1000 m。
+            direction = math.radians(first.bearing_deg)
+            unit = np.array([math.cos(direction), math.sin(direction)])
+            perpendicular = np.array([-math.sin(direction), math.cos(direction)])
+            station = np.asarray(first.station, dtype=float)
+            fallback = [
+                station + 750.0 * unit + sign * 600.0 * perpendicular
+                for sign in (-1.0, 1.0)
+            ]
+            return [
+                (
+                    (float(point[0]), float(point[1])),
+                    "首次后验网格为空，采用750u±600v保证复测点",
+                )
+                for point in fallback[:count]
+            ]
         support_circle = minimum_enclosing_circle(posterior.points)
         direction = math.radians(first.bearing_deg)
         perpendicular = np.array([-math.sin(direction), math.cos(direction)])
@@ -516,19 +536,134 @@ def localization_candidate_points(
     return [(center, f"当前定位区域最小覆盖圆中心，rho={track.clear_circle.radius:.2f} m")]
 
 
-def localize_and_clear_channel(
+def _point_to_segment_distance(
+    point: np.ndarray,
+    first: np.ndarray,
+    second: np.ndarray,
+) -> float:
+    """计算点到闭线段的欧氏距离。"""
+
+    direction = second - first
+    squared_length = float(np.dot(direction, direction))
+    if squared_length <= 1e-18:
+        return float(np.linalg.norm(point - first))
+    ratio = float(np.dot(point - first, direction) / squared_length)
+    ratio = min(max(ratio, 0.0), 1.0)
+    return float(np.linalg.norm(point - (first + ratio * direction)))
+
+
+def _point_in_convex_polygon(point: np.ndarray, polygon: FloatArray) -> bool:
+    """判断点是否位于逆时针凸多边形内或边界上。"""
+
+    if len(polygon) < 3:
+        return False
+    edges = np.roll(polygon, -1, axis=0) - polygon
+    offsets = point - polygon
+    crosses = edges[:, 0] * offsets[:, 1] - edges[:, 1] * offsets[:, 0]
+    return bool(np.all(crosses >= -1e-9) or np.all(crosses <= 1e-9))
+
+
+def fallback_clearance_grid(
+    region: FloatArray,
+    step_m: float,
+    clearance_radius_m: float,
+    current_position: tuple[float, float],
+) -> list[tuple[float, float]]:
+    """生成覆盖定位区域的方格中心，并按蛇形开放路线排序。
+
+    网格中心从外接矩形左下方半个步长处开始。仅保留位于多边形内，或到
+    多边形边界不超过清除半径的中心；真实位置所在网格单元的中心必被保留。
+    """
+
+    polygon = np.asarray(region, dtype=float)
+    if not len(polygon):
+        return []
+    half = step_m / 2.0
+    x_values = np.arange(
+        float(np.min(polygon[:, 0])) - half,
+        float(np.max(polygon[:, 0])) + half + step_m * 0.5,
+        step_m,
+    )
+    y_values = np.arange(
+        float(np.min(polygon[:, 1])) - half,
+        float(np.max(polygon[:, 1])) + half + step_m * 0.5,
+        step_m,
+    )
+    rows: list[list[tuple[float, float]]] = []
+    for row_index, y_value in enumerate(y_values):
+        row: list[tuple[float, float]] = []
+        for x_value in x_values:
+            point = np.asarray((x_value, y_value), dtype=float)
+            inside = _point_in_convex_polygon(point, polygon)
+            boundary_distance = min(
+                _point_to_segment_distance(
+                    point, polygon[index], polygon[(index + 1) % len(polygon)]
+                )
+                for index in range(len(polygon))
+            )
+            if inside or boundary_distance <= clearance_radius_m + 1e-9:
+                row.append((float(x_value), float(y_value)))
+        if row_index % 2:
+            row.reverse()
+        if row:
+            rows.append(row)
+    route = [point for row in rows for point in row]
+    if route and math_distance(current_position, route[-1]) < math_distance(
+        current_position, route[0]
+    ):
+        route.reverse()
+    return route
+
+
+def clear_with_fallback_grid(
+    executor: Problem3Executor,
+    channel: int,
+    reason: str,
+) -> None:
+    """用边长28 m方格覆盖剩余定位区域，直到该频道清除成功。"""
+
+    state = executor.state
+    track = state.tracks[channel]
+    if track.region is None or not len(track.region):
+        return
+    route = fallback_clearance_grid(
+        track.region,
+        state.settings.fallback_grid_step_m,
+        state.settings.clearance_radius_m,
+        state.position,
+    )
+    for index, point in enumerate(route, start=1):
+        if executor.clear(
+            point,
+            channel,
+            f"{reason}；28m网格兜底第{index}/{len(route)}点",
+        ):
+            return
+
+
+def localize_channel(
     executor: Problem3Executor,
     channel: int,
     insertion_reason: str,
+    *,
+    clear_when_ready: bool,
+    clear_radius_m: float,
+    use_grid_fallback: bool,
 ) -> None:
-    """滚动执行定位，且只在最小覆盖圆半径<=20 m或near时清除。"""
+    """执行有限次测向；可立即清除、延期清除或转入28 m网格兜底。"""
 
     state = executor.state
     for _ in range(state.settings.localization_max_measurements):
         track = state.tracks[channel]
         if track.status == "cleared":
             return
-        if track.status == "localized" and track.clear_circle is not None:
+        if (
+            track.clear_circle is not None
+            and track.clear_circle.radius <= clear_radius_m + 1e-9
+        ):
+            track.status = "localized"
+            if not clear_when_ready:
+                return
             center = (
                 float(track.clear_circle.center[0]),
                 float(track.clear_circle.center[1]),
@@ -536,9 +671,12 @@ def localize_and_clear_channel(
             executor.clear(
                 center,
                 channel,
-                f"{insertion_reason}；最小覆盖圆rho={track.clear_circle.radius:.2f}<=20",
+                f"{insertion_reason}；最小覆盖圆rho={track.clear_circle.radius:.2f}"
+                f"<={clear_radius_m:.1f}",
             )
-            return
+            if state.tracks[channel].status == "cleared":
+                return
+            break
         point, reason = choose_localization_point(state, channel)
         information_gain = state.beliefs[channel].information_gain_bits(point)
         executor.measure(
@@ -547,6 +685,45 @@ def localize_and_clear_channel(
             f"{insertion_reason}；{reason}",
             information_gain_bits=information_gain,
         )
+    track = state.tracks[channel]
+    if (
+        track.status != "cleared"
+        and track.clear_circle is not None
+        and track.clear_circle.radius <= clear_radius_m + 1e-9
+    ):
+        track.status = "localized"
+        if not clear_when_ready:
+            return
+        center = (
+            float(track.clear_circle.center[0]),
+            float(track.clear_circle.center[1]),
+        )
+        if executor.clear(
+            center,
+            channel,
+            f"{insertion_reason}；最终测向后最小覆盖圆"
+            f"rho={track.clear_circle.radius:.2f}<={clear_radius_m:.1f}",
+        ):
+            return
+    if use_grid_fallback and state.tracks[channel].status != "cleared":
+        clear_with_fallback_grid(executor, channel, f"{insertion_reason}；常规定位达到上限")
+
+
+def localize_and_clear_channel(
+    executor: Problem3Executor,
+    channel: int,
+    insertion_reason: str,
+) -> None:
+    """兼容MPC原行为：最多测向6次，并在20 m最小覆盖圆中心清除。"""
+
+    localize_channel(
+        executor,
+        channel,
+        insertion_reason,
+        clear_when_ready=True,
+        clear_radius_m=executor.state.settings.clearance_radius_m,
+        use_grid_fallback=False,
+    )
 
 
 def summarize_state(

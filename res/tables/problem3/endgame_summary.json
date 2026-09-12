@@ -1,0 +1,29 @@
+[
+  {
+    "mode": "legacy",
+    "runs": 120,
+    "mean_s": 3717.7409726166666,
+    "max_s": 4768.213826,
+    "faster": 0,
+    "resolved": 120,
+    "clear_failures": 0
+  },
+  {
+    "mode": "exact",
+    "runs": 120,
+    "mean_s": 3697.1526925666667,
+    "max_s": 5309.713044,
+    "faster": 60,
+    "resolved": 120,
+    "clear_failures": 0
+  },
+  {
+    "mode": "probe",
+    "runs": 120,
+    "mean_s": 3528.8663328083335,
+    "max_s": 4507.771531,
+    "faster": 83,
+    "resolved": 120,
+    "clear_failures": 0
+  }
+]

@@ -40,7 +40,7 @@ def main() -> None:
     )
     problem3_parser.add_argument(
         "--strategy",
-        choices=("robust_polygon_rolling", "belief_mpc"),
+        choices=("robust_polygon_rolling", "belief_mpc", "cooperative_bearing_tour", "integrated_bearing_tour"),
         required=True,
         help="问题3策略",
     )
@@ -59,6 +59,9 @@ def main() -> None:
         default=Path(__file__).resolve().parents[2] / "config" / "problem3.yaml",
         help="算法YAML配置（默认使用项目内配置，与启动目录无关）",
     )
+    problem3_parser.add_argument("--endgame", dest="tour_endgame_mode", choices=("legacy", "exact", "probe"), help="小规模路线与末段粗定位处理模式")
+    problem3_parser.add_argument("--tour-radius", dest="tour_polygon_radius_m", type=float, help="联合巡回覆盖多边形半径/m")
+    problem3_parser.add_argument("--channel-order", dest="tour_channel_order", choices=("legacy", "alternating"), help="共享测站频道顺序")
     problem3_parser.add_argument("--seed", type=int)
     problem3_parser.add_argument("--grid-step", dest="coverage_grid_step_m", type=float)
     problem3_parser.add_argument(
@@ -157,6 +160,7 @@ def main() -> None:
         from problems.problem3.main import load_settings, run_problem3
 
         override_names = (
+            "tour_polygon_radius_m", "tour_channel_order", "tour_endgame_mode",
             "seed", "coverage_grid_step_m", "coverage_validation_step_m",
             "particle_count_per_channel", "candidate_action_limit", "horizon",
             "beam_width", "p0", "g0", "polygon_sides", "polygon_radius_m",

@@ -17,11 +17,14 @@ from config.constants import (
     CLEARANCE_SUCCESS_TIME_S,
     MEASUREMENT_TIME_S,
     ROBOT_SPEED_MPS,
+    RECEPTION_RADIUS_MAX_M,
     SOURCE_COUNT_MAX,
 )
 from problems.problem3.config import MPC_STRATEGY, ROBUST_STRATEGY, Problem3Settings
 from problems.problem3.coverage import (
     PolygonPlan,
+    evaluate_polygon_plan,
+    held_karp_open_path,
     insertion_extra_length,
     math_distance,
     optimize_remaining_route,
@@ -32,7 +35,9 @@ from problems.problem3.shared import (
     PlannedAction,
     Problem3Executor,
     Problem3State,
+    clear_with_fallback_grid,
     choose_localization_point,
+    localize_channel,
     localization_candidate_points,
     localize_and_clear_channel,
 )
@@ -68,7 +73,18 @@ class RobustPolygonRollingStrategy:
         """完成覆盖扫描、滚动定位清除，并保留随时可恢复的剩余骨架。"""
 
         state = executor.state
-        selected_plan, plans = search_polygon_plans(self.settings)
+        selected_plan = evaluate_polygon_plan(
+            self.settings,
+            self.settings.robust_polygon_sides,
+            self.settings.robust_polygon_radius_m,
+            self.settings.robust_polygon_rotation_deg,
+            self.settings.robust_scan_origin,
+        )
+        if not selected_plan.coverage.valid:
+            raise ValueError(
+                "robust origin-plus-hexagon plan does not guarantee coverage"
+            )
+        plans = (selected_plan,)
         remaining = list(selected_plan.points)
         pending_localization: list[int] = []
 
@@ -93,44 +109,98 @@ class RobustPolygonRollingStrategy:
                     information_gain_bits=information_gain,
                 )
                 if result == "direction":
-                    next_point, localization_reason = choose_localization_point(
-                        state, channel
-                    )
-                    following = remaining[0] if remaining else coverage_point
-                    extra_length = insertion_extra_length(
-                        coverage_point, next_point, following
-                    )
-                    extra_time = (
-                        extra_length / ROBOT_SPEED_MPS
-                        + MEASUREMENT_TIME_S
-                        + (
-                            CHANNEL_SWITCH_TIME_S
-                            if channel != state.current_channel
-                            else 0.0
-                        )
-                    )
-                    if extra_time <= self.settings.insertion_time_limit_s:
-                        localize_and_clear_channel(
-                            executor,
-                            channel,
-                            "滚动立即插入定位任务；"
-                            f"DeltaL={extra_length:.2f}m, DeltaT≈{extra_time:.2f}s；"
-                            f"{localization_reason}",
-                        )
-                        if state.tracks[channel].status in {"detected", "localized"}:
-                            pending_localization.append(channel)
-                    else:
-                        pending_localization.append(channel)
+                    pending_localization.append(channel)
                 if state.counters.clear_success_count >= SOURCE_COUNT_MAX:
                     break
+
+            # 同一覆盖点先扫完全部频道，避免每发现一源就往返一次。
+            # 旧队列也在每个覆盖点重新评估；按当前位置而非发现顺序执行。
+            while pending_localization:
+                remaining = optimize_remaining_route(state.position, remaining)
+                following = remaining[0] if remaining else None
+                options = []
+                for channel in dict.fromkeys(pending_localization):
+                    track = state.tracks[channel]
+                    if track.status not in {"detected", "localized"}:
+                        continue
+                    point, reason = choose_localization_point(state, channel)
+                    # 圆心仅用于估算任务末端，实际清除仍要求19.8 m证明。
+                    center = tuple(float(x) for x in track.clear_circle.center)
+                    length = math_distance(state.position, point) + math_distance(point, center)
+                    if following is not None:
+                        length += math_distance(center, following) - math_distance(state.position, following)
+                    cost = length / ROBOT_SPEED_MPS + 2 * MEASUREMENT_TIME_S + CLEARANCE_SUCCESS_TIME_S
+                    if channel != state.current_channel:
+                        cost += CHANNEL_SWITCH_TIME_S
+                    options.append((cost, channel, reason))
+                if not options:
+                    pending_localization.clear()
+                    break
+                cost, channel, reason = min(options)
+                if following is not None and cost > self.settings.insertion_time_limit_s:
+                    break
+                localize_channel(
+                    executor, channel,
+                    f"覆盖点整批扫描后滚动插入；含估计清除末端DeltaT≈{cost:.2f}s；{reason}",
+                    clear_when_ready=True,
+                    clear_radius_m=self.settings.robust_clear_radius_m,
+                    use_grid_fallback=True,
+                )
+                pending_localization = [item for item in pending_localization if item != channel]
             if state.counters.clear_success_count >= SOURCE_COUNT_MAX:
                 break
 
-        # 高插入代价任务延后，但只有保底覆盖完成后才处理；detected频道早已从扫描移出。
-        for channel in dict.fromkeys(pending_localization):
-            if state.tracks[channel].status in {"detected", "localized"}:
-                localize_and_clear_channel(
-                    executor, channel, "保底路径完成后处理延期定位任务"
+        # 覆盖完成后，按到下一定位点的距离滚动处理，定位后就地清除，避免二次巡回。
+        pending_localization = [
+            channel for channel, track in state.tracks.items()
+            if track.status in {"detected", "localized"}
+        ]
+        while pending_localization:
+            channel = min(
+                pending_localization,
+                key=lambda item: math_distance(state.position, choose_localization_point(state, item)[0]),
+            )
+            localize_channel(
+                executor, channel, "覆盖完成后按当前位置滚动定位并清除",
+                clear_when_ready=True,
+                clear_radius_m=self.settings.robust_clear_radius_m,
+                use_grid_fallback=True,
+            )
+            pending_localization.remove(channel)
+
+        clear_tasks: list[tuple[int, tuple[float, float]]] = []
+        for channel, track in state.tracks.items():
+            if (
+                track.status == "localized"
+                and track.clear_circle is not None
+                and track.clear_circle.radius
+                <= self.settings.robust_clear_radius_m + 1e-9
+            ):
+                clear_tasks.append(
+                    (
+                        channel,
+                        (
+                            float(track.clear_circle.center[0]),
+                            float(track.clear_circle.center[1]),
+                        ),
+                    )
+                )
+        order = held_karp_open_path(
+            state.position, [point for _, point in clear_tasks]
+        )
+        for index in order:
+            channel, point = clear_tasks[index]
+            if state.tracks[channel].status != "localized":
+                continue
+            success = executor.clear(
+                point,
+                channel,
+                "Held-Karp末端开放最短路径；"
+                f"最小覆盖圆rho={state.tracks[channel].clear_circle.radius:.2f}",
+            )
+            if not success:
+                clear_with_fallback_grid(
+                    executor, channel, "保证清除点意外失败后转入28m网格"
                 )
         # 理论上每个unknown频道均经历连续覆盖；离散U仍作为实现一致性断言。
         for channel, track in state.tracks.items():
@@ -515,3 +585,161 @@ class BeliefMPCStrategy:
             if track.status == "unknown" and not np.any(state.uncovered[channel]):
                 track.status = "absent"
         return StrategyRunResult(state, selected_plan, plans)
+
+class CooperativeBearingTourStrategy:
+    """共享测站交会：覆盖移动同时为多个已发现频道收集第二/第三条示向。"""
+
+    name = 'cooperative_bearing_tour'
+
+    def __init__(self, settings: Problem3Settings, *, joint: bool = False) -> None:
+        self.settings = settings
+        self.joint = joint
+        self._scan_index = 0
+
+    def _channel_order(self, state: Problem3State, channels: list[int]) -> list[int]:
+        if not channels:
+            return []
+        if self.settings.tour_channel_order == "legacy":
+            return _ordered_channels(state, channels)
+        reverse = self._scan_index % 2 == 1
+        self._scan_index += 1
+        return sorted(channels, reverse=reverse)
+
+    @staticmethod
+    def _useful_bearing(state: Problem3State, channel: int, point: tuple[float, float]) -> bool:
+        track = state.tracks[channel]
+        if track.status != 'detected' or track.clear_circle is None:
+            return False
+        if any(math_distance(point, m.station) < 50.0 for m in track.measurements):
+            return False
+        # 保守筛掉一定超出最大接收半径的测站，不把接收概率当作不存在证明。
+        return math_distance(point, tuple(track.clear_circle.center)) <= RECEPTION_RADIUS_MAX_M + track.clear_circle.radius
+
+    def _scan(self, executor: Problem3Executor, point: tuple[float, float],
+              reason: str = "共享测站：全域覆盖与多频道交会复测共用移动") -> None:
+        state = executor.state
+        channels = [c for c in self.settings.channels if state.scan_needed(c, point) or self._useful_bearing(state, c, point)]
+        for channel in self._channel_order(state, channels):
+            executor.measure(point, channel, reason)
+
+    def run(self, executor: Problem3Executor) -> StrategyRunResult:
+        state = executor.state
+        plan = evaluate_polygon_plan(self.settings, 6, 1200.0, 0.0, True)
+        if not plan.coverage.valid:
+            raise ValueError('shared bearing tour requires guaranteed coverage')
+        remaining = list(plan.points)
+        while remaining:
+            remaining = optimize_remaining_route(state.position, remaining)
+            point = remaining.pop(0)
+            self._scan(executor, point)
+            if self.joint:
+                # 只插入已交会到100 m内的顺路任务，扫描清除位置以共享其移动。
+                while True:
+                    next_point = remaining[0] if remaining else None
+                    candidates = []
+                    for channel, track in state.tracks.items():
+                        if track.status not in {'detected', 'localized'} or track.clear_circle is None or track.clear_circle.radius > 100.0:
+                            continue
+                        center = tuple(float(x) for x in track.clear_circle.center)
+                        extra = math_distance(state.position, center)
+                        if next_point is not None:
+                            extra += math_distance(center, next_point) - math_distance(state.position, next_point)
+                        if extra <= 400.0:
+                            candidates.append((extra, channel))
+                    if not candidates:
+                        break
+                    _, channel = min(candidates)
+                    localize_channel(executor, channel, '共享交会后顺路清除', clear_when_ready=True,
+                                     clear_radius_m=self.settings.robust_clear_radius_m, use_grid_fallback=True)
+                    if state.tracks[channel].status != 'cleared':
+                        raise RuntimeError('shared tour could not resolve a detected channel')
+                    self._scan(executor, state.position)
+                    remaining = optimize_remaining_route(state.position, remaining)
+        # 位置估计用于开放TSP排序；到站仍按测向区域证明安全清除。
+        while True:
+            channels = [c for c,t in state.tracks.items() if t.status in {'detected','localized'}]
+            if not channels:
+                break
+            points = [tuple(float(x) for x in state.tracks[c].clear_circle.center) for c in channels]
+            order = held_karp_open_path(state.position, points)
+            channel = channels[order[0]]
+            localize_channel(executor, channel, '共享测站交会后Held-Karp滚动开放巡回',
+                             clear_when_ready=True, clear_radius_m=self.settings.robust_clear_radius_m,
+                             use_grid_fallback=True)
+            if state.tracks[channel].status != 'cleared':
+                raise RuntimeError('shared tour could not resolve a detected channel')
+        if not state.all_resolved():
+            raise RuntimeError('shared tour finished with unresolved channels')
+        return StrategyRunResult(state, plan, (plan,))
+
+class IntegratedBearingTourStrategy(CooperativeBearingTourStrategy):
+    """覆盖点与已交会目标共同构成动态开放旅行商问题。"""
+
+    name = 'integrated_bearing_tour'
+
+    def _target_candidates(self, state: Problem3State, remaining: list[tuple[float, float]]):
+        """末段把粗定位源纳入规划；未知频道从不使用未来坐标入队。"""
+        allow_uncertain = self.settings.tour_endgame_mode == "probe" and len(remaining) <= 2
+        return [(c, tuple(float(x) for x in track.clear_circle.center))
+                for c, track in state.tracks.items()
+                if track.status in {"detected", "localized"} and track.clear_circle is not None
+                and (not remaining or allow_uncertain
+                     or track.clear_circle.radius <= self.settings.tour_target_radius_m)]
+
+    def _order_points(self, position, points):
+        """十个以内候选用精确开放TSP，其余保留2-opt避免指数计算膨胀。"""
+        if self.settings.tour_endgame_mode != "legacy" and len(points) <= 10:
+            return [points[i] for i in held_karp_open_path(position, points)]
+        return optimize_remaining_route(position, points)
+
+    @staticmethod
+    def _probe_point(track, position, center, following):
+        """侧向150m的共享交会候选；仅估计绕行成本，不作为安全清除点。"""
+        angle = math.radians(track.measurements[-1].bearing_deg)
+        perpendicular = np.array([-math.sin(angle), math.cos(angle)])
+        candidates = [tuple(np.asarray(center) + sign * 150.0 * perpendicular) for sign in (-1, 1)]
+        return min(candidates, key=lambda p: math_distance(position, p) + math_distance(p, following))
+
+    def run(self, executor: Problem3Executor) -> StrategyRunResult:
+        state = executor.state
+        plan = evaluate_polygon_plan(self.settings, self.settings.tour_polygon_sides,
+                                     self.settings.tour_polygon_radius_m, 0.0, self.settings.tour_scan_origin)
+        if not plan.coverage.valid:
+            raise ValueError('integrated bearing tour requires guaranteed coverage')
+        if not self.settings.tour_scan_origin:
+            self._scan(executor, state.position)
+        remaining = list(plan.points)
+        probed: set[int] = set()
+        for _ in range(100):
+            if state.all_resolved():
+                return StrategyRunResult(state, plan, (plan,))
+            targets = self._target_candidates(state, remaining)
+            points = [*remaining, *(p for _,p in targets)]
+            if not points:
+                raise RuntimeError('integrated bearing tour has no remaining task')
+            route = self._order_points(state.position, points)
+            point = route[0]
+            if point in remaining:
+                remaining.remove(point)
+                self._scan(executor,point)
+            else:
+                channel = next(c for c,p in targets if p==point)
+                track = state.tracks[channel]
+                if (self.settings.tour_endgame_mode == "probe" and len(remaining) <= 2
+                        and track.clear_circle.radius > self.settings.tour_target_radius_m
+                        and channel not in probed):
+                    # 粗定位中心不直接作为清除点。在示向侧向偏移处共享补测，建立交会基线。
+                    following = route[1] if len(route) > 1 else point
+                    probe = self._probe_point(track, state.position, point, following)
+                    self._scan(executor, probe, f"末段频道{channel}粗定位侧向150m补测；兼顾未知频道覆盖与共享交会")
+                    probed.add(channel)
+                    continue
+                localize_channel(executor, channel, '覆盖与目标联合开放旅行商路线',
+                                 clear_when_ready=True,clear_radius_m=self.settings.robust_clear_radius_m,
+                                 use_grid_fallback=True)
+                if state.tracks[channel].status != 'cleared':
+                    raise RuntimeError('integrated tour could not clear target')
+                # 只复测已发现频道；未知频道由保留骨架完成，避免每清一源扫描20频道。
+                for other in self._channel_order(state,[c for c in self.settings.channels if self._useful_bearing(state,c,state.position)]):
+                    executor.measure(state.position, other, '清除点共享已发现频道交会测向')
+        raise RuntimeError('integrated bearing tour iteration limit')
