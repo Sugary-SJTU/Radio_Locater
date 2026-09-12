@@ -1,0 +1,2 @@
+[console_scripts]
+radio-locator = radio_locator.cli:main
