@@ -17,7 +17,12 @@ from config.constants import (
     INITIAL_POSITION,
     RECEPTION_RADIUS_MIN_M,
 )
-from config.paths import FIGURES_DIR, LOGS_DIR, TABLES_DIR
+from config.paths import (
+    LOGS_DIR,
+    PROBLEM3_FIGURES_DIR,
+    PROBLEM3_TRAJECTORY_FIGURES_DIR,
+    TABLES_DIR,
+)
 
 ROBUST_STRATEGY: Final[str] = "robust_polygon_rolling"
 MPC_STRATEGY: Final[str] = "belief_mpc"
@@ -91,4 +96,6 @@ class Problem3Settings:
 ACTION_LOG_DIR = LOGS_DIR / "problem3"
 SUMMARY_DIR = TABLES_DIR / "problem3"
 FORMAL_RESULTS_TABLE = SUMMARY_DIR / "formal_runs.csv"
-TRAJECTORY_FIGURE_DIR = FIGURES_DIR / "problem3"
+# 后续问题 3 的论文插图保存至 pic3；机器狗运行回放保持原目录，避免破坏既有日志链接。
+FIGURE_DIR = PROBLEM3_FIGURES_DIR
+TRAJECTORY_FIGURE_DIR = PROBLEM3_TRAJECTORY_FIGURES_DIR

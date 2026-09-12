@@ -11,6 +11,8 @@ import json
 from problems.problem1.config import (
     CALIPERS_FIGURE,
     COUNTEREXAMPLE_FIGURE,
+    HALF_PLANE_CONVENTION_FIGURE,
+    INTERSECTION_DETAIL_FIGURE,
     INTERSECTION_FIGURE,
     RESULT_TABLE,
     VALIDATION_FIGURE,
@@ -19,6 +21,8 @@ from problems.problem1.examples import validation_cases
 from problems.problem1.model import localize
 from problems.problem1.plotting import (
     plot_counterexample,
+    plot_half_plane_convention,
+    plot_intersection_polygon_detail,
     plot_rotating_calipers,
     plot_three_station_intersection,
     plot_validation_cases,
@@ -75,17 +79,21 @@ def main() -> None:
 
     first_result = localize(cases[0].measurements)
     plot_three_station_intersection(cases[0], first_result, INTERSECTION_FIGURE)
+    plot_intersection_polygon_detail(cases[0], first_result, INTERSECTION_DETAIL_FIGURE)
     plot_rotating_calipers(CALIPERS_FIGURE)
     plot_validation_cases(cases, VALIDATION_FIGURE)
     # 第三个验证案例是由三个检测点交会得到的直径圆反例。
     plot_counterexample(cases[2], COUNTEREXAMPLE_FIGURE)
+    plot_half_plane_convention(HALF_PLANE_CONVENTION_FIGURE)
 
     print(f"问题 1 验证表：{RESULT_TABLE}")
     for output in (
         INTERSECTION_FIGURE,
+        INTERSECTION_DETAIL_FIGURE,
         CALIPERS_FIGURE,
         VALIDATION_FIGURE,
         COUNTEREXAMPLE_FIGURE,
+        HALF_PLANE_CONVENTION_FIGURE,
     ):
         print(f"问题 1 图像：{output}")
 

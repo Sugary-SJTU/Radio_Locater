@@ -13,7 +13,7 @@ from config.constants import (
     RECEPTION_RADIUS_MAX_M,
     RECEPTION_RADIUS_MIN_M,
 )
-from config.paths import FIGURES_DIR, TABLES_DIR
+from config.paths import PROBLEM2_FIGURES_DIR, TABLES_DIR
 
 # 首次示向度同样带有 ±1° 误差，候选区域必须考虑该误差带。
 ANGLE_ERROR_DEG: Final[float] = BEARING_ERROR_DEG
@@ -49,6 +49,6 @@ ARENA_POLYGON_VERTICES: Final[int] = 720
 RESULT_TABLE = TABLES_DIR / "problem2_candidate_scores.csv"
 REGION_SUMMARY = TABLES_DIR / "problem2_excellent_regions.json"
 DIAMETER_SAMPLE_TABLE = TABLES_DIR / "problem2_selected_m2_diameters.csv"
-SCREENING_FIGURE = FIGURES_DIR / "problem2_screening_principles.png"
-RESULT_FIGURE = FIGURES_DIR / "problem2_candidate_region.png"
-DIAMETER_HISTOGRAM = FIGURES_DIR / "problem2_selected_m2_diameter_histogram.png"
+SCREENING_FIGURE = PROBLEM2_FIGURES_DIR / "problem2_screening_principles.png"
+RESULT_FIGURE = PROBLEM2_FIGURES_DIR / "problem2_candidate_region.png"
+DIAMETER_HISTOGRAM = PROBLEM2_FIGURES_DIR / "problem2_selected_m2_diameter_histogram.png"

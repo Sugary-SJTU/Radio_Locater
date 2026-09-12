@@ -98,13 +98,13 @@
   "maximum_score_point": {
     "x_m": -450.0,
     "y_m": 410.0,
-    "expected_log_diameter_gain_bit": 5.878802484604613
+    "expected_log_diameter_gain_bit": 5.878802484604615
   },
   "selected_second_point": {
     "x_m": -690.0,
     "y_m": 210.0,
-    "detection_probability": 1.0,
-    "geometry_score": 0.802898220300145,
+    "detection_probability": 0.9999999999999999,
+    "geometry_score": 0.8028982203001451,
     "expected_log_diameter_gain_bit": 5.682093466809924
   }
 }

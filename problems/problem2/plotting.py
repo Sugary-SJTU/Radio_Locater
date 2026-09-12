@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Annulus, Circle, Polygon
 
-from problems.problem1.plotting import configure_chinese_font
+from problems.problem1.plotting import configure_chinese_font, style_figure_for_paper
 from problems.problem2.config import (
     DOMAIN_RADIUS_M,
     GUARANTEED_RECEPTION_RADIUS_M,
@@ -32,7 +32,10 @@ def _save_figure(figure: plt.Figure, output: Path) -> None:
     """创建结果目录并保存高分辨率白底图片。"""
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(output, dpi=220, bbox_inches="tight", facecolor="white")
+    style_figure_for_paper(figure)
+    figure.savefig(
+        output, dpi=220, bbox_inches="tight", facecolor="white", edgecolor="#111111"
+    )
     plt.close(figure)
 
 
@@ -53,7 +56,6 @@ def plot_screening_principles(output: Path) -> None:
     axes[0, 0].set_xlim(-12, 15)
     axes[0, 0].set_ylim(-12, 15)
     axes[0, 0].set_aspect("equal")
-    axes[0, 0].set_title("(a) 近距排除原则")
     axes[0, 0].legend(fontsize=9)
     axes[0, 0].axis("off")
 
@@ -82,7 +84,6 @@ def plot_screening_principles(output: Path) -> None:
     axes[0, 1].set_xlabel("检测距离 d / m")
     axes[0, 1].set_ylabel("接收概率 p(d)")
     axes[0, 1].set_ylim(-0.05, 1.08)
-    axes[0, 1].set_title("(b) 未知接收半径下的检测概率")
     axes[0, 1].legend(fontsize=9)
 
     # 原理三：并列画出一个通过和一个被淘汰的候选点，明确展示集合相交条件。
@@ -162,7 +163,6 @@ def plot_screening_principles(output: Path) -> None:
     axes[1, 0].set_xlim(-3_300, 2_600)
     axes[1, 0].set_ylim(-2_700, 2_000)
     axes[1, 0].set_aspect("equal")
-    axes[1, 0].set_title("(c) 1500 m 可达性：保留相交候选、淘汰不相交候选")
     axes[1, 0].legend(fontsize=7.5, loc="lower right")
     axes[1, 0].axis("off")
 
@@ -199,13 +199,11 @@ def plot_screening_principles(output: Path) -> None:
     axes[1, 1].set_xticks(np.arange(0.0, 181.0, 30.0))
     axes[1, 1].set_xlabel("交会角 γ / °")
     axes[1, 1].set_ylabel("单点几何质量 |sin γ|")
-    axes[1, 1].set_title("(d) 交会角质量：避免近 0° 或 180° 的退化几何")
     axes[1, 1].legend(fontsize=8, loc="lower center")
     axes[1, 1].grid(alpha=0.2)
 
     # 分段概率图和交会角质量图依赖定量坐标，几何集合示意图不显示坐标轴。
     axes[0, 1].grid(alpha=0.2)
-    figure.suptitle("问题 2：第二检测点粗筛的四项原理", fontsize=16)
     figure.tight_layout()
     _save_figure(figure, output)
 
@@ -422,11 +420,6 @@ def plot_candidate_region(
             alpha=0.35,
         )
     )
-    gain = result.selected.expected_log_diameter_gain
-    axis.set_title(
-        "问题 2：粗筛—细化得到的第二检测点候选区域\n"
-        f"式 (59) 最终点={selected}，期望对数直径增益={gain:.3f} bit"
-    )
     axis.set_xlabel("x / m（正东）")
     axis.set_ylabel("y / m（正北）")
     axis.set_xlim(-2_050, 2_050)
@@ -455,8 +448,6 @@ def plot_selected_m2_diameter_histogram(
     centers = (edges[:-1] + edges[1:]) / 2.0
     widths = np.diff(edges)
     weighted_mean = float(np.dot(weights, diameters))
-    source_count = len({sample.source_point for sample in samples})
-
     figure, (axis, pie_axis) = plt.subplots(
         1,
         2,
@@ -479,7 +470,6 @@ def plot_selected_m2_diameter_histogram(
         linewidth=2.0,
         label=f"加权平均直径 {weighted_mean:.2f} m",
     )
-    axis.set_title("(a) $D_2$ 加权柱状分布")
     axis.set_xlabel("第二次测向后多边形直径 $D_2$ / m")
     axis.set_ylabel("归一化概率质量")
     axis.grid(axis="y", alpha=0.22)
@@ -510,13 +500,6 @@ def plot_selected_m2_diameter_histogram(
         colors=["#4C78A8", "#72B7B2", "#F2CF5B", "#F28E2B", "#E15759"],
         wedgeprops={"edgecolor": "white", "linewidth": 1.0},
         textprops={"fontsize": 9},
-    )
-    pie_axis.set_title("(b) 按直径大小分组的概率占比")
-    figure.suptitle(
-        "选定 $M_2$ 后定位多边形直径分布\n"
-        f"$M_2={selected_point}$；S1 干扰源网格点 {source_count} 个，"
-        f"含测向误差共 {len(samples)} 条记录",
-        fontsize=15,
     )
     figure.tight_layout()
     _save_figure(figure, output)

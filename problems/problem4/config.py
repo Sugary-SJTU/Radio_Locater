@@ -15,7 +15,12 @@ from config.constants import (
     SOURCE_COUNT_MAX,
     SOURCE_COUNT_MIN,
 )
-from config.paths import LOGS_DIR, TABLES_DIR
+from config.paths import (
+    LOGS_DIR,
+    PROBLEM4_FIGURES_DIR,
+    PROBLEM4_TRAJECTORY_FIGURES_DIR,
+    TABLES_DIR,
+)
 from config.simulator import ARENA_ID, BASE_URL, HTTP_TIMEOUT_S, ROBOT_ID
 
 # 问题 4 的干扰源总数和合法频道范围与问题 3 相同。
@@ -32,6 +37,9 @@ SOURCE_COVERAGE_HALF_ANGLE_DEG: Final[float] = DIRECTIONAL_HALF_ANGLE_DEG
 # 与问题 3 分开记录，避免两类测试的动作和正式结果互相覆盖。
 ACTION_LOG = LOGS_DIR / "problem4_actions.jsonl"
 FORMAL_TEST_TABLE = TABLES_DIR / "problem4_formal_tests.xlsx"
+# 预留论文插图目录；将来机器狗联调轨迹仍单独写入原有的 problem4 目录。
+FIGURE_DIR = PROBLEM4_FIGURES_DIR
+TRAJECTORY_FIGURE_DIR = PROBLEM4_TRAJECTORY_FIGURES_DIR
 
 # 对外只暴露运行问题 4 必需的配置名称。
 __all__ = [
@@ -40,6 +48,7 @@ __all__ = [
     "AVAILABLE_CHANNELS",
     "BASE_URL",
     "FORMAL_TEST_TABLE",
+    "FIGURE_DIR",
     "HTTP_TIMEOUT_S",
     "ROBOT_ID",
     "SOURCE_COUNT_RANGE",
@@ -47,4 +56,5 @@ __all__ = [
     "START_CHANNEL",
     "START_POSITION",
     "TARGET_CLEARANCE_RADIUS_M",
+    "TRAJECTORY_FIGURE_DIR",
 ]

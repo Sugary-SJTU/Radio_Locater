@@ -24,6 +24,14 @@ PAPER_PDF = PROJECT_ROOT / "paper" / "无线电干扰源的快速自动定位与
 # 可再生成结果统一放在 res 下，避免散落到配置或算法源码目录。
 RES_DIR = PROJECT_ROOT / "res"
 FIGURES_DIR = RES_DIR / "figures"
+# 论文与模型说明图按题号分目录保存；具体绘图函数在保存时创建这些目录。
+PROBLEM1_FIGURES_DIR = FIGURES_DIR / "pic1"
+PROBLEM2_FIGURES_DIR = FIGURES_DIR / "pic2"
+PROBLEM3_FIGURES_DIR = FIGURES_DIR / "pic3"
+PROBLEM4_FIGURES_DIR = FIGURES_DIR / "pic4"
+# 联调时的机器狗轨迹属于运行回放资料，沿用既有专用目录，不与论文插图混放。
+PROBLEM3_TRAJECTORY_FIGURES_DIR = FIGURES_DIR / "problem3"
+PROBLEM4_TRAJECTORY_FIGURES_DIR = FIGURES_DIR / "problem4"
 TABLES_DIR = RES_DIR / "tables"
 # 这里保存程序自己的明文动作日志，不代替模拟器导出的加密正式日志。
 LOGS_DIR = RES_DIR / "logs"

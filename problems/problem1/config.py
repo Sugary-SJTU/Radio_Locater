@@ -7,7 +7,7 @@
 from typing import Final
 
 from config.constants import ARENA_RADIUS_M, BEARING_ERROR_DEG
-from config.paths import FIGURES_DIR, TABLES_DIR
+from config.paths import PROBLEM1_FIGURES_DIR, TABLES_DIR
 
 # 在题目 1 命名空间中使用更贴近该题语义的名称，数值仍来自公共题面常量。
 # 每次测向形成“示向度 ± 1°”的扇形约束，多次约束相交得到定位区域。
@@ -23,7 +23,9 @@ ARENA_POLYGON_VERTICES: Final[int] = 1_440
 # 表格用于保存顶点、直径端点和覆盖判定；图片用于论文展示定位区域。
 # 此处只声明路径，不会创建文件或父目录。
 RESULT_TABLE = TABLES_DIR / "problem1_validation.csv"
-INTERSECTION_FIGURE = FIGURES_DIR / "problem1_three_station_intersection.png"
-CALIPERS_FIGURE = FIGURES_DIR / "problem1_rotating_calipers.png"
-VALIDATION_FIGURE = FIGURES_DIR / "problem1_validation_cases.png"
-COUNTEREXAMPLE_FIGURE = FIGURES_DIR / "problem1_diameter_circle_counterexample.png"
+INTERSECTION_FIGURE = PROBLEM1_FIGURES_DIR / "problem1_three_station_intersection.png"
+INTERSECTION_DETAIL_FIGURE = PROBLEM1_FIGURES_DIR / "problem1_intersection_polygon_detail.png"
+CALIPERS_FIGURE = PROBLEM1_FIGURES_DIR / "problem1_rotating_calipers.png"
+VALIDATION_FIGURE = PROBLEM1_FIGURES_DIR / "problem1_validation_cases.png"
+COUNTEREXAMPLE_FIGURE = PROBLEM1_FIGURES_DIR / "problem1_diameter_circle_counterexample.png"
+HALF_PLANE_CONVENTION_FIGURE = PROBLEM1_FIGURES_DIR / "problem1_half_plane_convention.png"

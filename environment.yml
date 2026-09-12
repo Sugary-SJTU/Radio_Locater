@@ -1,5 +1,5 @@
 # Conda 环境只负责解释器和开发工具；项目自身仍由最后一行 pip -e . 安装。
-name: cumcm-2026-b
+name: mcm
 channels:
   # 统一使用 conda-forge，减少同一依赖从多个渠道混装的风险。
   - conda-forge

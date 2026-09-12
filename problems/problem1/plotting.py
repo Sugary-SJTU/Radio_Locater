@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.patches import Circle, Polygon, Wedge
+from matplotlib.text import Text
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset
 
 from problems.problem1.config import ANGLE_ERROR_DEG, DOMAIN_RADIUS_M
@@ -23,24 +24,53 @@ from radio_locator.geometry import rotating_calipers_diameter
 
 
 def configure_chinese_font() -> None:
-    """设置当前环境已有的中文字体，并保证负号正常显示。"""
+    """设置适合中文论文插图的衬线字体，并保证负号正常显示。"""
 
-    plt.rcParams["font.sans-serif"] = [
-        # Windows 10/11 自带字体优先，后两项兼容 Conda/Linux 环境。
-        "Microsoft YaHei",
-        "SimHei",
-        "Source Han Sans CN",
-        "Noto Sans CJK SC",
-        "DejaVu Sans",
+    plt.rcParams["font.family"] = "serif"
+    plt.rcParams["font.serif"] = [
+        # Noto Serif CJK SC 在当前 Linux 环境可用；其余项保证其他平台正常回退。
+        "Noto Serif CJK SC",
+        "Source Han Serif SC",
+        "Songti SC",
+        "SimSun",
+        "DejaVu Serif",
     ]
     plt.rcParams["axes.unicode_minus"] = False
+    plt.rcParams["font.size"] = 10.5
+    plt.rcParams["font.weight"] = "bold"
+    plt.rcParams["axes.labelsize"] = 11
+    plt.rcParams["axes.labelweight"] = "bold"
+    plt.rcParams["legend.frameon"] = True
+    plt.rcParams["legend.edgecolor"] = "#222222"
+    plt.rcParams["legend.framealpha"] = 0.94
+
+
+def style_figure_for_paper(figure: plt.Figure) -> None:
+    """统一加粗黑色图框和坐标轴边框，使图片脱离正文时仍清晰可辨。"""
+
+    figure.patch.set_facecolor("white")
+    figure.patch.set_edgecolor("#111111")
+    figure.patch.set_linewidth(1.35)
+    for text in figure.findobj(match=Text):
+        text.set_fontweight("bold")
+    for axis in figure.get_axes():
+        if not axis.axison:
+            continue
+        for spine in axis.spines.values():
+            spine.set_visible(True)
+            spine.set_color("#111111")
+            spine.set_linewidth(1.05)
+        axis.tick_params(which="both", color="#111111", labelcolor="#111111")
 
 
 def _save_figure(figure: plt.Figure, output: Path) -> None:
     """创建父目录并以适合论文插图的分辨率保存。"""
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(output, dpi=220, bbox_inches="tight", facecolor="white")
+    style_figure_for_paper(figure)
+    figure.savefig(
+        output, dpi=220, bbox_inches="tight", facecolor="white", edgecolor="#111111"
+    )
     plt.close(figure)
 
 
@@ -152,6 +182,115 @@ def _wedge_boundary_handle(linestyle: str) -> Line2D:
     )
 
 
+def plot_half_plane_convention(output: Path) -> None:
+    """绘制单个检测扇形统一为有向直线左侧半平面的示意图。"""
+
+    configure_chinese_font()
+    figure, axis = plt.subplots(figsize=(8.6, 6.4))
+    origin = np.array([0.0, 0.0])
+    lower_angle, upper_angle = np.radians([24.0, 66.0])
+    lower = np.array([np.cos(lower_angle), np.sin(lower_angle)])
+    upper = np.array([np.cos(upper_angle), np.sin(upper_angle)])
+    boundary_length = 5.2
+
+    # 两个原始射线之间的扇形正是两个统一左半平面的交集。
+    axis.add_patch(
+        Wedge(
+            origin,
+            4.35,
+            24.0,
+            66.0,
+            facecolor="#8FD19E",
+            edgecolor="none",
+            alpha=0.38,
+            zorder=0,
+        )
+    )
+    for direction, color, label, offset in (
+        (lower, "#2878B5", r"$L_i^-$", (-0.12, -0.28)),
+        (upper, "#D2693C", r"$L_i^+$", (0.08, 0.16)),
+    ):
+        endpoints = np.vstack((-boundary_length * direction, boundary_length * direction))
+        axis.plot(endpoints[:, 0], endpoints[:, 1], color=color, linewidth=1.55)
+        point = 3.55 * direction + np.asarray(offset)
+        axis.text(*point, label, color=color, fontsize=12)
+
+    # 后边界保持原方向；前边界反向后，其可行侧同样位于箭头左侧。
+    axis.annotate(
+        "",
+        xy=2.45 * lower,
+        xytext=0.28 * lower,
+        arrowprops={"arrowstyle": "-|>", "color": "#174C75", "lw": 2.2},
+    )
+    axis.annotate(
+        r"$\boldsymbol{d}_i^- = \boldsymbol{u}_i^-$",
+        xy=1.45 * lower,
+        xytext=(1.58, -1.02),
+        color="#174C75",
+        fontsize=13,
+        arrowprops={"arrowstyle": "-", "color": "#174C75", "lw": 0.9},
+    )
+    axis.annotate(
+        "",
+        xy=-2.45 * upper,
+        xytext=-0.28 * upper,
+        arrowprops={"arrowstyle": "-|>", "color": "#9C3D21", "lw": 2.2},
+    )
+    axis.annotate(
+        r"$\boldsymbol{d}_i^+ = -\boldsymbol{u}_i^+$",
+        xy=-1.35 * upper,
+        xytext=(-3.95, -0.05),
+        color="#9C3D21",
+        fontsize=13,
+        arrowprops={"arrowstyle": "-", "color": "#9C3D21", "lw": 0.9},
+    )
+
+    axis.scatter(*origin, s=68, color="#111111", zorder=4)
+    axis.annotate(
+        r"$\boldsymbol{p}_i = M_i$",
+        origin,
+        xytext=(-0.18, -0.68),
+        textcoords="data",
+        ha="center",
+        fontsize=13,
+    )
+    point_x = np.array([2.35, 2.35])
+    axis.scatter(*point_x, marker="D", s=60, color="#2878B5", zorder=4)
+    axis.annotate(
+        r"$X \in H_i^- \cap H_i^+$",
+        point_x,
+        xytext=(0.18, 0.34),
+        textcoords="offset points",
+        color="#174C75",
+        fontsize=12.5,
+    )
+    axis.text(
+        2.72,
+        1.08,
+        r"$H_i^- \cap H_i^+$" "\n统一的可行区域（左侧）",
+        ha="center",
+        va="center",
+        color="#245C36",
+        fontsize=12.5,
+        bbox={"boxstyle": "round,pad=0.35", "fc": "white", "ec": "#3A7D4B", "lw": 1.0},
+    )
+    axis.text(
+        -4.0,
+        3.78,
+        r"$H_i^\pm=\{X:\ \boldsymbol{d}_i^\pm\times"
+        r"(X-\boldsymbol{p}_i)\geq0\}$",
+        fontsize=14,
+        bbox={"boxstyle": "round,pad=0.38", "fc": "white", "ec": "#111111", "lw": 1.0},
+    )
+    axis.text(0.58, 4.12, "两条边界均按箭头左侧取可行半平面", fontsize=12)
+    axis.set_aspect("equal")
+    axis.set_xlim(-4.55, 4.85)
+    axis.set_ylim(-2.0, 4.75)
+    axis.axis("off")
+    figure.tight_layout(pad=0.5)
+    _save_figure(figure, output)
+
+
 def plot_three_station_intersection(
     case: LocalizationCase,
     result: LocalizationResult,
@@ -182,20 +321,11 @@ def plot_three_station_intersection(
         marker="o",
         label=f"区域直径 D={result.diameter.distance:.1f} m",
     )
-    axis.scatter(
-        *case.target,
-        marker="*",
-        s=170,
-        color="#D62728",
-        label="验证真值 G",
-    )
-    axis.set_title("三个检测点的示向度误差带及交汇定位区域")
     axis.set_xlabel("x / m（正东）")
     axis.set_ylabel("y / m（正北）")
     axis.set_aspect("equal")
     axis.set_xlim(-1950, 1950)
     axis.set_ylim(-1950, 1950)
-    axis.grid(alpha=0.2)
     handles, labels = axis.get_legend_handles_labels()
     axis.legend(
         [_wedge_boundary_handle("-"), *handles],
@@ -237,17 +367,84 @@ def plot_three_station_intersection(
         linewidth=2.0,
         marker="o",
     )
-    detail.scatter(*case.target, marker="*", s=90, color="#D62728")
     center = np.mean(result.polygon, axis=0)
     span = max(float(np.ptp(result.polygon[:, 0])), float(np.ptp(result.polygon[:, 1])))
     half_width = max(0.7 * span, 25.0)
     detail.set_xlim(center[0] - half_width, center[0] + half_width)
     detail.set_ylim(center[1] - half_width, center[1] + half_width)
     detail.set_aspect("equal")
-    detail.set_title("交汇区域特写", fontsize=9)
-    detail.grid(alpha=0.2)
-    detail.tick_params(labelsize=7)
     mark_inset(axis, detail, loc1=2, loc2=4, fc="none", ec="#777777", lw=0.8)
+    axis.set_axis_off()
+    detail.set_axis_off()
+    _save_figure(figure, output)
+
+
+def plot_intersection_polygon_detail(
+    case: LocalizationCase,
+    result: LocalizationResult,
+    output: Path,
+) -> None:
+    """独立绘制三站交汇多边形的局部边界、直径和直径圆示例。"""
+
+    configure_chinese_font()
+    figure, axis = plt.subplots(figsize=(7.4, 6.4))
+    _draw_local_wedge_boundaries(axis, case)
+    axis.add_patch(
+        Polygon(
+            result.polygon,
+            closed=True,
+            facecolor="#E15759",
+            edgecolor="#B22222",
+            alpha=0.45,
+            linewidth=1.8,
+            label="三站交汇定位区域",
+            zorder=2,
+        )
+    )
+    axis.add_patch(
+        Circle(
+            result.circle_center,
+            result.circle_radius_m,
+            fill=False,
+            edgecolor="#E15759",
+            linewidth=2.0,
+            label="直径形成的圆",
+            zorder=3,
+        )
+    )
+    axis.plot(
+        [result.diameter.first[0], result.diameter.second[0]],
+        [result.diameter.first[1], result.diameter.second[1]],
+        color="#7A1FA2",
+        linewidth=2.4,
+        marker="o",
+        label=rf"区域直径 $D={result.diameter.distance:.1f}\ \mathrm{{m}}$",
+        zorder=4,
+    )
+    for index, point in enumerate(result.polygon):
+        axis.annotate(
+            f"$P_{index}$",
+            point,
+            xytext=(5, 5),
+            textcoords="offset points",
+            fontsize=10,
+            zorder=5,
+        )
+    center = np.mean(result.polygon, axis=0)
+    span = max(float(np.ptp(result.polygon[:, 0])), float(np.ptp(result.polygon[:, 1])))
+    half_width = max(0.78 * span, 30.0)
+    axis.set_xlim(center[0] - half_width, center[0] + half_width)
+    axis.set_ylim(center[1] - half_width, center[1] + half_width)
+    axis.set_aspect("equal")
+    handles, labels = axis.get_legend_handles_labels()
+    axis.legend(
+        [_wedge_boundary_handle("--"), *handles],
+        ["±1° 边界虚线约束", *labels],
+        loc="upper right",
+        fontsize=9,
+    )
+    axis.set_axis_off()
+    figure.tight_layout(pad=0.55)
     _save_figure(figure, output)
 
 
@@ -308,7 +505,6 @@ def plot_rotating_calipers(output: Path) -> None:
     )
     label_point = (opposite + projection) / 2 + 0.2 * normal
     axes[0].text(*label_point, "$h(i,j)$", color="#7A1FA2")
-    axes[0].set_title("(a) 平行卡壳与对踵点：面积增大则推进 j")
 
     axes[1].plot(
         [diameter.first[0], diameter.second[0]],
@@ -327,8 +523,6 @@ def plot_rotating_calipers(output: Path) -> None:
         textcoords="offset points",
         arrowprops={"arrowstyle": "->", "color": "#333333"},
     )
-    axes[1].set_title("(b) 卡壳旋转一周后取得凸多边形直径")
-    figure.suptitle("旋转卡壳算法解析图例", fontsize=15)
     figure.tight_layout()
     _save_figure(figure, output)
 
@@ -359,13 +553,6 @@ def plot_validation_cases(cases: Sequence[LocalizationCase], output: Path) -> No
                 label="交汇定位区域",
             )
         )
-        overview.scatter(
-            *case.target,
-            marker="*",
-            color="#D62728",
-            s=100,
-            label="验证真值 G",
-        )
         overview.plot(
             [result.diameter.first[0], result.diameter.second[0]],
             [result.diameter.first[1], result.diameter.second[1]],
@@ -373,7 +560,6 @@ def plot_validation_cases(cases: Sequence[LocalizationCase], output: Path) -> No
             linewidth=1.8,
             label="区域直径",
         )
-        overview.set_title(f"{case.name}：检测点全局布局")
         overview.set_xlim(-1900, 1900)
         overview.set_ylim(-1900, 1900)
         overview.set_aspect("equal")
@@ -417,14 +603,6 @@ def plot_validation_cases(cases: Sequence[LocalizationCase], output: Path) -> No
                 zorder=3,
             )
         )
-        detail.scatter(
-            *case.target,
-            marker="*",
-            color="#D62728",
-            s=100,
-            label="验证真值 G",
-            zorder=4,
-        )
         for index, point in enumerate(result.polygon):
             detail.annotate(
                 f"P{index}",
@@ -441,10 +619,6 @@ def plot_validation_cases(cases: Sequence[LocalizationCase], output: Path) -> No
         half_width = max(0.65 * span, 20.0)
         detail.set_xlim(center[0] - half_width, center[0] + half_width)
         detail.set_ylim(center[1] - half_width, center[1] + half_width)
-        detail.set_title(
-            f"交汇区域特写：面积={result.area_m2:.0f} m²，"
-            f"D={result.diameter.distance:.1f} m"
-        )
         detail.set_aspect("equal")
         detail.grid(alpha=0.2)
         detail.set_xlabel("x / m")
@@ -458,7 +632,6 @@ def plot_validation_cases(cases: Sequence[LocalizationCase], output: Path) -> No
             loc="best",
             ncol=2,
         )
-    figure.suptitle("问题 1：不同检测点几何布局的算法验证", fontsize=14)
     figure.tight_layout()
     _save_figure(figure, output)
 
@@ -492,7 +665,6 @@ def plot_counterexample(case: LocalizationCase, output: Path) -> None:
             label="交汇四边形",
         )
     )
-    overview.scatter(*case.target, marker="*", s=130, color="#D62728", label="验证真值 G")
     input_text = "\n".join(
         f"S{i}=({m.station[0]:.0f}, {m.station[1]:.0f}),  θ{i}={m.bearing_deg:.3f}°"
         for i, m in enumerate(case.measurements, 1)
@@ -505,7 +677,6 @@ def plot_counterexample(case: LocalizationCase, output: Path) -> None:
         fontsize=9,
         bbox={"boxstyle": "round", "facecolor": "white", "alpha": 0.9},
     )
-    overview.set_title("(a) 三个检测点及其 ±1° 示向度交会")
     overview.set_xlabel("x / m")
     overview.set_ylabel("y / m")
     overview.set_xlim(-1_900, 1_900)
@@ -575,11 +746,6 @@ def plot_counterexample(case: LocalizationCase, output: Path) -> None:
         float(np.min(polygon[:, 1]) - padding),
         float(np.max(polygon[:, 1]) + padding),
     )
-    detail.set_title(
-        "(b) 交汇区域局部放大\n"
-        f"D={diameter.distance:.3f} m，圆半径={radius:.3f} m，"
-        f"圆外超出={excess:.3f} m"
-    )
     detail.set_xlabel("x / m")
     detail.set_ylabel("y / m")
     detail.set_aspect("equal")
@@ -590,6 +756,5 @@ def plot_counterexample(case: LocalizationCase, output: Path) -> None:
         ["扇形边界虚射线", *labels],
         fontsize=8,
     )
-    figure.suptitle("由实际示向度交会形成的“直径圆不能覆盖定位区域”反例", fontsize=14)
     figure.tight_layout()
     _save_figure(figure, output)
