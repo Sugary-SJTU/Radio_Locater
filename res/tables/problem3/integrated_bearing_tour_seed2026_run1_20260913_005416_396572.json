@@ -1,0 +1,338 @@
+{
+  "strategy": "integrated_bearing_tour",
+  "all_channels_resolved": true,
+  "cleared_count": 15,
+  "clearance_ratio": 1.0,
+  "clearance_ratio_denominator": "postrun truth source count",
+  "total_virtual_time_s": 5274.327883,
+  "average_localize_clear_time_s": 1895.8221202666668,
+  "total_movement_distance_m": 18596.639417012026,
+  "measure_count": 206,
+  "switch_count": 162,
+  "clear_success_count": 15,
+  "clear_failure_count": 96,
+  "channels": {
+    "1": {
+      "status": "cleared",
+      "first_detected_time_s": 2297.433215,
+      "localized_time_s": null,
+      "cleared_time_s": 2985.327531,
+      "guaranteed_coverage_fraction": 0.7036629460776607
+    },
+    "2": {
+      "status": "cleared",
+      "first_detected_time_s": 11.0,
+      "localized_time_s": 2501.0515,
+      "cleared_time_s": 3023.575794,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "3": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "4": {
+      "status": "cleared",
+      "first_detected_time_s": 727.0,
+      "localized_time_s": 1470.706665,
+      "cleared_time_s": 1479.338258,
+      "guaranteed_coverage_fraction": 0.47366766231724566
+    },
+    "5": {
+      "status": "cleared",
+      "first_detected_time_s": 733.0,
+      "localized_time_s": null,
+      "cleared_time_s": 1664.135862,
+      "guaranteed_coverage_fraction": 0.47366766231724566
+    },
+    "6": {
+      "status": "cleared",
+      "first_detected_time_s": 35.0,
+      "localized_time_s": 1212.193722,
+      "cleared_time_s": 1220.419948,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "7": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "8": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "9": {
+      "status": "cleared",
+      "first_detected_time_s": 2321.433215,
+      "localized_time_s": null,
+      "cleared_time_s": 2695.034387,
+      "guaranteed_coverage_fraction": 0.7036629460776607
+    },
+    "10": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "11": {
+      "status": "cleared",
+      "first_detected_time_s": 769.0,
+      "localized_time_s": 1083.889639,
+      "cleared_time_s": 1089.662422,
+      "guaranteed_coverage_fraction": 0.47366766231724566
+    },
+    "12": {
+      "status": "cleared",
+      "first_detected_time_s": 71.0,
+      "localized_time_s": 2147.190527,
+      "cleared_time_s": 2154.551233,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "13": {
+      "status": "cleared",
+      "first_detected_time_s": 77.0,
+      "localized_time_s": null,
+      "cleared_time_s": 899.836152,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "14": {
+      "status": "cleared",
+      "first_detected_time_s": 83.0,
+      "localized_time_s": 1841.396516,
+      "cleared_time_s": 3319.810143,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "15": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "16": {
+      "status": "cleared",
+      "first_detected_time_s": 3598.457803,
+      "localized_time_s": null,
+      "cleared_time_s": 4777.686503,
+      "guaranteed_coverage_fraction": 0.9349158937274014
+    },
+    "17": {
+      "status": "cleared",
+      "first_detected_time_s": 101.0,
+      "localized_time_s": 1859.396516,
+      "cleared_time_s": 3203.74727,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "18": {
+      "status": "cleared",
+      "first_detected_time_s": 811.0,
+      "localized_time_s": 1509.338258,
+      "cleared_time_s": 1836.396516,
+      "guaranteed_coverage_fraction": 0.47366766231724566
+    },
+    "19": {
+      "status": "cleared",
+      "first_detected_time_s": 468.0,
+      "localized_time_s": 5268.331204,
+      "cleared_time_s": 5274.327883,
+      "guaranteed_coverage_fraction": 0.3082848608709322
+    },
+    "20": {
+      "status": "cleared",
+      "first_detected_time_s": 119.0,
+      "localized_time_s": 3768.130057,
+      "cleared_time_s": 5035.806135,
+      "guaranteed_coverage_fraction": 0.0
+    }
+  },
+  "coverage_plan": {
+    "sides": 6,
+    "radius_m": 1150.0,
+    "rotation_deg": 0.0,
+    "scan_origin": true,
+    "points": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1150.0,
+        0.0
+      ],
+      [
+        575.0000000000001,
+        995.9292143521044
+      ],
+      [
+        -574.9999999999998,
+        995.9292143521045
+      ],
+      [
+        -1150.0,
+        1.4083438190194562e-13
+      ],
+      [
+        -575.0000000000005,
+        -995.9292143521042
+      ],
+      [
+        575.0000000000001,
+        -995.9292143521044
+      ]
+    ],
+    "route_length_m": 6900.0,
+    "measure_count": 140,
+    "switch_count": 133,
+    "estimated_base_time_s": 2213.0,
+    "coverage": {
+      "analytic_max_distance_m": 988.5114204360128,
+      "numerical_max_distance_m": 988.511420436013,
+      "coverage_ratio": 1.0,
+      "worst_point": [
+        0.0,
+        -1800.0
+      ],
+      "achieved_margin_m": 11.488579563987173,
+      "required_margin_m": 0.0,
+      "valid": true
+    }
+  },
+  "official_log_original_names": [],
+  "problem_number": 4,
+  "source_count": 15,
+  "omnidirectional_source_count": 5,
+  "directional_source_count": 10,
+  "truth_metadata_error": null,
+  "time_breakdown_s": {
+    "movement": 3719.3278834023995,
+    "channel_switch": 162.0,
+    "detection": 1030.0,
+    "clearance": 363.0,
+    "other": 0.0,
+    "total": 5274.327883
+  },
+  "average_time_per_source_s": 351.6218588666667,
+  "average_time_per_cleared_source_s": 351.6218588666667,
+  "run_index": 1,
+  "case_code": null,
+  "seed": 2026,
+  "host": "127.0.0.1",
+  "port": 2144,
+  "program_wall_time_s": 1.3523677740013227,
+  "action_log": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/logs/problem3/integrated_bearing_tour_seed2026_run1_20260913_005416_396572.jsonl",
+  "summary_file": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/tables/problem3/integrated_bearing_tour_seed2026_run1_20260913_005416_396572.json",
+  "polygon_search_file": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/tables/problem3/integrated_bearing_tour_seed2026_run1_20260913_005416_396572_polygon_search.csv",
+  "settings": {
+    "tour_polygon_sides": 6,
+    "tour_polygon_radius_m": 1150.0,
+    "tour_scan_origin": true,
+    "tour_target_radius_m": 150.0,
+    "tour_channel_order": "legacy",
+    "tour_endgame_mode": "probe",
+    "seed": 2026,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "robust_polygon_sides": 6,
+    "robust_polygon_radius_m": 1200.0,
+    "robust_polygon_rotation_deg": 0.0,
+    "robust_scan_origin": true,
+    "robust_clear_radius_m": 19.8,
+    "fallback_grid_step_m": 28.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": false,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 40.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 80,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 30,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 3,
+    "beam_width": 20,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0
+  },
+  "postrun_truth_file": "res/simulator/problem4_seed2026.json",
+  "plotting_error": null,
+  "figure_directory_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572",
+  "figure_directory_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572",
+  "trajectory_figure": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/trajectory.png",
+  "trajectory_figure_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/trajectory.png",
+  "trajectory_figure_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/trajectory.pdf",
+  "clearance_detail_figure": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/clearance_details.png",
+  "clearance_detail_figure_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/clearance_details.png",
+  "clearance_detail_figure_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/clearance_details.pdf",
+  "time_breakdown_figure": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/time_breakdown.png",
+  "time_breakdown_figure_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/time_breakdown.png",
+  "time_breakdown_figure_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/integrated_bearing_tour_seed2026_run1_20260913_005416_396572/time_breakdown.pdf"
+}

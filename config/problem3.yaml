@@ -1,0 +1,49 @@
+# 问题3算法默认参数。题面固定物理量位于 config/constants.py，不应在此修改。
+algorithm:
+  seed: 1
+  # 联合开放巡回：覆盖点与已交会目标共同排序，150m只是入队阈值。
+  tour_polygon_sides: 6
+  tour_polygon_radius_m: 1150.0
+  tour_scan_origin: true
+  tour_target_radius_m: 150.0
+  # route_aligned 独立调优结果；不改变原 integrated 策略的六边形。
+  route_aligned_polygon_sides: 7
+  route_aligned_polygon_radius_m: 1050.0
+  # legacy优先当前频道；alternating每个非空扫描批次交替升降序。
+  tour_channel_order: legacy
+  # probe：小规模精确排路＋末段粗定位侧向补测；legacy恢复旧版。
+  tour_endgame_mode: probe
+  # robust_polygon_rolling 使用论文讨论确定的“原点+正六边形”保证覆盖。
+  robust_polygon_sides: 6
+  robust_polygon_radius_m: 1200.0
+  robust_polygon_rotation_deg: 0.0
+  robust_scan_origin: true
+  robust_clear_radius_m: 19.8
+  fallback_grid_step_m: 28.0
+  polygon_sides: 7
+  polygon_radius_m: 1000.0
+  polygon_rotation_deg: 0.0
+  scan_origin: false
+  robustness_margin_m: 0.0
+  optimize_polygon: true
+  polygon_side_candidates: [6, 7, 8, 9]
+  polygon_radius_candidates_m: [750.0, 800.0, 850.0, 900.0, 950.0, 1000.0]
+  polygon_rotation_candidates_deg: [0.0, 7.5, 15.0, 22.5]
+  scan_origin_candidates: [false, true]
+  coverage_grid_step_m: 40.0
+  coverage_validation_step_m: 20.0
+  localization_max_measurements: 6
+  insertion_time_limit_s: 420.0
+  particle_count_per_channel: 480
+  existence_prior: 0.65
+  direction_bin_deg: 5.0
+  entropy_clear_threshold_bits: 0.2
+  mean_information_gain_floor_bits: 0.05
+  p0: 0.8
+  g0: 0.5
+  candidate_action_limit: 30
+  coverage_lookahead_nodes: 4
+  detected_candidate_count: 3
+  horizon: 3
+  beam_width: 20
+  maximum_noncoverage_actions: 6

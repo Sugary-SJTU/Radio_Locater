@@ -1,0 +1,298 @@
+{
+  "strategy": "robust_polygon_rolling",
+  "all_channels_resolved": true,
+  "cleared_count": 13,
+  "clearance_ratio": 1.0,
+  "clearance_ratio_denominator": "inferred completion because all channels resolved or 16 sources cleared",
+  "total_virtual_time_s": 8955.982952,
+  "average_localize_clear_time_s": 688.9217655384616,
+  "total_movement_distance_m": 41274.91476125785,
+  "measure_count": 111,
+  "switch_count": 81,
+  "clear_success_count": 13,
+  "clear_failure_count": 0,
+  "channels": {
+    "1": {
+      "status": "cleared",
+      "first_detected_time_s": 205.0,
+      "localized_time_s": 603.324311,
+      "cleared_time_s": 610.272011,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "2": {
+      "status": "cleared",
+      "first_detected_time_s": 844.247006,
+      "localized_time_s": 1234.713993,
+      "cleared_time_s": 1241.886943,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "3": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "4": {
+      "status": "cleared",
+      "first_detected_time_s": 6914.148188,
+      "localized_time_s": 7126.76456,
+      "cleared_time_s": 7268.253047,
+      "guaranteed_coverage_fraction": 0.7155599603567889
+    },
+    "5": {
+      "status": "cleared",
+      "first_detected_time_s": 3526.896656,
+      "localized_time_s": 3925.446803,
+      "cleared_time_s": 3931.976718,
+      "guaranteed_coverage_fraction": 0.42913776015857286
+    },
+    "6": {
+      "status": "cleared",
+      "first_detected_time_s": 1338.560637,
+      "localized_time_s": 1735.968897,
+      "cleared_time_s": 1743.344688,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "7": {
+      "status": "cleared",
+      "first_detected_time_s": 4162.596288,
+      "localized_time_s": 4503.007349,
+      "cleared_time_s": 4509.192114,
+      "guaranteed_coverage_fraction": 0.42913776015857286
+    },
+    "8": {
+      "status": "cleared",
+      "first_detected_time_s": 1958.53983,
+      "localized_time_s": 2325.756013,
+      "cleared_time_s": 2332.971665,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "9": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "10": {
+      "status": "cleared",
+      "first_detected_time_s": 4956.697154,
+      "localized_time_s": 5189.733147,
+      "cleared_time_s": 5361.416577,
+      "guaranteed_coverage_fraction": 0.5738354806739345
+    },
+    "11": {
+      "status": "cleared",
+      "first_detected_time_s": 2548.003528,
+      "localized_time_s": 2757.015775,
+      "cleared_time_s": 2938.481016,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "12": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "13": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "14": {
+      "status": "cleared",
+      "first_detected_time_s": 5524.954215,
+      "localized_time_s": 5883.355154,
+      "cleared_time_s": 5889.699789,
+      "guaranteed_coverage_fraction": 0.5738354806739345
+    },
+    "15": {
+      "status": "cleared",
+      "first_detected_time_s": 6127.817422,
+      "localized_time_s": 6507.52727,
+      "cleared_time_s": 6514.189016,
+      "guaranteed_coverage_fraction": 0.5738354806739345
+    },
+    "16": {
+      "status": "cleared",
+      "first_detected_time_s": 7420.207558,
+      "localized_time_s": 7823.980826,
+      "cleared_time_s": 7828.980826,
+      "guaranteed_coverage_fraction": 0.7155599603567889
+    },
+    "17": {
+      "status": "cleared",
+      "first_detected_time_s": 8212.580503,
+      "localized_time_s": 8588.308982,
+      "cleared_time_s": 8593.308982,
+      "guaranteed_coverage_fraction": 0.8572844400396432
+    },
+    "18": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "19": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "20": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    }
+  },
+  "coverage_plan": {
+    "sides": 7,
+    "radius_m": 1000.0,
+    "rotation_deg": 0.0,
+    "scan_origin": false,
+    "points": [
+      [
+        1000.0,
+        0.0
+      ],
+      [
+        623.4898018587336,
+        781.8314824680298
+      ],
+      [
+        -222.52093395631434,
+        974.9279121818237
+      ],
+      [
+        -900.968867902419,
+        433.8837391175582
+      ],
+      [
+        -900.9688679024191,
+        -433.88373911755804
+      ],
+      [
+        -222.5209339563146,
+        -974.9279121818237
+      ],
+      [
+        623.4898018587334,
+        -781.8314824680299
+      ]
+    ],
+    "route_length_m": 6206.604869410698,
+    "measure_count": 140,
+    "switch_count": 133,
+    "estimated_base_time_s": 2074.3209738821397,
+    "coverage": {
+      "analytic_max_distance_m": 1000.0,
+      "numerical_max_distance_m": 999.9999999999999,
+      "coverage_ratio": 1.0,
+      "worst_point": [
+        0.0,
+        0.0
+      ],
+      "achieved_margin_m": 0.0,
+      "required_margin_m": 0.0,
+      "valid": true
+    }
+  },
+  "official_log_original_names": [],
+  "run_index": 1,
+  "case_code": null,
+  "seed": 1,
+  "host": "127.0.0.1",
+  "port": 2031,
+  "program_wall_time_s": 0.32532851900032256,
+  "action_log": "/home/Lilywhite/PIG/CUMCM/Code/res/logs/problem3/robust_polygon_rolling_seed1_run1_20260911_203748_978387.jsonl",
+  "summary_file": "/home/Lilywhite/PIG/CUMCM/Code/res/tables/problem3/robust_polygon_rolling_seed1_run1_20260911_203748_978387.json",
+  "polygon_search_file": "/home/Lilywhite/PIG/CUMCM/Code/res/tables/problem3/robust_polygon_rolling_seed1_run1_20260911_203748_978387_polygon_search.csv",
+  "settings": {
+    "seed": 1,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": false,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 100.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 120,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 30,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 3,
+    "beam_width": 20,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0
+  }
+}

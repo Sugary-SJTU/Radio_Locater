@@ -1,0 +1,75 @@
+{
+  "data_kind": "analytical_action_cost_estimate_not_simulation",
+  "scenario": "problem4",
+  "assumptions": {
+    "scan": "每个测站扫描20个频道；每站按19次换频计。",
+    "clearance": "按题设最多16个干扰源均清除成功计。",
+    "movement": "起点为原点；采用多起点开放路径启发式估算，不含返航。",
+    "scope": "仅比较候选发现路线的动作成本，不代表检出率或清除成功率。"
+  },
+  "candidate_strategies": [
+    {
+      "label": "七边形直接复用\n（无定向保证）",
+      "station_count": 8,
+      "route_length_m": 6516.935112881232,
+      "measure_count": 160,
+      "switch_count": 152,
+      "assumed_clear_success_count": 16,
+      "breakdown": {
+        "movement_s": 1303.3870225762464,
+        "measurement_s": 800.0,
+        "switching_s": 152.0,
+        "clearance_other_s": 80.0,
+        "total_s": 2335.3870225762466,
+        "percentages": [
+          55.81032222823757,
+          34.25556416415692,
+          6.508557191189815,
+          3.425556416415692
+        ]
+      }
+    },
+    {
+      "label": "七边形+外侧补测\n（经验方案）",
+      "station_count": 14,
+      "route_length_m": 17139.850022605402,
+      "measure_count": 280,
+      "switch_count": 266,
+      "assumed_clear_success_count": 16,
+      "breakdown": {
+        "movement_s": 3427.97000452108,
+        "measurement_s": 1400.0,
+        "switching_s": 266.0,
+        "clearance_other_s": 80.0,
+        "total_s": 5173.97000452108,
+        "percentages": [
+          66.25415302998813,
+          27.058525634602873,
+          5.1411198705745464,
+          1.54620146483445
+        ]
+      }
+    },
+    {
+      "label": "三角网格扫描\n（保证方案）",
+      "station_count": 29,
+      "route_length_m": 27361.62579612277,
+      "measure_count": 580,
+      "switch_count": 551,
+      "assumed_clear_success_count": 16,
+      "breakdown": {
+        "movement_s": 5472.325159224554,
+        "measurement_s": 2900.0,
+        "switching_s": 551.0,
+        "clearance_other_s": 80.0,
+        "total_s": 9003.325159224554,
+        "percentages": [
+          60.781156544343666,
+          32.210321727953385,
+          6.119961128311142,
+          0.8885605993918174
+        ]
+      }
+    }
+  ]
+}

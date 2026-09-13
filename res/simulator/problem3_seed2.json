@@ -1,0 +1,143 @@
+{
+  "file_function": "本地模拟器案例真值；定位策略不得读取此文件。",
+  "problem": 3,
+  "seed": 2,
+  "source_count": 15,
+  "sources": [
+    {
+      "channel": 1,
+      "x_m": 1402.4355109508242,
+      "y_m": -291.01905654482175,
+      "reception_radius_m": 1341.5324111548125,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 2,
+      "x_m": 432.68687478088043,
+      "y_m": 1040.0223687842679,
+      "reception_radius_m": 1172.9803327858665,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 3,
+      "x_m": 997.700544668302,
+      "y_m": -812.6791356581041,
+      "reception_radius_m": 1387.7819712363448,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 4,
+      "x_m": 902.342882055331,
+      "y_m": -465.3733009078754,
+      "reception_radius_m": 1235.4549427078787,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 5,
+      "x_m": 1171.7895319904203,
+      "y_m": 935.2475295091119,
+      "reception_radius_m": 1052.2717792164708,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 9,
+      "x_m": 604.847228106717,
+      "y_m": -536.9729608155703,
+      "reception_radius_m": 1339.9057307422918,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 12,
+      "x_m": -1021.3093698273681,
+      "y_m": -1307.0779852838134,
+      "reception_radius_m": 1203.2711988377682,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 13,
+      "x_m": -1077.0715766239482,
+      "y_m": -716.6799619033534,
+      "reception_radius_m": 1431.058992453814,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 14,
+      "x_m": 928.6817480525932,
+      "y_m": -746.5074609068183,
+      "reception_radius_m": 1306.8584692012937,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 15,
+      "x_m": -1639.1195771218877,
+      "y_m": 20.021476196529154,
+      "reception_radius_m": 1346.2590659149866,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 16,
+      "x_m": -1037.3030588319834,
+      "y_m": -149.81514610203968,
+      "reception_radius_m": 1108.1116955095072,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 17,
+      "x_m": 554.4879657888714,
+      "y_m": 137.19608717155265,
+      "reception_radius_m": 1350.9747381929947,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 18,
+      "x_m": 973.5486148740022,
+      "y_m": -728.7237515912002,
+      "reception_radius_m": 1417.5916023461398,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 19,
+      "x_m": 1101.7677830660894,
+      "y_m": -183.89123936577457,
+      "reception_radius_m": 1296.0310055391824,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    },
+    {
+      "channel": 20,
+      "x_m": -1314.9553451669344,
+      "y_m": 867.3836396165618,
+      "reception_radius_m": 1098.084955984136,
+      "source_type": "omnidirectional",
+      "direction_deg": null,
+      "cleared": false
+    }
+  ]
+}

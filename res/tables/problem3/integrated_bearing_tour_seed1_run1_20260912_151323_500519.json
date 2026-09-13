@@ -1,0 +1,314 @@
+{
+  "strategy": "integrated_bearing_tour",
+  "all_channels_resolved": true,
+  "cleared_count": 15,
+  "clearance_ratio": 1.0,
+  "clearance_ratio_denominator": "inferred completion because all channels resolved or 16 sources cleared",
+  "total_virtual_time_s": 3703.929662,
+  "average_localize_clear_time_s": 1313.9878350666663,
+  "total_movement_distance_m": 13579.648311024805,
+  "measure_count": 154,
+  "switch_count": 143,
+  "clear_success_count": 15,
+  "clear_failure_count": 0,
+  "channels": {
+    "1": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "2": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "3": {
+      "status": "cleared",
+      "first_detected_time_s": 17.0,
+      "localized_time_s": 1889.218989,
+      "cleared_time_s": 1961.117067,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "4": {
+      "status": "cleared",
+      "first_detected_time_s": 374.0,
+      "localized_time_s": 3256.032667,
+      "cleared_time_s": 3703.929662,
+      "guaranteed_coverage_fraction": 0.3082848608709322
+    },
+    "5": {
+      "status": "cleared",
+      "first_detected_time_s": 29.0,
+      "localized_time_s": 1895.218989,
+      "cleared_time_s": 2406.525025,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "6": {
+      "status": "cleared",
+      "first_detected_time_s": 1138.600464,
+      "localized_time_s": 1670.145898,
+      "cleared_time_s": 1678.782559,
+      "guaranteed_coverage_fraction": 0.5885867002043703
+    },
+    "7": {
+      "status": "cleared",
+      "first_detected_time_s": 41.0,
+      "localized_time_s": 587.856988,
+      "cleared_time_s": 594.254537,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "8": {
+      "status": "cleared",
+      "first_detected_time_s": 1901.218989,
+      "localized_time_s": 2165.603352,
+      "cleared_time_s": 2172.403446,
+      "guaranteed_coverage_fraction": 0.7044489860084893
+    },
+    "9": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "10": {
+      "status": "cleared",
+      "first_detected_time_s": 841.600464,
+      "localized_time_s": 1361.4254,
+      "cleared_time_s": 1504.230038,
+      "guaranteed_coverage_fraction": 0.47382487030341136
+    },
+    "11": {
+      "status": "cleared",
+      "first_detected_time_s": 2623.552039,
+      "localized_time_s": 2752.292843,
+      "cleared_time_s": 2779.379038,
+      "guaranteed_coverage_fraction": 0.8209401037572709
+    },
+    "12": {
+      "status": "cleared",
+      "first_detected_time_s": 3155.81297,
+      "localized_time_s": 3324.858366,
+      "cleared_time_s": 3333.167349,
+      "guaranteed_coverage_fraction": 0.9479641565791542
+    },
+    "13": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "14": {
+      "status": "cleared",
+      "first_detected_time_s": 83.0,
+      "localized_time_s": 1931.218989,
+      "cleared_time_s": 2498.70581,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "15": {
+      "status": "cleared",
+      "first_detected_time_s": 89.0,
+      "localized_time_s": 2599.552039,
+      "cleared_time_s": 2935.298636,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "16": {
+      "status": "cleared",
+      "first_detected_time_s": 95.0,
+      "localized_time_s": 3125.81297,
+      "cleared_time_s": 3536.357426,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "17": {
+      "status": "cleared",
+      "first_detected_time_s": 1937.218989,
+      "localized_time_s": 2178.403446,
+      "cleared_time_s": 2236.067806,
+      "guaranteed_coverage_fraction": 0.7044489860084893
+    },
+    "18": {
+      "status": "cleared",
+      "first_detected_time_s": 2641.552039,
+      "localized_time_s": 2770.292843,
+      "cleared_time_s": 2817.330145,
+      "guaranteed_coverage_fraction": 0.8209401037572709
+    },
+    "19": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "20": {
+      "status": "cleared",
+      "first_detected_time_s": 829.600464,
+      "localized_time_s": 1342.188333,
+      "cleared_time_s": 1349.4254,
+      "guaranteed_coverage_fraction": 0.47382487030341136
+    }
+  },
+  "coverage_plan": {
+    "sides": 6,
+    "radius_m": 1130.0,
+    "rotation_deg": 0.0,
+    "scan_origin": true,
+    "points": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1130.0,
+        0.0
+      ],
+      [
+        565.0000000000001,
+        978.6087062764157
+      ],
+      [
+        -564.9999999999998,
+        978.6087062764158
+      ],
+      [
+        -1130.0,
+        1.3838508830365092e-13
+      ],
+      [
+        -565.0000000000005,
+        -978.6087062764154
+      ],
+      [
+        565.0000000000001,
+        -978.6087062764157
+      ]
+    ],
+    "route_length_m": 6780.0,
+    "measure_count": 140,
+    "switch_count": 133,
+    "estimated_base_time_s": 2189.0,
+    "coverage": {
+      "analytic_max_distance_m": 996.9496764656195,
+      "numerical_max_distance_m": 996.9496764656196,
+      "coverage_ratio": 1.0,
+      "worst_point": [
+        0.0,
+        -1800.0
+      ],
+      "achieved_margin_m": 3.0503235343804818,
+      "required_margin_m": 0.0,
+      "valid": true
+    }
+  },
+  "official_log_original_names": [],
+  "run_index": 1,
+  "case_code": null,
+  "seed": 1,
+  "host": "127.0.0.1",
+  "port": 2026,
+  "program_wall_time_s": 4.969409000001178,
+  "action_log": "C:\\Users\\SHIXING\\Desktop\\国赛（正式版）\\Radio_Locater\\res\\logs\\problem3\\integrated_bearing_tour_seed1_run1_20260912_151323_500519.jsonl",
+  "summary_file": "C:\\Users\\SHIXING\\Desktop\\国赛（正式版）\\Radio_Locater\\res\\tables\\problem3\\integrated_bearing_tour_seed1_run1_20260912_151323_500519.json",
+  "polygon_search_file": "C:\\Users\\SHIXING\\Desktop\\国赛（正式版）\\Radio_Locater\\res\\tables\\problem3\\integrated_bearing_tour_seed1_run1_20260912_151323_500519_polygon_search.csv",
+  "settings": {
+    "tour_polygon_sides": 6,
+    "tour_polygon_radius_m": 1130.0,
+    "tour_scan_origin": true,
+    "tour_target_radius_m": 150.0,
+    "tour_channel_order": "legacy",
+    "tour_endgame_mode": "probe",
+    "seed": 1,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "robust_polygon_sides": 6,
+    "robust_polygon_radius_m": 1200.0,
+    "robust_polygon_rotation_deg": 0.0,
+    "robust_scan_origin": true,
+    "robust_clear_radius_m": 19.8,
+    "fallback_grid_step_m": 28.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": true,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 40.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 480,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 30,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 3,
+    "beam_width": 20,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0
+  },
+  "postrun_truth_file": null,
+  "plotting_error": null,
+  "trajectory_figure": "C:\\Users\\SHIXING\\Desktop\\国赛（正式版）\\Radio_Locater\\res\\figures\\problem3\\integrated_bearing_tour_seed1_run1_20260912_151323_500519_trajectory.png",
+  "clearance_detail_figure": null
+}

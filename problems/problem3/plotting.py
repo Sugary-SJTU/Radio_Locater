@@ -1,0 +1,381 @@
+"""问题3单局运行轨迹和清除尝试特写绘图。
+
+绘图只读取策略退出后的程序动作日志，不参与选点。主图保留全局运动结构，所有容易
+重叠的逐次行为另在时间轴中展开；清除细节独立成图，避免遮盖主图。
+"""
+
+from __future__ import annotations
+
+import json
+import math
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+from radio_locator.runtime import prepare_matplotlib_config
+
+prepare_matplotlib_config()
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.lines import Line2D
+from matplotlib.patches import Circle
+
+from config.constants import ARENA_RADIUS_M
+from config.paths import paired_pdf_path
+from problems.problem1.plotting import configure_chinese_font, style_figure_for_paper
+
+
+RESULT_STYLE: dict[str, dict[str, Any]] = {
+    "no_signal": {"color": "#9AA0A6", "marker": "o", "label": "检测：无信号"},
+    "direction": {"color": "#F28E2B", "marker": "^", "label": "检测：示向度"},
+    "near": {"color": "#B455D4", "marker": "D", "label": "检测：near"},
+    "clear_success": {"color": "#2CA25F", "marker": "P", "label": "清除成功"},
+    "clear_failure": {"color": "#D62728", "marker": "X", "label": "清除失败"},
+}
+
+
+@dataclass(frozen=True, slots=True)
+class ReplayEvent:
+    """动作日志中一次可绘制的检测或清除行为。"""
+
+    index: int
+    virtual_time_s: float
+    position: tuple[float, float]
+    channel: int
+    action_type: str
+    result: str
+
+
+def _read_jsonl(path: Path) -> list[dict[str, Any]]:
+    """逐行读取JSONL，并在坏行处给出明确行号。"""
+
+    records: list[dict[str, Any]] = []
+    with path.open("r", encoding="utf-8") as file:
+        for line_number, line in enumerate(file, 1):
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as error:
+                raise ValueError(f"invalid JSONL at {path}:{line_number}") from error
+            records.append(record)
+    if not records:
+        raise ValueError(f"empty action log: {path}")
+    return records
+
+
+def _event_result(record: dict[str, Any]) -> str | None:
+    """把附件原始结果映射为固定绘图颜色类别。"""
+
+    action = record.get("action_type")
+    response = record.get("raw_response", {})
+    if action == "measure":
+        result = response.get("measure_result")
+        return result if result in {"no_signal", "direction", "near"} else None
+    if action == "clear":
+        return (
+            "clear_success"
+            if response.get("clear_result") == "success"
+            else "clear_failure"
+        )
+    return None
+
+
+def load_replay(
+    action_log: Path,
+) -> tuple[list[tuple[float, float]], list[ReplayEvent], str]:
+    """提取包含重复停留点的完整轨迹和所有检测/清除事件。"""
+
+    records = _read_jsonl(action_log)
+    trajectory: list[tuple[float, float]] = []
+    events: list[ReplayEvent] = []
+    strategy = str(records[0].get("strategy", "unknown"))
+    for record in records:
+        position_data = record.get("position")
+        if not isinstance(position_data, dict):
+            continue
+        position = (float(position_data["x"]), float(position_data["y"]))
+        trajectory.append(position)
+        result = _event_result(record)
+        channels = record.get("target_channels") or []
+        if result is not None and channels:
+            events.append(
+                ReplayEvent(
+                    len(events) + 1,
+                    float(record["virtual_time_s"]),
+                    position,
+                    int(channels[0]),
+                    str(record["action_type"]),
+                    result,
+                )
+            )
+    return trajectory, events, strategy
+
+
+def _save(figure: plt.Figure, path: Path) -> None:
+    """以论文插图分辨率保存白底图像。"""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    style_figure_for_paper(figure)
+    figure.savefig(
+        path, dpi=220, bbox_inches="tight", facecolor="white", edgecolor="#111111"
+    )
+    pdf_path = paired_pdf_path(path)
+    pdf_path.parent.mkdir(parents=True, exist_ok=True)
+    figure.savefig(
+        pdf_path, bbox_inches="tight", facecolor="white", edgecolor="#111111"
+    )
+    plt.close(figure)
+
+
+def _draw_direction_arrows(axis: plt.Axes, points: np.ndarray) -> None:
+    """沿长移动段稀疏绘制箭头，既表达方向又不铺满轨迹。"""
+
+    if len(points) < 2:
+        return
+    displacement = np.diff(points, axis=0)
+    moving = np.flatnonzero(np.linalg.norm(displacement, axis=1) > 1e-6)
+    if not len(moving):
+        return
+    stride = max(1, math.ceil(len(moving) / 18))
+    for index in moving[::stride]:
+        start = points[index]
+        delta = displacement[index]
+        axis.annotate(
+            "",
+            xy=start + 0.58 * delta,
+            xytext=start + 0.42 * delta,
+            arrowprops={"arrowstyle": "-|>", "color": "#2468A2", "lw": 0.9},
+            zorder=3,
+        )
+
+
+def plot_run_trajectory(
+    action_log: Path,
+    output: Path,
+    truth_file: Path | None = None,
+) -> None:
+    """绘制全局轨迹、源位置、空间事件和不重叠的逐动作时间轴。"""
+
+    configure_chinese_font()
+    trajectory, events, _strategy = load_replay(action_log)
+    points = np.asarray(trajectory, dtype=float)
+    figure = plt.figure(figsize=(14.2, 8.3), constrained_layout=True)
+    grid = figure.add_gridspec(1, 2, width_ratios=(3.25, 1.0))
+    axis = figure.add_subplot(grid[0, 0])
+    timeline = figure.add_subplot(grid[0, 1])
+
+    axis.add_patch(
+        Circle(
+            (0.0, 0.0), ARENA_RADIUS_M, fill=False, linestyle="--",
+            linewidth=1.3, edgecolor="#59636F", label="目标圆域",
+        )
+    )
+    axis.plot(
+        points[:, 0], points[:, 1], color="#2878B5", linewidth=1.25,
+        alpha=0.72, zorder=1, label="机器狗运动轨迹",
+    )
+    _draw_direction_arrows(axis, points)
+    axis.scatter(
+        points[0, 0], points[0, 1], marker="s", s=58, color="#111111",
+        edgecolor="white", linewidth=0.7, zorder=7, label="起点",
+    )
+    axis.scatter(
+        points[-1, 0], points[-1, 1], marker="o", s=82, facecolor="none",
+        edgecolor="#00A6A6", linewidth=1.7, zorder=7, label="结束位置",
+    )
+    for result, style in RESULT_STYLE.items():
+        selected = [event for event in events if event.result == result]
+        if not selected:
+            continue
+        event_points = np.asarray([event.position for event in selected])
+        size = 14 if result == "no_signal" else 34
+        axis.scatter(
+            event_points[:, 0], event_points[:, 1], s=size,
+            marker=style["marker"], color=style["color"],
+            alpha=0.52 if result == "no_signal" else 0.9,
+            edgecolor="white", linewidth=0.35, zorder=4,
+        )
+
+    axis.set_aspect("equal")
+    extent = max(ARENA_RADIUS_M * 1.06, float(np.max(np.abs(points))) * 1.04)
+    axis.set_xlim(-extent, extent)
+    axis.set_ylim(-extent, extent)
+    axis.set_xlabel("x / m（正东）")
+    axis.set_ylabel("y / m（正北）")
+    axis.grid(alpha=0.16)
+
+    for result, style in RESULT_STYLE.items():
+        selected = [event for event in events if event.result == result]
+        if selected:
+            timeline.scatter(
+                [event.index for event in selected],
+                [event.virtual_time_s / 3600.0 for event in selected],
+                marker=style["marker"], color=style["color"], s=28,
+                label=f"{style['label']} ({len(selected)})",
+            )
+    timeline.plot(
+        [event.index for event in events],
+        [event.virtual_time_s / 3600.0 for event in events],
+        color="#B8C2CC", linewidth=0.8, zorder=0,
+    )
+    timeline.set_xlabel("检测/清除行为序号")
+    timeline.set_ylabel("累计虚拟时间 / h")
+    timeline.grid(alpha=0.18)
+    timeline.legend(loc="upper left", fontsize=7.7, framealpha=0.92)
+
+    handles = [
+        Line2D([0], [0], color="#2878B5", lw=1.5, label="机器狗运动轨迹"),
+        Line2D([0], [0], marker="s", color="none", markerfacecolor="#111111",
+               markersize=7, label="起点"),
+        Line2D([0], [0], marker="o", color="none", markerfacecolor="none",
+               markeredgecolor="#00A6A6", markersize=8, label="结束位置"),
+    ]
+    handles.extend(
+        Line2D(
+            [0], [0], marker=style["marker"], color="none",
+            markerfacecolor=style["color"], markersize=7, label=style["label"],
+        )
+        for result, style in RESULT_STYLE.items()
+        if any(event.result == result for event in events)
+    )
+    axis.legend(
+        handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.16),
+        ncol=4, fontsize=8.2, framealpha=0.95,
+    )
+    _save(figure, output)
+
+
+def plot_clearance_details(
+    action_log: Path,
+    output: Path,
+    truth_file: Path | None = None,
+) -> bool:
+    """按频道绘制清除尝试特写；返回False表示没有可画的清除事件。"""
+
+    configure_chinese_font()
+    _, events, _strategy = load_replay(action_log)
+    clear_events = [event for event in events if event.action_type == "clear"]
+    channels = sorted({event.channel for event in clear_events})
+    if not channels:
+        return False
+    columns = min(4, len(channels))
+    rows = math.ceil(len(channels) / columns)
+    figure, axes = plt.subplots(rows, columns, figsize=(3.15 * columns, 3.0 * rows))
+    axes_array = np.atleast_1d(axes).ravel()
+    for axis, channel in zip(axes_array, channels, strict=False):
+        attempts = [event for event in clear_events if event.channel == channel]
+        attempt_points = np.asarray([event.position for event in attempts])
+        for attempt in attempts:
+            style = RESULT_STYLE[attempt.result]
+            axis.scatter(
+                *attempt.position, marker=style["marker"], s=65,
+                color=style["color"], edgecolor="white", linewidth=0.5, zorder=6,
+            )
+        center = np.mean(attempt_points, axis=0)
+        radius = max(28.0, float(np.max(np.linalg.norm(attempt_points - center, axis=1))) + 8.0)
+        axis.set_xlim(center[0] - radius, center[0] + radius)
+        axis.set_ylim(center[1] - radius, center[1] + radius)
+        axis.set_aspect("equal")
+        axis.axis("off")
+        bar_y = center[1] - 0.80 * radius
+        axis.plot([center[0] - 5.0, center[0] + 5.0], [bar_y, bar_y], color="#222222", lw=2)
+        axis.text(center[0], bar_y + 1.5, "10 m", ha="center", va="bottom", fontsize=7)
+    for axis in axes_array[len(channels):]:
+        axis.axis("off")
+    handles = [
+        Line2D([0], [0], marker="P", color="none", markerfacecolor="#2CA25F",
+               markersize=8, label="清除成功点"),
+        Line2D([0], [0], marker="X", color="none", markerfacecolor="#D62728",
+               markersize=8, label="清除失败点"),
+    ]
+    figure.legend(handles=handles, loc="lower center", ncol=4, fontsize=8)
+    figure.subplots_adjust(bottom=0.08, hspace=0.22, wspace=0.10)
+    _save(figure, output)
+    return True
+
+
+def plot_time_breakdown(
+    time_breakdown_s: dict[str, float],
+    output: Path,
+) -> None:
+    """绘制单局移动、换频、检测、清除及其他耗时柱状图。"""
+
+    configure_chinese_font()
+    entries = [
+        ("移动", float(time_breakdown_s.get("movement", 0.0)), "#2878B5"),
+        ("换频", float(time_breakdown_s.get("channel_switch", 0.0)), "#7A5DC7"),
+        ("检测", float(time_breakdown_s.get("detection", 0.0)), "#F28E2B"),
+        ("清除", float(time_breakdown_s.get("clearance", 0.0)), "#2CA25F"),
+        ("其他", float(time_breakdown_s.get("other", 0.0)), "#9AA0A6"),
+    ]
+    labels = [entry[0] for entry in entries]
+    values = np.asarray([entry[1] for entry in entries], dtype=float)
+    colors = [entry[2] for entry in entries]
+    total = float(time_breakdown_s.get("total", np.sum(values)))
+
+    figure, axis = plt.subplots(figsize=(8.2, 5.3))
+    bars = axis.bar(
+        labels,
+        values,
+        color=colors,
+        edgecolor="#111111",
+        linewidth=1.0,
+        width=0.66,
+    )
+    upper = max(float(np.max(values)) if len(values) else 0.0, 1.0)
+    for bar, value in zip(bars, values, strict=True):
+        percentage = 100.0 * value / total if total > 0.0 else 0.0
+        axis.text(
+            bar.get_x() + bar.get_width() / 2.0,
+            value + 0.025 * upper,
+            f"{value:.1f} s\n{percentage:.1f}%",
+            ha="center",
+            va="bottom",
+            fontsize=9,
+        )
+    axis.set_ylabel("耗时 / s")
+    axis.set_xlabel("动作类型")
+    axis.set_ylim(0.0, upper * 1.22)
+    axis.grid(axis="y", alpha=0.20)
+    figure.tight_layout()
+    _save(figure, output)
+
+
+def plot_run_replay(
+    action_log: Path,
+    trajectory_output: Path,
+    clearance_output: Path,
+    truth_file: Path | None = None,
+    *,
+    time_breakdown_s: dict[str, float] | None = None,
+    timing_output: Path | None = None,
+) -> dict[str, str | None]:
+    """生成一次模拟的轨迹、清除特写和耗时构成图。"""
+
+    plot_run_trajectory(action_log, trajectory_output, truth_file)
+    clearance_path: str | None = None
+    if plot_clearance_details(
+        action_log, clearance_output, truth_file
+    ):
+        clearance_path = str(clearance_output)
+    timing_path: str | None = None
+    if time_breakdown_s is not None and timing_output is not None:
+        plot_time_breakdown(time_breakdown_s, timing_output)
+        timing_path = str(timing_output)
+    return {
+        "trajectory_figure": str(trajectory_output),
+        "trajectory_figure_png": str(trajectory_output),
+        "trajectory_figure_pdf": str(paired_pdf_path(trajectory_output)),
+        "clearance_detail_figure": clearance_path,
+        "clearance_detail_figure_png": clearance_path,
+        "clearance_detail_figure_pdf": (
+            str(paired_pdf_path(clearance_output)) if clearance_path else None
+        ),
+        "time_breakdown_figure": timing_path,
+        "time_breakdown_figure_png": timing_path,
+        "time_breakdown_figure_pdf": (
+            str(paired_pdf_path(timing_output)) if timing_path and timing_output else None
+        ),
+    }
