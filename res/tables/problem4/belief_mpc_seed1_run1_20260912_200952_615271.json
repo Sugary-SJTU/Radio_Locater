@@ -1,0 +1,2950 @@
+{
+  "strategy": "belief_mpc",
+  "all_channels_resolved": false,
+  "cleared_count": 12,
+  "source_total_count": null,
+  "cleared_over_total": "12/unknown",
+  "clearance_ratio": 0.75,
+  "clearance_ratio_denominator": "unknown; conservative upper bound is 16",
+  "total_virtual_time_s": 5175.449518,
+  "virtual_time_breakdown_s": {
+    "movement_s": 4412.449514346213,
+    "measurement_s": 595.0,
+    "channel_switch_s": 108.0,
+    "clear_s": 60.0
+  },
+  "average_localize_clear_time_s": 3006.92787,
+  "total_movement_distance_m": 22062.247571731063,
+  "measure_count": 119,
+  "switch_count": 108,
+  "clear_success_count": 12,
+  "clear_failure_count": 0,
+  "channels": {
+    "1": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 1055.660488,
+      "localized_time_s": 4494.851452,
+      "cleared_time_s": 4501.611536,
+      "guaranteed_coverage_fraction": 0.6711208929413615,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 1.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": -1687.5265798055784,
+            "y": 12.379896002807486,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 1500.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1350.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          -1687.5265798055784,
+          12.379896002807486
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "2": {
+      "status": "absent",
+      "status_basis": "1000 m guaranteed coverage exhausted U_j",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0,
+      "belief": {
+        "existence_probability": 0.14003590667168847,
+        "entropy_bits": 1.3394509007821058,
+        "effective_sample_size": 1.351341950596925,
+        "radius_marginal": {
+          "1000.000": 0.02380952383951247,
+          "1050.000": 5.714285713435376e-11,
+          "1100.000": 0.09523809524852607,
+          "1150.000": 0.14285714285136053,
+          "1200.000": 0.02380952382760771,
+          "1250.000": 0.07142857141377551,
+          "1300.000": 0.0952380952270975,
+          "1350.000": 0.1190476190308957,
+          "1400.000": 0.19047619043990932,
+          "1450.000": 0.04761904761712018,
+          "1500.000": 0.19047619044705213
+        },
+        "position_marginal_top": [
+          {
+            "x": 1500.0,
+            "y": 300.0,
+            "probability_given_exists": 0.04761904760997732
+          },
+          {
+            "x": -1350.0,
+            "y": 900.0,
+            "probability_given_exists": 0.047619047607596374
+          },
+          {
+            "x": -1200.0,
+            "y": 450.0,
+            "probability_given_exists": 0.047619047607596374
+          },
+          {
+            "x": -600.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.02380952380856009
+          },
+          {
+            "x": -1200.0,
+            "y": 600.0,
+            "probability_given_exists": 0.02380952380856009
+          },
+          {
+            "x": 450.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": 0.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": 1050.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": -600.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": 300.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": -450.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": 300.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": 0.0,
+            "y": -1800.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": 1800.0,
+            "y": 0.0,
+            "probability_given_exists": 0.02380952380617914
+          },
+          {
+            "x": 900.0,
+            "y": 750.0,
+            "probability_given_exists": 0.023809523803798187
+          },
+          {
+            "x": 150.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.023809523803798187
+          },
+          {
+            "x": 1350.0,
+            "y": 300.0,
+            "probability_given_exists": 0.023809523803798187
+          },
+          {
+            "x": 1500.0,
+            "y": -300.0,
+            "probability_given_exists": 0.023809523803798187
+          },
+          {
+            "x": 0.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.023809523803798187
+          },
+          {
+            "x": 450.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.023809523803798187
+          }
+        ],
+        "effective_grid_count": 37,
+        "possible_area_m2": 8100000.0,
+        "maximum_diameter_m": 3691.356085778925,
+        "minimum_enclosing_radius_m": 1884.7665288448793,
+        "minimum_enclosing_center": [
+          21.428571428571427,
+          -21.428571428571427
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 3.3675301363790326e-11
+      }
+    },
+    "3": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 1294.213984,
+      "localized_time_s": 4585.80562,
+      "cleared_time_s": 4722.118645,
+      "guaranteed_coverage_fraction": 0.770004716239585,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 1.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": -1461.710549082967,
+            "y": -831.8644928500911,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": -750.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1050.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1050.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1050.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          -1461.710549082967,
+          -831.8644928500911
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "4": {
+      "status": "absent",
+      "status_basis": "1000 m guaranteed coverage exhausted U_j",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0,
+      "belief": {
+        "existence_probability": 0.13715903245121952,
+        "entropy_bits": 1.3115865913749958,
+        "effective_sample_size": 1.3423658821322033,
+        "radius_marginal": {
+          "1000.000": 0.0731707317173706,
+          "1050.000": 0.12195121952082091,
+          "1100.000": 0.12195121952082094,
+          "1150.000": 0.048780487815645444,
+          "1200.000": 0.09756097560933968,
+          "1250.000": 0.09756097560933967,
+          "1300.000": 0.0487804878107674,
+          "1350.000": 0.14634146339083878,
+          "1400.000": 0.07317073170273647,
+          "1450.000": 0.1219512194964307,
+          "1500.000": 0.048780487805889346
+        },
+        "position_marginal_top": [
+          {
+            "x": -750.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.048780487793694226
+          },
+          {
+            "x": -1200.0,
+            "y": -900.0,
+            "probability_given_exists": 0.048780487793694226
+          },
+          {
+            "x": 1650.0,
+            "y": 300.0,
+            "probability_given_exists": 0.048780487793694226
+          },
+          {
+            "x": 450.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.048780487793694226
+          },
+          {
+            "x": 900.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.024390243899286138
+          },
+          {
+            "x": -750.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.024390243899286138
+          },
+          {
+            "x": -1050.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": 1200.0,
+            "y": -750.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -300.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": 1350.0,
+            "y": 900.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -300.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -1200.0,
+            "y": -150.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -750.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -1200.0,
+            "y": 300.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -1050.0,
+            "y": -300.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -1650.0,
+            "y": 300.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -900.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -900.0,
+            "y": 750.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -750.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.024390243896847113
+          },
+          {
+            "x": -1050.0,
+            "y": 900.0,
+            "probability_given_exists": 0.024390243896847113
+          }
+        ],
+        "effective_grid_count": 37,
+        "possible_area_m2": 8021250.0,
+        "maximum_diameter_m": 3639.229931994723,
+        "minimum_enclosing_radius_m": 1855.351585631572,
+        "minimum_enclosing_center": [
+          -0.0,
+          -0.0
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 3.144621719517943e-11
+      }
+    },
+    "5": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 846.106992,
+      "localized_time_s": 3851.655099,
+      "cleared_time_s": 4076.916348,
+      "guaranteed_coverage_fraction": 0.42902059424618766,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 1.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": -841.6586830462038,
+            "y": 340.71675513113064,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": -900.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1350.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          -841.6586830462038,
+          340.71675513113064
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "6": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 35.0,
+      "localized_time_s": 2730.213868,
+      "cleared_time_s": 2737.440045,
+      "guaranteed_coverage_fraction": 0.0,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 1.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": 882.1308057429976,
+            "y": -943.0069147303923,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 0.0,
+            "y": -1800.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1650.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1500.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1500.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1050.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1050.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          882.1308057429976,
+          -943.0069147303923
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "7": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 840.106992,
+      "localized_time_s": 3780.197096,
+      "cleared_time_s": 3941.810203,
+      "guaranteed_coverage_fraction": 0.42902059424618766,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 1.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": -1003.4215260186747,
+            "y": 970.8143728973332,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 1350.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 900.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1050.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": 300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          -1003.4215260186747,
+          970.8143728973332
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "8": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 17.0,
+      "localized_time_s": 3500.079763,
+      "cleared_time_s": 3506.428083,
+      "guaranteed_coverage_fraction": 0.0,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 1.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": 67.69538423096192,
+            "y": 961.9807693077589,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 450.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1500.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1350.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          67.69538423096192,
+          961.9807693077589
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "9": {
+      "status": "absent",
+      "status_basis": "1000 m guaranteed coverage exhausted U_j",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0,
+      "belief": {
+        "existence_probability": 0.16778356914828776,
+        "entropy_bits": 1.6090494440858654,
+        "effective_sample_size": 1.4427400438321796,
+        "radius_marginal": {
+          "1000.000": 0.1153846153951923,
+          "1050.000": 0.07692307694038461,
+          "1100.000": 0.03846153846442308,
+          "1150.000": 0.038461538472115385,
+          "1200.000": 0.07692307692884616,
+          "1250.000": 0.13461538460721154,
+          "1300.000": 0.13461538460721154,
+          "1350.000": 0.09615384614663464,
+          "1400.000": 0.09615384614278846,
+          "1450.000": 0.09615384615240385,
+          "1500.000": 0.09615384614278845
+        },
+        "position_marginal_top": [
+          {
+            "x": -1650.0,
+            "y": -600.0,
+            "probability_given_exists": 0.038461538456730775
+          },
+          {
+            "x": 900.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.038461538456730775
+          },
+          {
+            "x": 0.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.038461538454807695
+          },
+          {
+            "x": 900.0,
+            "y": 600.0,
+            "probability_given_exists": 0.038461538454807695
+          },
+          {
+            "x": -1500.0,
+            "y": -300.0,
+            "probability_given_exists": 0.038461538454807695
+          },
+          {
+            "x": 1200.0,
+            "y": -150.0,
+            "probability_given_exists": 0.019230769229326924
+          },
+          {
+            "x": 1050.0,
+            "y": -600.0,
+            "probability_given_exists": 0.019230769229326924
+          },
+          {
+            "x": -750.0,
+            "y": -900.0,
+            "probability_given_exists": 0.019230769229326924
+          },
+          {
+            "x": 900.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.019230769229326924
+          },
+          {
+            "x": -300.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": -1200.0,
+            "y": -150.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": 300.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": -750.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": 1050.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": -1050.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": 1200.0,
+            "y": -600.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": -750.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": 1050.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": 150.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.019230769227403847
+          },
+          {
+            "x": -150.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.019230769227403847
+          }
+        ],
+        "effective_grid_count": 45,
+        "possible_area_m2": 8471250.0,
+        "maximum_diameter_m": 3710.703171263144,
+        "minimum_enclosing_radius_m": 1878.7932899052548,
+        "minimum_enclosing_center": [
+          -0.0,
+          -27.272727272727273
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 2.9362124600038846e-11
+      }
+    },
+    "10": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 834.106992,
+      "localized_time_s": 4231.03613,
+      "cleared_time_s": 4236.03613,
+      "guaranteed_coverage_fraction": 0.42902059424618766,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 1.0
+        },
+        "position_marginal_top": [
+          {
+            "x": -1202.0667871003225,
+            "y": 987.7041904982061,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": -150.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1500.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1350.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1500.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1350.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          -1202.0667871003225,
+          987.7041904982061
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "11": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 1533.76748,
+      "localized_time_s": 1875.805406,
+      "cleared_time_s": 2561.325136,
+      "guaranteed_coverage_fraction": 0.8563119006445528,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 1.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": 324.3573764644061,
+            "y": -1551.3930811823866,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 750.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1050.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1350.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1350.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 900.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1500.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          324.3573764644061,
+          -1551.3930811823866
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "12": {
+      "status": "absent",
+      "status_basis": "1000 m guaranteed coverage exhausted U_j",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0,
+      "belief": {
+        "existence_probability": 0.15413723514322986,
+        "entropy_bits": 1.476266589033723,
+        "effective_sample_size": 1.3966688924250144,
+        "radius_marginal": {
+          "1000.000": 0.08510638299927568,
+          "1050.000": 0.14893617022213673,
+          "1100.000": 0.10638297872888183,
+          "1150.000": 0.14893617019447716,
+          "1200.000": 0.021276595755138072,
+          "1250.000": 0.17021276593684928,
+          "1300.000": 0.06382978723775465,
+          "1350.000": 0.06382978723562699,
+          "1400.000": 0.06382978723349932,
+          "1450.000": 0.0638297872249887,
+          "1500.000": 0.06382978723137166
+        },
+        "position_marginal_top": [
+          {
+            "x": 750.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.04255319148048891
+          },
+          {
+            "x": -150.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.021276595744499777
+          },
+          {
+            "x": 1650.0,
+            "y": -450.0,
+            "probability_given_exists": 0.021276595744499777
+          },
+          {
+            "x": -600.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": 1350.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": 600.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": 0.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": -1350.0,
+            "y": -300.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": -1050.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": 1500.0,
+            "y": 0.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": 1050.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.021276595742372114
+          },
+          {
+            "x": -1350.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": -1050.0,
+            "y": -300.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": 900.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": 1500.0,
+            "y": 600.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": -1500.0,
+            "y": 0.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": 1500.0,
+            "y": 150.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": 750.0,
+            "y": -900.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": -750.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.021276595740244455
+          },
+          {
+            "x": 1050.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.021276595740244455
+          }
+        ],
+        "effective_grid_count": 44,
+        "possible_area_m2": 8662500.0,
+        "maximum_diameter_m": 3723.5420075718516,
+        "minimum_enclosing_radius_m": 1861.7710037859258,
+        "minimum_enclosing_center": [
+          0.0,
+          0.0
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 3.213925328409069e-11
+      }
+    },
+    "13": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 11.0,
+      "localized_time_s": 5168.433195,
+      "cleared_time_s": 5175.449518,
+      "guaranteed_coverage_fraction": 0.0,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 1.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": -45.22531557406273,
+            "y": -948.408466480389,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 150.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1350.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1050.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1350.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1800.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1650.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          -45.22531557406273,
+          -948.408466480389
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "14": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 1336.213984,
+      "localized_time_s": 4870.201287,
+      "cleared_time_s": 4875.201287,
+      "guaranteed_coverage_fraction": 0.7145102971230939,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 1.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": -997.2662936995123,
+            "y": -294.2973196093929,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 1200.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1350.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 900.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": 300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          -997.2662936995123,
+          -294.2973196093929
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "15": {
+      "status": "absent",
+      "status_basis": "1000 m guaranteed coverage exhausted U_j",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0,
+      "belief": {
+        "existence_probability": 0.14289366056017994,
+        "entropy_bits": 1.3671460027398672,
+        "effective_sample_size": 1.3603477941460975,
+        "radius_marginal": {
+          "1000.000": 0.1627906976621417,
+          "1050.000": 0.1162790697822607,
+          "1100.000": 0.06976744187447269,
+          "1150.000": 0.06976744187214712,
+          "1200.000": 0.04651162792406706,
+          "1250.000": 0.023255813962033536,
+          "1300.000": 0.06976744185819361,
+          "1350.000": 0.06976744186284478,
+          "1400.000": 0.2093023255466739,
+          "1450.000": 0.06976744185819363,
+          "1500.000": 0.09302325579697134
+        },
+        "position_marginal_top": [
+          {
+            "x": -1350.0,
+            "y": 450.0,
+            "probability_given_exists": 0.04651162789616009
+          },
+          {
+            "x": -900.0,
+            "y": -600.0,
+            "probability_given_exists": 0.04651162789616009
+          },
+          {
+            "x": -1050.0,
+            "y": -900.0,
+            "probability_given_exists": 0.04651162789616009
+          },
+          {
+            "x": 1200.0,
+            "y": -600.0,
+            "probability_given_exists": 0.02325581395273121
+          },
+          {
+            "x": 900.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.02325581395273121
+          },
+          {
+            "x": 1200.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": -1650.0,
+            "y": -300.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": -750.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": -1050.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": -900.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": -150.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": -150.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": 750.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": 1350.0,
+            "y": 900.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": 1200.0,
+            "y": -450.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": 450.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": 450.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.023255813950405626
+          },
+          {
+            "x": 900.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.023255813948080045
+          },
+          {
+            "x": -150.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.023255813948080045
+          },
+          {
+            "x": -600.0,
+            "y": -1500.0,
+            "probability_given_exists": 0.023255813948080045
+          }
+        ],
+        "effective_grid_count": 38,
+        "possible_area_m2": 7695000.0,
+        "maximum_diameter_m": 3639.229931994723,
+        "minimum_enclosing_radius_m": 1822.688900404454,
+        "minimum_enclosing_center": [
+          -130.61797752808988,
+          34.550561797752806
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 3.323108384909253e-11
+      }
+    },
+    "16": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 1312.213984,
+      "localized_time_s": 2085.167906,
+      "cleared_time_s": 2192.95242,
+      "guaranteed_coverage_fraction": 0.7145102971230939,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 1.0
+        },
+        "position_marginal_top": [
+          {
+            "x": 7.587580887717804,
+            "y": -398.9418470364176,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 300.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1050.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1350.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1500.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 150.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          7.587580887717804,
+          -398.9418470364176
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "17": {
+      "status": "detected",
+      "status_basis": "bearing observations and continuous wedge intersection",
+      "first_detected_time_s": 600.553496,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.286590158780066,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 0.0,
+          "1050.000": 0.0,
+          "1100.000": 1.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": 665.2119733431932,
+            "y": 419.9948263512907,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": 300.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -450.0,
+            "y": 300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1200.0,
+            "y": 900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -1800.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1200.0,
+            "y": 0.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -900.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1350.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 300.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          665.2119733431932,
+          419.9948263512907
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    },
+    "18": {
+      "status": "absent",
+      "status_basis": "1000 m guaranteed coverage exhausted U_j",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0,
+      "belief": {
+        "existence_probability": 0.13715903244948768,
+        "entropy_bits": 1.311586591291548,
+        "effective_sample_size": 1.3423658821268138,
+        "radius_marginal": {
+          "1000.000": 0.09756097562052347,
+          "1050.000": 0.21951219509922662,
+          "1100.000": 0.09756097562296252,
+          "1150.000": 0.04878048781879833,
+          "1200.000": 1.463414634271267e-11,
+          "1250.000": 0.04878048782123736,
+          "1300.000": 0.09756097559857227,
+          "1350.000": 0.14634146339054133,
+          "1400.000": 0.024390243904521117,
+          "1450.000": 0.07317073170624629,
+          "1500.000": 0.14634146340273643
+        },
+        "position_marginal_top": [
+          {
+            "x": 1350.0,
+            "y": 300.0,
+            "probability_given_exists": 0.048780487796847107
+          },
+          {
+            "x": -450.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.024390243899643067
+          },
+          {
+            "x": -1500.0,
+            "y": -750.0,
+            "probability_given_exists": 0.024390243899643067
+          },
+          {
+            "x": 1050.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.024390243899643067
+          },
+          {
+            "x": -1500.0,
+            "y": 750.0,
+            "probability_given_exists": 0.024390243899643067
+          },
+          {
+            "x": 1350.0,
+            "y": -450.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 150.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": -150.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": -900.0,
+            "y": -900.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 1500.0,
+            "y": -450.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": -1500.0,
+            "y": 300.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 450.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 0.0,
+            "y": 1800.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 1050.0,
+            "y": -150.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": -1350.0,
+            "y": 450.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 150.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 300.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": 300.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": -1650.0,
+            "y": -600.0,
+            "probability_given_exists": 0.024390243897204043
+          },
+          {
+            "x": -150.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.024390243897204043
+          }
+        ],
+        "effective_grid_count": 38,
+        "possible_area_m2": 8415000.0,
+        "maximum_diameter_m": 3723.5420075718516,
+        "minimum_enclosing_radius_m": 1862.5315131098364,
+        "minimum_enclosing_center": [
+          -15.69767441860465,
+          43.604651162790695
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 2.9439011842720585e-11
+      }
+    },
+    "19": {
+      "status": "absent",
+      "status_basis": "1000 m guaranteed coverage exhausted U_j",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0,
+      "belief": {
+        "existence_probability": 0.14573248410529321,
+        "entropy_bits": 1.394673525752809,
+        "effective_sample_size": 1.3693834114477679,
+        "radius_marginal": {
+          "1000.000": 0.13636363636157028,
+          "1050.000": 0.022727272767458683,
+          "1100.000": 0.13636363636157026,
+          "1150.000": 0.06818181819555785,
+          "1200.000": 0.09090909090392563,
+          "1250.000": 0.15909090907902895,
+          "1300.000": 0.02272727274018595,
+          "1350.000": 0.04545454545764463,
+          "1400.000": 0.11363636361911157,
+          "1450.000": 0.06818181818192148,
+          "1500.000": 0.1363636363320248
+        },
+        "position_marginal_top": [
+          {
+            "x": 1650.0,
+            "y": -300.0,
+            "probability_given_exists": 0.04545454544400827
+          },
+          {
+            "x": 0.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.04545454544400827
+          },
+          {
+            "x": -300.0,
+            "y": 1650.0,
+            "probability_given_exists": 0.04545454544400827
+          },
+          {
+            "x": -900.0,
+            "y": 450.0,
+            "probability_given_exists": 0.02272727272654959
+          },
+          {
+            "x": -900.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.02272727272427686
+          },
+          {
+            "x": 900.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.02272727272427686
+          },
+          {
+            "x": -1200.0,
+            "y": 300.0,
+            "probability_given_exists": 0.02272727272427686
+          },
+          {
+            "x": 1350.0,
+            "y": 600.0,
+            "probability_given_exists": 0.02272727272427686
+          },
+          {
+            "x": 1200.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.02272727272427686
+          },
+          {
+            "x": 1500.0,
+            "y": 0.0,
+            "probability_given_exists": 0.02272727272427686
+          },
+          {
+            "x": 150.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.02272727272427686
+          },
+          {
+            "x": 600.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": -1200.0,
+            "y": -300.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": 600.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": 150.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": -1350.0,
+            "y": -750.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": 1500.0,
+            "y": 300.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": 1200.0,
+            "y": 1050.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": -750.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.022727272722004133
+          },
+          {
+            "x": 1350.0,
+            "y": -450.0,
+            "probability_given_exists": 0.022727272722004133
+          }
+        ],
+        "effective_grid_count": 40,
+        "possible_area_m2": 8313750.0,
+        "maximum_diameter_m": 3675.1509485405227,
+        "minimum_enclosing_radius_m": 1842.3585771166918,
+        "minimum_enclosing_center": [
+          -21.694214876033058,
+          -63.84297520661157
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 3.378343949516696e-11
+      }
+    },
+    "20": {
+      "status": "cleared",
+      "status_basis": "successful clear",
+      "first_detected_time_s": 337.0,
+      "localized_time_s": 3001.546595,
+      "cleared_time_s": 3008.235985,
+      "guaranteed_coverage_fraction": 0.0,
+      "belief": {
+        "existence_probability": 1.0,
+        "entropy_bits": -0.0,
+        "effective_sample_size": 1.0,
+        "radius_marginal": {
+          "1000.000": 1.0,
+          "1050.000": 0.0,
+          "1100.000": 0.0,
+          "1150.000": 0.0,
+          "1200.000": 0.0,
+          "1250.000": 0.0,
+          "1300.000": 0.0,
+          "1350.000": 0.0,
+          "1400.000": 0.0,
+          "1450.000": 0.0,
+          "1500.000": 0.0
+        },
+        "position_marginal_top": [
+          {
+            "x": 1761.077686393899,
+            "y": -140.67887134246902,
+            "probability_given_exists": 1.0
+          },
+          {
+            "x": -750.0,
+            "y": 750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 450.0,
+            "y": -150.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 600.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": -450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": 1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1350.0,
+            "y": -900.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1350.0,
+            "y": -600.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": -1350.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 0.0,
+            "y": -1050.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 750.0,
+            "y": 1500.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -150.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": 1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -1650.0,
+            "y": 450.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -600.0,
+            "y": -1650.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1050.0,
+            "y": -1200.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -750.0,
+            "y": -750.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": 1500.0,
+            "y": -300.0,
+            "probability_given_exists": 0.0
+          },
+          {
+            "x": -300.0,
+            "y": 300.0,
+            "probability_given_exists": 0.0
+          }
+        ],
+        "effective_grid_count": 1,
+        "possible_area_m2": 22500.0,
+        "maximum_diameter_m": 212.13203435596424,
+        "minimum_enclosing_radius_m": 106.06601717798212,
+        "minimum_enclosing_center": [
+          1761.077686393899,
+          -140.67887134246902
+        ],
+        "grid_resolution_m": 150.0,
+        "pruned_probability_mass": 0.0
+      }
+    }
+  },
+  "coverage_plan": {
+    "sides": 7,
+    "radius_m": 1000.0,
+    "rotation_deg": 7.5,
+    "scan_origin": false,
+    "points": [
+      [
+        991.4448613738103,
+        130.52619222005157
+      ],
+      [
+        516.1062738075066,
+        856.5245554778514
+      ],
+      [
+        -347.87086458522725,
+        937.5424585439991
+      ],
+      [
+        -949.8941466728459,
+        312.57176794564475
+      ],
+      [
+        -836.6277620064199,
+        -547.771839217871
+      ],
+      [
+        -93.363608452951,
+        -995.6320789411338
+      ],
+      [
+        720.2052465361263,
+        -693.7610560285418
+      ]
+    ],
+    "route_length_m": 6206.604869410697,
+    "measure_count": 140,
+    "switch_count": 133,
+    "estimated_base_time_s": 2074.3209738821392,
+    "coverage": {
+      "analytic_max_distance_m": 1000.0,
+      "numerical_max_distance_m": 999.9999999999999,
+      "coverage_ratio": 1.0,
+      "worst_point": [
+        0.0,
+        0.0
+      ],
+      "achieved_margin_m": 0.0,
+      "required_margin_m": 0.0,
+      "valid": true
+    }
+  },
+  "official_log_original_names": [],
+  "run_index": 1,
+  "case_code": null,
+  "seed": 1,
+  "host": "127.0.0.1",
+  "port": 2026,
+  "program_wall_time_s": 25.02373310000985,
+  "action_log": "C:\\Users\\baozihappy\\Desktop\\python2\\Radio_Locater\\res\\logs\\problem4\\belief_mpc_seed1_run1_20260912_200952_615271.jsonl",
+  "summary_file": "C:\\Users\\baozihappy\\Desktop\\python2\\Radio_Locater\\res\\tables\\problem4\\belief_mpc_seed1_run1_20260912_200952_615271.json",
+  "polygon_search_file": "C:\\Users\\baozihappy\\Desktop\\python2\\Radio_Locater\\res\\tables\\problem4\\belief_mpc_seed1_run1_20260912_200952_615271_polygon_search.csv",
+  "settings": {
+    "seed": 1,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": true,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 40.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 480,
+    "coarse_grid_size": 150.0,
+    "fine_grid_size": 30.0,
+    "clearance_grid_size": 8.0,
+    "radius_grid_size": 50.0,
+    "probability_prune_threshold": 1e-07,
+    "existence_threshold": 1e-06,
+    "clear_probability": 0.99,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 30,
+    "candidate_top_k": 24,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 3,
+    "planning_horizon": 3,
+    "beam_width": 20,
+    "observation_scenario_limit": 5,
+    "observation_merge_probability": 0.01,
+    "replan_time_margin": 8.0,
+    "efficiency_coverage_weight": 1.0,
+    "efficiency_localization_weight": 1.0,
+    "expected_clear_failure_probability": 0.01,
+    "fallback_no_progress_steps": 5,
+    "minimum_safe_remaining_time_s": 300.0,
+    "ablation_variant": "E",
+    "random_seed": null,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0
+  },
+  "postrun_truth_file": null,
+  "truth_metadata_error": null,
+  "plotting_error": null,
+  "trajectory_figure": "C:\\Users\\baozihappy\\Desktop\\python2\\Radio_Locater\\res\\figures\\problem4\\belief_mpc_seed1_run1_20260912_200952_615271_trajectory.png",
+  "clearance_detail_figure": null
+}

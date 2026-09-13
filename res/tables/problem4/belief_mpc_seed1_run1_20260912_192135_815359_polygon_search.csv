@@ -1,0 +1,2 @@
+sides,radius_m,rotation_deg,scan_origin,route_length_m,measure_count,switch_count,estimated_base_time_s,analytic_max_distance_m,numerical_max_distance_m,coverage_ratio,worst_x,worst_y,achieved_margin_m,valid
+3,1100.0,0.0,False,19800.0,380,361,6221.0,,1100.0,1.0,0.0,0.0,0.0,True

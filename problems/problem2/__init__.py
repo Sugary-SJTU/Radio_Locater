@@ -1,0 +1,8 @@
+"""问题 2：第二检测点选择及候选区域。
+
+``model`` 实现粗筛和局部细化，``plotting`` 生成原理与结果图，``main`` 负责导出。
+该包不依赖模拟器，可使用给定的首次检测点和示向度离线运行。
+"""
+from . import model, plotting, main
+
+__all__ = ["model", "plotting", "main"]

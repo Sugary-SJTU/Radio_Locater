@@ -1,0 +1,52 @@
+[build-system]
+# setuptools 负责把源码安装为可导入包；版本下限保证支持当前 pyproject 配置格式。
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# 项目元数据会用于可编辑安装和命令行脚本生成。
+name = "radio-interference-localization"
+version = "0.1.0"
+description = "2026 CUMCM Problem B: radio interference localization and clearance"
+requires-python = ">=3.11"
+dependencies = [
+    # 数值计算与凸几何基础。
+    "matplotlib>=3.8",
+    "numpy>=1.26",
+    # 表 1、候选点及实验统计结果读写。
+    "openpyxl>=3.1",
+    "pandas>=2.2",
+    # 后续算法参数文件与绘图支持。
+    "PyYAML>=6.0",
+    "scipy>=1.12",
+    "seaborn>=0.13",
+]
+
+[project.scripts]
+# 安装后生成 radio-locator 命令，并转发到 cli.py 的 main 函数。
+radio-locator = "radio_locator.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.setuptools]
+# config/problems 位于项目根目录，公共包采用 src 布局，故在此显式列出以便人工核对。
+packages = [
+    "config",
+    "problems",
+    "problems.problem1",
+    "problems.problem2",
+    "problems.problem3",
+    "problems.problem4",
+    "radio_locator",
+]
+package-dir = {radio_locator = "src/radio_locator"}
+
+[tool.setuptools.package-data]
+# 非可编辑安装时也携带问题3的默认YAML配置。
+config = ["*.yaml"]

@@ -1,0 +1,48 @@
+algorithm:
+  seed: 1
+  polygon_sides: 7
+  polygon_radius_m: 1000.0
+  polygon_rotation_deg: 0.0
+  scan_origin: false
+  robustness_margin_m: 0.0
+  optimize_polygon: true
+  polygon_side_candidates: [6, 7, 8, 9]
+  polygon_radius_candidates_m: [750.0, 800.0, 850.0, 900.0, 950.0, 1000.0]
+  polygon_rotation_candidates_deg: [0.0, 7.5, 15.0, 22.5]
+  scan_origin_candidates: [false, true]
+  coverage_grid_step_m: 40.0
+  coverage_validation_step_m: 20.0
+  localization_max_measurements: 6
+  insertion_time_limit_s: 420.0
+  particle_count_per_channel: 480
+  coarse_grid_size: 150.0
+  fine_grid_size: 30.0
+  clearance_grid_size: 8.0
+  radius_grid_size: 50.0
+  probability_prune_threshold: 1.0e-7
+  existence_threshold: 1.0e-6
+  clear_probability: 0.99
+  existence_prior: 0.65
+  direction_bin_deg: 5.0
+  entropy_clear_threshold_bits: 0.2
+  mean_information_gain_floor_bits: 0.05
+  p0: 0.8
+  g0: 0.5
+  candidate_action_limit: 30
+  candidate_top_k: 24
+  coverage_lookahead_nodes: 4
+  detected_candidate_count: 3
+  horizon: 3
+  planning_horizon: 3
+  beam_width: 20
+  observation_scenario_limit: 5
+  observation_merge_probability: 0.01
+  replan_time_margin: 8.0
+  efficiency_coverage_weight: 1.0
+  efficiency_localization_weight: 1.0
+  expected_clear_failure_probability: 0.01
+  fallback_no_progress_steps: 5
+  minimum_safe_remaining_time_s: 300.0
+  ablation_variant: E
+  random_seed:
+  maximum_noncoverage_actions: 6
