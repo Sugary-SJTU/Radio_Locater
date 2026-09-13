@@ -1,0 +1,366 @@
+{
+  "strategy": "problem4_fast",
+  "all_channels_resolved": false,
+  "cleared_count": 7,
+  "clearance_ratio": 0.4375,
+  "clearance_ratio_denominator": "conservative upper bound 16",
+  "total_virtual_time_s": 5918.156666,
+  "average_localize_clear_time_s": 3313.3541729999997,
+  "total_movement_distance_m": 25870.783330745176,
+  "measure_count": 120,
+  "switch_count": 109,
+  "clear_success_count": 7,
+  "clear_failure_count": 0,
+  "channels": {
+    "1": {
+      "status": "detected",
+      "first_detected_time_s": 1798.320974,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.9633705392233926
+    },
+    "2": {
+      "status": "cleared",
+      "first_detected_time_s": 509.553496,
+      "localized_time_s": 2394.277212,
+      "cleared_time_s": 2506.382934,
+      "guaranteed_coverage_fraction": 0.286590158780066
+    },
+    "3": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "4": {
+      "status": "cleared",
+      "first_detected_time_s": 1058.660487,
+      "localized_time_s": 3065.866108,
+      "cleared_time_s": 3072.431755,
+      "guaranteed_coverage_fraction": 0.5719226536708064
+    },
+    "5": {
+      "status": "detected",
+      "first_detected_time_s": 1810.320974,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.9633705392233926
+    },
+    "6": {
+      "status": "detected",
+      "first_detected_time_s": 802.106991,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.42902059424618766
+    },
+    "7": {
+      "status": "cleared",
+      "first_detected_time_s": 241.0,
+      "localized_time_s": 4047.58907,
+      "cleared_time_s": 4054.789798,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "8": {
+      "status": "cleared",
+      "first_detected_time_s": 247.0,
+      "localized_time_s": 4249.87374,
+      "cleared_time_s": 4254.87374,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "9": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "10": {
+      "status": "cleared",
+      "first_detected_time_s": 1577.767478,
+      "localized_time_s": 4362.49261,
+      "cleared_time_s": 4498.388108,
+      "guaranteed_coverage_fraction": 0.8563119006445528
+    },
+    "11": {
+      "status": "cleared",
+      "first_detected_time_s": 1333.213983,
+      "localized_time_s": 4699.117108,
+      "cleared_time_s": 4705.758645,
+      "guaranteed_coverage_fraction": 0.7145102971230939
+    },
+    "12": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "13": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "14": {
+      "status": "detected",
+      "first_detected_time_s": 1834.320974,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.9633705392233926
+    },
+    "15": {
+      "status": "detected",
+      "first_detected_time_s": 289.0,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "16": {
+      "status": "detected",
+      "first_detected_time_s": 1840.320974,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.9633705392233926
+    },
+    "17": {
+      "status": "cleared",
+      "first_detected_time_s": 850.106991,
+      "localized_time_s": 5792.294891,
+      "cleared_time_s": 5918.156666,
+      "guaranteed_coverage_fraction": 0.42902059424618766
+    },
+    "18": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "19": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    },
+    "20": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 1.0
+    }
+  },
+  "coverage_plan": {
+    "name": "problem4_fast",
+    "source_project": "../p4 ",
+    "base_station_count": 7,
+    "outer_station_count": 6,
+    "station_count": 13,
+    "base_points": [
+      [
+        991.4448613738103,
+        130.52619222005157
+      ],
+      [
+        516.1062738075066,
+        856.5245554778514
+      ],
+      [
+        -347.87086458522725,
+        937.5424585439991
+      ],
+      [
+        -949.8941466728459,
+        312.57176794564475
+      ],
+      [
+        -836.6277620064196,
+        -547.7718392178714
+      ],
+      [
+        -93.3636084529501,
+        -995.6320789411338
+      ],
+      [
+        720.2052465361263,
+        -693.7610560285418
+      ]
+    ],
+    "outer_points": [
+      [
+        1945.0930568998494,
+        1122.9999999999998
+      ],
+      [
+        1.3752783554424777e-13,
+        2246.0
+      ],
+      [
+        -1945.0930568998494,
+        1122.9999999999998
+      ],
+      [
+        -1945.093056899849,
+        -1123.0000000000002
+      ],
+      [
+        -4.1258350663274324e-13,
+        -2246.0
+      ],
+      [
+        1945.0930568998485,
+        -1123.000000000001
+      ]
+    ],
+    "directional_guarantee": false,
+    "grid_fallback": false,
+    "completion_required": false
+  },
+  "official_log_original_names": [],
+  "problem_number": 4,
+  "source_count": null,
+  "omnidirectional_source_count": null,
+  "directional_source_count": null,
+  "truth_metadata_error": null,
+  "run_index": 1,
+  "seed": 1,
+  "host": "127.0.0.1",
+  "port": 200,
+  "program_wall_time_s": 2.040426700000353,
+  "time_breakdown_s": {
+    "movement": 5174.156666149035,
+    "channel_switch": 109.0,
+    "detection": 600.0,
+    "clearance": 35.0,
+    "other": 0.0,
+    "total": 5918.156666
+  },
+  "movement_time_s": 5174.156666149035,
+  "channel_switch_time_s": 109.0,
+  "detection_time_s": 600.0,
+  "clearance_time_s": 35.0,
+  "other_time_s": 0.0,
+  "average_time_per_source_s": null,
+  "average_time_per_cleared_source_s": 845.4509522857143,
+  "action_log": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\logs\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742.jsonl",
+  "summary_file": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\tables\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742.json",
+  "settings": {
+    "tour_polygon_sides": 6,
+    "tour_polygon_radius_m": 1150.0,
+    "tour_scan_origin": true,
+    "tour_target_radius_m": 150.0,
+    "route_aligned_polygon_sides": 7,
+    "route_aligned_polygon_radius_m": 1050.0,
+    "tour_channel_order": "legacy",
+    "tour_endgame_mode": "probe",
+    "seed": 1,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "robust_polygon_sides": 6,
+    "robust_polygon_radius_m": 1200.0,
+    "robust_polygon_rotation_deg": 0.0,
+    "robust_scan_origin": true,
+    "robust_clear_radius_m": 19.8,
+    "fallback_grid_step_m": 28.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": true,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 40.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 480,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 30,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 3,
+    "beam_width": 20,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0,
+    "directional_mesh_layout": "concentric_ring",
+    "directional_grid_spacing_m": 1000.0,
+    "directional_grid_rotation_deg": 0.0,
+    "directional_grid_offset_x_m": 0.0,
+    "directional_grid_offset_y_m": 433.0127018922193,
+    "opportunistic_bearing_limit": 5,
+    "directional_clear_radius_m": 19.8,
+    "route_clear_insertion_limit_m": 300.0,
+    "route_probe_insertion_limit_m": 0.0
+  },
+  "postrun_truth_file": null,
+  "figure_directory_png": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\png\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742",
+  "figure_directory_pdf": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\pdf\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742",
+  "plotting_error": null,
+  "trajectory_figure": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\png\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\trajectory.png",
+  "trajectory_figure_png": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\png\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\trajectory.png",
+  "trajectory_figure_pdf": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\pdf\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\trajectory.pdf",
+  "clearance_detail_figure": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\png\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\clearance_details.png",
+  "clearance_detail_figure_png": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\png\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\clearance_details.png",
+  "clearance_detail_figure_pdf": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\pdf\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\clearance_details.pdf",
+  "time_breakdown_figure": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\png\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\time_breakdown.png",
+  "time_breakdown_figure_png": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\png\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\time_breakdown.png",
+  "time_breakdown_figure_pdf": "C:\\Users\\85375\\Desktop\\Code\\code\\Radio_Locater\\res\\figures\\pdf\\problem4\\problem4_fast_seed1_run1_20260913_145918_300742\\time_breakdown.pdf"
+}

@@ -60,6 +60,8 @@ class Problem4Settings(Problem3Settings):
     directional_grid_offset_x_m: float = 0.0
     # 半行高平移可把有限圆域所需格点由31个降至27个，解析保证不变。
     directional_grid_offset_y_m: float = 433.0127018922193
+    # 在12扇区几何约束内可取的更短内环；仍保持每个三角形最长边不超过1000m。
+    directional_ring_inner_radius_m: float = 925.0
     opportunistic_bearing_limit: int = 5
     directional_clear_radius_m: float = 19.8
     route_clear_insertion_limit_m: float = 300.0
@@ -72,20 +74,20 @@ __all__ = [
     "ARENA_ID",
     "AVAILABLE_CHANNELS",
     "BASE_URL",
-    "FORMAL_TEST_TABLE",
     "FIGURE_DIR",
+    "FORMAL_TEST_TABLE",
+    "GUARANTEED_DIRECTIONAL_LATTICE",
     "HTTP_TIMEOUT_S",
+    "LEGACY_OUTER_PROBE_FAST",
+    "OPTIMIZED_GUARANTEED_LATTICE",
+    "PARENT_FAST_STRATEGY",
     "ROBOT_ID",
     "SOURCE_COUNT_RANGE",
     "SOURCE_COVERAGE_HALF_ANGLE_DEG",
-    "SUMMARY_DIR",
     "START_CHANNEL",
     "START_POSITION",
+    "SUMMARY_DIR",
     "TARGET_CLEARANCE_RADIUS_M",
     "TRAJECTORY_FIGURE_DIR",
-    "GUARANTEED_DIRECTIONAL_LATTICE",
-    "OPTIMIZED_GUARANTEED_LATTICE",
-    "PARENT_FAST_STRATEGY",
-    "LEGACY_OUTER_PROBE_FAST",
     "Problem4Settings",
 ]

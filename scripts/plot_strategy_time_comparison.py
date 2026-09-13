@@ -10,10 +10,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import asdict
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
@@ -48,7 +46,6 @@ from problems.problem3.strategies import (
     RobustPolygonRollingStrategy,
 )
 from scripts.benchmark_problem3 import EngineClient
-
 
 COMPONENTS = ("移动", "检测", "换频", "清除/其他")
 COLORS = ("#4C78A8", "#F2A541", "#59A14F", "#B07AA1")
@@ -262,6 +259,88 @@ def _plot_percent_bars(labels: list[str], breakdowns: list[TimeBreakdown], outpu
     plt.close(figure)
 
 
+def _plot_time_bars(
+    labels: list[str], breakdowns: list[TimeBreakdown], output: Path,
+) -> None:
+    """绘制各动作平均耗时的绝对值堆叠柱，不添加图内标题。"""
+
+    configure_chinese_font()
+    figure, axis = plt.subplots(figsize=(8.4, 5.2))
+    x = np.arange(len(labels))
+    bottom = np.zeros(len(labels))
+    matrix = np.asarray([
+        [
+            item.movement_s,
+            item.measurement_s,
+            item.switching_s,
+            item.clearance_other_s,
+        ]
+        for item in breakdowns
+    ])
+    absolute_components = ("移动", "测量", "换频", "消除/其他")
+    for index, (component, color) in enumerate(
+        zip(absolute_components, COLORS, strict=True)
+    ):
+        axis.bar(
+            x, matrix[:, index], bottom=bottom, width=0.58, label=component,
+            color=color, edgecolor="black", linewidth=0.85,
+        )
+        bottom += matrix[:, index]
+
+    totals = matrix.sum(axis=1)
+    maximum = float(np.max(totals))
+    internal_label_limit = maximum * 0.055
+    short_names = ("移动", "测量", "换频", "消除")
+    for bar_index, values in enumerate(matrix):
+        cumulative = 0.0
+        small_labels: list[str] = []
+        for component_index, value in enumerate(values):
+            center = cumulative + value / 2.0
+            if value >= internal_label_limit:
+                axis.text(
+                    x[bar_index], center, f"{value:.0f}",
+                    ha="center", va="center", fontsize=9.0,
+                    fontweight="semibold",
+                    color="white" if component_index in {0, 2, 3} else "#111111",
+                    zorder=5,
+                )
+            else:
+                small_labels.append(f"{short_names[component_index]} {value:.0f}")
+            cumulative += value
+        if small_labels:
+            axis.text(
+                x[bar_index], totals[bar_index] + maximum * 0.025,
+                " · ".join(small_labels), ha="center", va="bottom",
+                fontsize=8.0, color="#333333", zorder=6,
+            )
+        axis.text(
+            x[bar_index], totals[bar_index] + maximum * 0.085,
+            f"合计 {totals[bar_index]:.0f} s", ha="center", va="bottom",
+            fontsize=9.0, fontweight="semibold", color="#111111", zorder=6,
+        )
+
+    axis.set_ylim(0.0, maximum * 1.20)
+    axis.set_ylabel("平均耗时 / s")
+    axis.set_xticks(x, labels)
+    axis.grid(axis="y", color="#C9C9C9", linewidth=0.65, alpha=0.75)
+    axis.set_axisbelow(True)
+    for spine in axis.spines.values():
+        spine.set_color("black")
+        spine.set_linewidth(1.0)
+    figure.subplots_adjust(top=0.82)
+    figure.legend(
+        *axis.get_legend_handles_labels(), ncol=4, loc="upper center",
+        bbox_to_anchor=(0.5, 0.975), frameon=False,
+    )
+    output.parent.mkdir(parents=True, exist_ok=True)
+    style_figure_for_paper(figure)
+    figure.savefig(output, dpi=300, bbox_inches="tight", facecolor="white", edgecolor="black")
+    pdf = paired_pdf_path(output)
+    pdf.parent.mkdir(parents=True, exist_ok=True)
+    figure.savefig(pdf, bbox_inches="tight", facecolor="white", edgecolor="black")
+    plt.close(figure)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed-start", type=int, default=0)
@@ -287,11 +366,12 @@ def main() -> None:
         p4_table.write_text(json.dumps(problem4, ensure_ascii=False, indent=2), encoding="utf-8")
 
     p3_records = problem3["strategy_results"]
-    _plot_percent_bars(
-        ["鲁棒多边形\n滚动", "信念MPC", "联合示向\n巡回"],
+    problem3_names = ("robust_polygon_rolling", "integrated_bearing_tour")
+    _plot_time_bars(
+        ["全局覆盖+TSP", "belief_state+MPC"],
         [
             TimeBreakdown(**{key: p3_records[name]["mean"][key] for key in TimeBreakdown.__dataclass_fields__})
-            for name in p3_records
+            for name in problem3_names
         ],
         PROBLEM3_FIGURES_DIR / "problem3_strategy_time_percent.png",
     )

@@ -82,7 +82,7 @@ class GuaranteedDirectionalLatticeStrategy:
         return self.settings.route_probe_insertion_limit_m
 
     def _ring_inner_radius_m(self) -> float:
-        return self.settings.guaranteed_radius_m
+        return self.settings.directional_ring_inner_radius_m
 
     @staticmethod
     def _pending_reference_point(

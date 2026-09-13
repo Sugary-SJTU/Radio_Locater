@@ -1,7 +1,5 @@
 """问题四定向保证格与端到端策略测试。"""
 
-from radio_locator.client import ActionExchange
-from radio_locator.local_simulator import SimulatorEngine, SimulatorScenario
 from problems.problem3.shared import Problem3Executor
 from problems.problem4.config import Problem4Settings
 from problems.problem4.model import (
@@ -14,6 +12,8 @@ from problems.problem4.strategies import (
     OptimizedGuaranteedLatticeStrategy,
     Problem4State,
 )
+from radio_locator.client import ActionExchange
+from radio_locator.local_simulator import SimulatorEngine, SimulatorScenario
 
 
 class _EngineClient:
@@ -81,12 +81,12 @@ def test_concentric_ring_mesh_uses_25_stations_with_same_guarantee() -> None:
     assert audit["valid"] is True
 
 
-def test_optimized_inner_ring_preserves_directional_guarantee() -> None:
+def test_default_optimized_inner_ring_preserves_directional_guarantee() -> None:
     settings = Problem4Settings()
     stations = directional_ring_mesh_points(
         settings.arena_radius_m,
         settings.guaranteed_radius_m,
-        inner_radius_m=925.0,
+        inner_radius_m=settings.directional_ring_inner_radius_m,
     )
     audit = validate_directional_lattice(
         stations, settings.arena_radius_m, settings.guaranteed_radius_m, 50.0
@@ -115,7 +115,6 @@ def test_guaranteed_strategy_clears_all_sources_on_fixed_mixed_case() -> None:
     assert result.plan["coverage_audit"]["valid"] is True
     assert state.all_resolved()
     assert state.counters.clear_success_count == len(client.engine.scenario.sources)
-
 
 def test_optimized_guaranteed_strategy_preserves_full_clearance() -> None:
     settings = Problem4Settings(seed=0)

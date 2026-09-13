@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1040" viewBox="0 0 1680 1040">
+  <rect width="1680" height="1040" fill="#ffffff"/>
+  <rect x="8" y="8" width="1664" height="1024" fill="none" stroke="#111111" stroke-width="4"/>
+  <g font-family="Microsoft YaHei, SimHei, sans-serif" fill="#111111">
+    <!-- 图例 -->
+    <g font-size="28">
+      <rect x="390" y="62" width="52" height="28" fill="#4C78A8" stroke="#111111" stroke-width="2"/>
+      <text x="458" y="86">移动</text>
+      <rect x="610" y="62" width="52" height="28" fill="#F2A541" stroke="#111111" stroke-width="2"/>
+      <text x="678" y="86">测量</text>
+      <rect x="830" y="62" width="52" height="28" fill="#59A14F" stroke="#111111" stroke-width="2"/>
+      <text x="898" y="86">换频</text>
+      <rect x="1050" y="62" width="52" height="28" fill="#B07AA1" stroke="#111111" stroke-width="2"/>
+      <text x="1118" y="86">消除/其他</text>
+    </g>
+
+    <!-- 水平网格与纵轴刻度：0 至 7000 s -->
+    <g stroke="#D0D0D0" stroke-width="1.5">
+      <line x1="215" y1="840" x2="1550" y2="840"/>
+      <line x1="215" y1="753" x2="1550" y2="753"/>
+      <line x1="215" y1="666" x2="1550" y2="666"/>
+      <line x1="215" y1="579" x2="1550" y2="579"/>
+      <line x1="215" y1="491" x2="1550" y2="491"/>
+      <line x1="215" y1="404" x2="1550" y2="404"/>
+      <line x1="215" y1="317" x2="1550" y2="317"/>
+      <line x1="215" y1="230" x2="1550" y2="230"/>
+    </g>
+    <g font-size="25" text-anchor="end">
+      <text x="195" y="848">0</text>
+      <text x="195" y="761">1000</text>
+      <text x="195" y="674">2000</text>
+      <text x="195" y="587">3000</text>
+      <text x="195" y="499">4000</text>
+      <text x="195" y="412">5000</text>
+      <text x="195" y="325">6000</text>
+      <text x="195" y="238">7000</text>
+    </g>
+    <text x="66" y="535" font-size="30" text-anchor="middle" transform="rotate(-90 66 535)">平均耗时 / s</text>
+
+    <!-- 绘图区边框 -->
+    <rect x="215" y="230" width="1335" height="610" fill="none" stroke="#111111" stroke-width="3"/>
+
+    <!-- 全局覆盖：robust_polygon_rolling，合计 5907 s -->
+    <g stroke="#111111" stroke-width="2">
+      <rect x="430" y="381.4" width="300" height="458.6" fill="#4C78A8"/>
+      <rect x="430" y="339.0" width="300" height="42.4" fill="#F2A541"/>
+      <rect x="430" y="331.5" width="300" height="7.5" fill="#59A14F"/>
+      <rect x="430" y="325.3" width="300" height="6.2" fill="#B07AA1"/>
+    </g>
+    <text x="580" y="618" fill="#ffffff" font-size="27" font-weight="600" text-anchor="middle">5263</text>
+    <text x="580" y="369" font-size="22" font-weight="600" text-anchor="middle">487</text>
+    <text x="580" y="298" font-size="22" text-anchor="middle">换频 86 · 消除/其他 72</text>
+    <text x="580" y="260" font-size="24" font-weight="600" text-anchor="middle">合计 5907 s</text>
+
+    <!-- 滚动插入：integrated_bearing_tour，合计 3556 s -->
+    <g stroke="#111111" stroke-width="2">
+      <rect x="1035" y="612.3" width="300" height="227.7" fill="#4C78A8"/>
+      <rect x="1035" y="548.2" width="300" height="64.1" fill="#F2A541"/>
+      <rect x="1035" y="536.4" width="300" height="11.8" fill="#59A14F"/>
+      <rect x="1035" y="530.2" width="300" height="6.2" fill="#B07AA1"/>
+    </g>
+    <text x="1185" y="733" fill="#ffffff" font-size="27" font-weight="600" text-anchor="middle">2613</text>
+    <text x="1185" y="588" font-size="24" font-weight="600" text-anchor="middle">736</text>
+    <text x="1185" y="503" font-size="22" text-anchor="middle">换频 135 · 消除/其他 72</text>
+    <text x="1185" y="465" font-size="24" font-weight="600" text-anchor="middle">合计 3556 s</text>
+
+    <!-- 横轴标签 -->
+    <g font-size="30" text-anchor="middle">
+      <text x="580" y="902">全局覆盖+TSP</text>
+      <text x="1185" y="902">belief_state+MPC</text>
+    </g>
+  </g>
+</svg>

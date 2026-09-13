@@ -10,7 +10,11 @@ from pathlib import Path
 from typing import Any
 
 from config.paths import PROBLEM4_TRAJECTORY_FIGURES_DIR, paired_pdf_path
-from problems.problem3.main import format_run_report, load_truth_statistics, summarize_action_times
+from problems.problem3.main import (
+    format_run_report,
+    load_truth_statistics,
+    summarize_action_times,
+)
 from problems.problem3.shared import JsonlRunLogger, Problem3Executor, summarize_state
 from problems.problem4.config import (
     ACTION_LOG_DIR,
