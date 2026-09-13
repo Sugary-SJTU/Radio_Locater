@@ -143,6 +143,29 @@ def main() -> None:
     problem3_parser.add_argument(
         "--next-run-wait", type=float, default=0.0, help="等待GUI启动下一局的秒数"
     )
+    problem4_parser = subparsers.add_parser(
+        "problem4", help="运行全向/定向混合源的保证发现、定位与清除策略"
+    )
+    problem4_parser.add_argument(
+        "--strategy", choices=(
+            "guaranteed_directional_lattice", "optimized_guaranteed_lattice",
+            "problem4_fast", "legacy_outer_probe_fast",
+        ),
+        default="guaranteed_directional_lattice",
+    )
+    problem4_parser.add_argument("--host", default=default_url.hostname or "127.0.0.1")
+    problem4_parser.add_argument("--port", type=int, default=default_url.port or 2026)
+    problem4_parser.add_argument("--robot-id", default=os.getenv("CUMCM_ROBOT_ID", ""))
+    problem4_parser.add_argument(
+        "--timeout", type=float, default=float(os.getenv("CUMCM_HTTP_TIMEOUT_S", "5"))
+    )
+    problem4_parser.add_argument("--seed", type=int, default=1)
+    problem4_parser.add_argument("--grid-spacing", type=float, default=1_000.0)
+    problem4_parser.add_argument("--bearing-limit", type=int, default=5)
+    problem4_parser.add_argument("--clear-insertion", type=float, default=300.0)
+    problem4_parser.add_argument("--runs", type=int, default=1)
+    problem4_parser.add_argument("--truth-file", action="append", type=Path, default=[])
+    problem4_parser.add_argument("--print-json", action="store_true")
     simulator_parser = subparsers.add_parser(
         "simulator", help="启动与附件接口兼容的问题 3/4 本地模拟器"
     )
@@ -214,6 +237,33 @@ def main() -> None:
             truth_files=arguments.truth_file,
             formal=arguments.formal,
             next_run_wait_s=arguments.next_run_wait,
+        )
+        for summary in summaries:
+            print(format_run_report(summary))
+        if arguments.print_json:
+            print("\n完整 JSON 汇总：")
+            print(json.dumps(summaries, ensure_ascii=False, indent=2))
+    elif arguments.problem == "problem4":
+        from problems.problem4.config import Problem4Settings
+        from problems.problem4.main import format_run_report, run_problem4
+
+        spacing = arguments.grid_spacing
+        settings = Problem4Settings(
+            seed=arguments.seed,
+            directional_grid_spacing_m=spacing,
+            directional_grid_offset_y_m=spacing * 3**0.5 / 4.0,
+            opportunistic_bearing_limit=arguments.bearing_limit,
+            route_clear_insertion_limit_m=arguments.clear_insertion,
+        )
+        summaries = run_problem4(
+            host=arguments.host,
+            port=arguments.port,
+            robot_id=arguments.robot_id,
+            timeout_s=arguments.timeout,
+            settings=settings,
+            strategy=arguments.strategy,
+            runs=arguments.runs,
+            truth_files=arguments.truth_file,
         )
         for summary in summaries:
             print(format_run_report(summary))

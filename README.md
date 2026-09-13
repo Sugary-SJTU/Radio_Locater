@@ -2,7 +2,7 @@
 
 2026 年数学建模竞赛 B 题合并项目。数值模型和问题 4 以
 `Radio_Locater/master` 为准，论文绘图、分题图片目录及相关展示功能来自
-`Radio_Locater_p`；问题 4 的自动搜索策略仍待实现。
+`Radio_Locater_p`。问题 4 已实现定向保证发现、联合定位和顺路清除策略。
 
 ## 目录与职责
 
@@ -15,7 +15,7 @@
 │   ├── problem1/                     # 交会定位、区域直径、覆盖判定与绘图
 │   ├── problem2/                     # 第二检测点选址、候选区域与绘图
 │   ├── problem3/                     # 在线搜索、定位、清除、日志与统计
-│   └── problem4/                     # 定向/全向混合问题的配置预留
+│   └── problem4/                     # 定向保证网格、混合源定位清除与运行入口
 ├── src/radio_locator/
 │   ├── cli.py                        # problem1、problem2、problem3、simulator 命令
 │   ├── client.py                     # 官方模拟器四个 HTTP 接口客户端
@@ -101,9 +101,50 @@ python scripts/attachment_protocol_demo.py --robot-id demo
 
 它会执行 `/enter → /measure → /measure → /clear → /measure → /exit`，虚拟时刻应为 `0, 105, 111, 194, 199, 199`。仅在本地模拟器或官方演练中使用，不能用于正式测试。
 
-停止本地服务请在服务窗口按 `Ctrl+C`。本地问题 4 场景可用 `--problem 4` 启动；当前复用问题 3
-策略接口进行联调，运行时传入对应问题 4 的 `--truth-file`，程序会自动统计全向/定向源数量，
-并将图组写入 `problem4/<run-id>/`。
+停止本地服务请在服务窗口按 `Ctrl+C`。
+
+## 问题 4 定向/全向混合源
+
+问题四采用“中心 + 12点内环 + 12点外环”的同心环三角剖分。每个剖分三角形最长边
+不超过最低接收半径 1000 m，且外环正十二边形外切目标圆，因此任意源位置附近的测站
+凸包都包含源位置；无论定向半平面朝向如何，至少一个测站必然收到信号。
+
+本地联调先启动问题四模拟器：
+
+```bash
+python main.py simulator --problem 4 --seed 0 --robot-id demo --port 2026
+```
+
+再在另一终端运行策略：
+
+```bash
+python run.py problem4 --host 127.0.0.1 --port 2026 --robot-id demo --seed 0 \
+  --truth-file res/simulator/problem4_seed0.json
+```
+
+另提供两个父项目路线变体。`--strategy problem4_fast` 忠实保留父目录 `p4 ` 项目的
+高速逻辑：先访问半径1000m的七边形，再访问半径2246m的外侧六点，随后只做有限次
+主动定位，不进入密集网格兜底；它可能留下未发现或未清除频道，适合明确接受完成率风险
+时追求短耗时。`--strategy legacy_outer_probe_fast` 使用同一路线，但追加安全网格兜底，
+用于研究补全原方法所需的时间代价。正式测试仍默认使用具有定向发现保证的同心环策略。
+
+策略运行期间不读取真值；`--truth-file` 仅在退出后统计全向/定向源数量并绘制复盘图。
+单局输出写入 `res/logs/problem4/`、`res/tables/problem4/` 和
+`res/figures/{png,pdf}/problem4/<run-id>/`。
+
+复现保证路线、原始高速路线和安全兜底路线的同种子比较，或扩大单一策略审计样本：
+
+```bash
+python scripts/benchmark_problem4.py --seed-start 0 --seed-count 30
+python scripts/benchmark_problem4.py --seed-start 0 --seed-count 100 --only concentric_ring_joint
+```
+
+0--9号同种子比较中，同心环联合插入策略实际全源清除率为100%、平均耗时约7742s；
+父项目原始高速策略平均耗时约6713s，但实际全源清除率为0%、平均仅清除约50.6%的
+干扰源；同一路线追加安全兜底后实际全源清除率为90%、平均耗时约13541s。由此可见，
+原项目的速度优势来自不完备的定向阴性裁剪和提前停止，而非更快的完备定位。对比数据和图分别位于
+`res/tables/problem4/problem4_strategy_comparison.json` 与
+`res/figures/{png,pdf}/pic4/`。
 
 ## 官方客户端演练与正式测试
 

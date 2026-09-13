@@ -1,0 +1,414 @@
+{
+  "strategy": "guaranteed_directional_lattice",
+  "all_channels_resolved": true,
+  "cleared_count": 15,
+  "clearance_ratio": 1.0,
+  "clearance_ratio_denominator": "postrun truth source count",
+  "total_virtual_time_s": 7579.084171,
+  "average_localize_clear_time_s": 4154.341458933332,
+  "total_movement_distance_m": 27560.420855423694,
+  "measure_count": 336,
+  "switch_count": 312,
+  "clear_success_count": 15,
+  "clear_failure_count": 0,
+  "channels": {
+    "1": {
+      "status": "cleared",
+      "first_detected_time_s": 5.0,
+      "localized_time_s": 2461.436928,
+      "cleared_time_s": 6057.731061,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "2": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "3": {
+      "status": "cleared",
+      "first_detected_time_s": 1949.854074,
+      "localized_time_s": 2280.90931,
+      "cleared_time_s": 3855.835153,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "4": {
+      "status": "cleared",
+      "first_detected_time_s": 4285.601584,
+      "localized_time_s": 4543.525003,
+      "cleared_time_s": 7030.670201,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "5": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "6": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "7": {
+      "status": "cleared",
+      "first_detected_time_s": 366.0,
+      "localized_time_s": 3205.716393,
+      "cleared_time_s": 6218.06604,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "8": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "9": {
+      "status": "cleared",
+      "first_detected_time_s": 1460.63809,
+      "localized_time_s": 4309.601584,
+      "cleared_time_s": 7183.095615,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "10": {
+      "status": "cleared",
+      "first_detected_time_s": 823.055236,
+      "localized_time_s": 5160.566778,
+      "cleared_time_s": 5324.147199,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "11": {
+      "status": "cleared",
+      "first_detected_time_s": 65.0,
+      "localized_time_s": 390.0,
+      "cleared_time_s": 6484.310471,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "12": {
+      "status": "cleared",
+      "first_detected_time_s": 396.0,
+      "localized_time_s": 2959.792974,
+      "cleared_time_s": 5796.262889,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "13": {
+      "status": "cleared",
+      "first_detected_time_s": 835.055236,
+      "localized_time_s": 1478.63809,
+      "cleared_time_s": 1583.113419,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "14": {
+      "status": "cleared",
+      "first_detected_time_s": 83.0,
+      "localized_time_s": 1057.582854,
+      "cleared_time_s": 6673.667156,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "15": {
+      "status": "cleared",
+      "first_detected_time_s": 5166.566778,
+      "localized_time_s": 7574.084171,
+      "cleared_time_s": 7579.084171,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "16": {
+      "status": "absent",
+      "first_detected_time_s": null,
+      "localized_time_s": null,
+      "cleared_time_s": null,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "17": {
+      "status": "cleared",
+      "first_detected_time_s": 1496.63809,
+      "localized_time_s": 4887.183598,
+      "cleared_time_s": 4964.681346,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "18": {
+      "status": "cleared",
+      "first_detected_time_s": 1292.110472,
+      "localized_time_s": 1871.854074,
+      "cleared_time_s": 4638.991349,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "19": {
+      "status": "cleared",
+      "first_detected_time_s": 113.0,
+      "localized_time_s": 1762.326456,
+      "cleared_time_s": 6847.775897,
+      "guaranteed_coverage_fraction": 0.0
+    },
+    "20": {
+      "status": "cleared",
+      "first_detected_time_s": 4273.601584,
+      "localized_time_s": 4585.525003,
+      "cleared_time_s": 4688.811061,
+      "guaranteed_coverage_fraction": 0.0
+    }
+  },
+  "coverage_plan": {
+    "name": "guaranteed_directional_lattice",
+    "stations": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1000.0,
+        0.0
+      ],
+      [
+        866.0254037844387,
+        499.99999999999994
+      ],
+      [
+        500.0000000000001,
+        866.0254037844386
+      ],
+      [
+        6.123233995736766e-14,
+        1000.0
+      ],
+      [
+        -499.9999999999998,
+        866.0254037844387
+      ],
+      [
+        -866.0254037844385,
+        500.00000000000034
+      ],
+      [
+        -1000.0,
+        1.2246467991473532e-13
+      ],
+      [
+        -866.0254037844388,
+        -499.9999999999997
+      ],
+      [
+        -500.00000000000045,
+        -866.0254037844384
+      ],
+      [
+        -1.8369701987210297e-13,
+        -1000.0
+      ],
+      [
+        499.9999999999993,
+        -866.025403784439
+      ],
+      [
+        866.0254037844384,
+        -500.00000000000045
+      ],
+      [
+        1800.0,
+        482.30854637602084
+      ],
+      [
+        1317.6914536239792,
+        1317.691453623979
+      ],
+      [
+        482.30854637602124,
+        1799.9999999999998
+      ],
+      [
+        -482.3085463760206,
+        1800.0
+      ],
+      [
+        -1317.691453623979,
+        1317.6914536239792
+      ],
+      [
+        -1799.9999999999998,
+        482.30854637602135
+      ],
+      [
+        -1800.0000000000002,
+        -482.3085463760201
+      ],
+      [
+        -1317.69145362398,
+        -1317.6914536239783
+      ],
+      [
+        -482.30854637602226,
+        -1799.9999999999998
+      ],
+      [
+        482.30854637602,
+        -1800.0000000000002
+      ],
+      [
+        1317.6914536239788,
+        -1317.6914536239794
+      ],
+      [
+        1799.9999999999998,
+        -482.3085463760224
+      ]
+    ],
+    "station_count": 25,
+    "planned_route_length_m": 18238.94915048517,
+    "coverage_audit": {
+      "valid": true,
+      "station_count": 25,
+      "sample_count": 4053,
+      "failed_sample_count": 0,
+      "sample_step_m": 50.0
+    }
+  },
+  "official_log_original_names": [],
+  "problem_number": 4,
+  "source_count": 15,
+  "omnidirectional_source_count": 3,
+  "directional_source_count": 12,
+  "truth_metadata_error": null,
+  "run_index": 1,
+  "seed": 0,
+  "host": "127.0.0.1",
+  "port": 2120,
+  "program_wall_time_s": 1.3799326430016663,
+  "time_breakdown_s": {
+    "movement": 5512.084171084741,
+    "channel_switch": 312.0,
+    "detection": 1680.0,
+    "clearance": 75.0,
+    "other": 0.0,
+    "total": 7579.084171
+  },
+  "movement_time_s": 5512.084171084741,
+  "channel_switch_time_s": 312.0,
+  "detection_time_s": 1680.0,
+  "clearance_time_s": 75.0,
+  "other_time_s": 0.0,
+  "average_time_per_source_s": 505.2722780666667,
+  "average_time_per_cleared_source_s": 505.2722780666667,
+  "action_log": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/logs/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248.jsonl",
+  "summary_file": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/tables/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248.json",
+  "settings": {
+    "tour_polygon_sides": 6,
+    "tour_polygon_radius_m": 1150.0,
+    "tour_scan_origin": true,
+    "tour_target_radius_m": 150.0,
+    "route_aligned_polygon_sides": 7,
+    "route_aligned_polygon_radius_m": 1050.0,
+    "tour_channel_order": "legacy",
+    "tour_endgame_mode": "probe",
+    "seed": 0,
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "arena_radius_m": 1800.0,
+    "guaranteed_radius_m": 1000.0,
+    "robust_polygon_sides": 6,
+    "robust_polygon_radius_m": 1200.0,
+    "robust_polygon_rotation_deg": 0.0,
+    "robust_scan_origin": true,
+    "robust_clear_radius_m": 19.8,
+    "fallback_grid_step_m": 28.0,
+    "scan_origin": false,
+    "polygon_sides": 7,
+    "polygon_radius_m": 1000.0,
+    "polygon_rotation_deg": 0.0,
+    "robustness_margin_m": 0.0,
+    "optimize_polygon": true,
+    "polygon_side_candidates": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "polygon_radius_candidates_m": [
+      750.0,
+      800.0,
+      850.0,
+      900.0,
+      950.0,
+      1000.0
+    ],
+    "polygon_rotation_candidates_deg": [
+      0.0,
+      7.5,
+      15.0,
+      22.5
+    ],
+    "scan_origin_candidates": [
+      false,
+      true
+    ],
+    "coverage_grid_step_m": 40.0,
+    "coverage_validation_step_m": 20.0,
+    "localization_max_measurements": 6,
+    "insertion_time_limit_s": 420.0,
+    "particle_count_per_channel": 480,
+    "existence_prior": 0.65,
+    "direction_bin_deg": 5.0,
+    "entropy_clear_threshold_bits": 0.2,
+    "mean_information_gain_floor_bits": 0.05,
+    "p0": 0.8,
+    "g0": 0.5,
+    "candidate_action_limit": 30,
+    "coverage_lookahead_nodes": 4,
+    "detected_candidate_count": 3,
+    "horizon": 3,
+    "beam_width": 20,
+    "maximum_noncoverage_actions": 6,
+    "start_position": [
+      0.0,
+      0.0
+    ],
+    "start_channel": 1,
+    "clearance_radius_m": 20.0,
+    "directional_mesh_layout": "concentric_ring",
+    "directional_grid_spacing_m": 1000.0,
+    "directional_grid_rotation_deg": 0.0,
+    "directional_grid_offset_x_m": 0.0,
+    "directional_grid_offset_y_m": 433.0127018922193,
+    "opportunistic_bearing_limit": 5,
+    "directional_clear_radius_m": 19.8,
+    "route_clear_insertion_limit_m": 300.0,
+    "route_probe_insertion_limit_m": 0.0
+  },
+  "postrun_truth_file": "res/simulator/problem4_seed0.json",
+  "figure_directory_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248",
+  "figure_directory_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248",
+  "plotting_error": null,
+  "trajectory_figure": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/trajectory.png",
+  "trajectory_figure_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/trajectory.png",
+  "trajectory_figure_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/trajectory.pdf",
+  "clearance_detail_figure": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/clearance_details.png",
+  "clearance_detail_figure_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/clearance_details.png",
+  "clearance_detail_figure_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/clearance_details.pdf",
+  "time_breakdown_figure": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/time_breakdown.png",
+  "time_breakdown_figure_png": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/png/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/time_breakdown.png",
+  "time_breakdown_figure_pdf": "/home/Lilywhite/PIG/CUMCM/Radio_Locater/res/figures/pdf/problem4/guaranteed_directional_lattice_seed0_run1_20260913_114152_293248/time_breakdown.pdf"
+}

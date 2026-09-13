@@ -1,0 +1,170 @@
+{
+  "data_kind": "local_simulator_measurement",
+  "problem": 4,
+  "seeds": [
+    2026
+  ],
+  "priority": "completion rate first, mean virtual time second",
+  "variants": {
+    "problem4_fast": {
+      "settings": {
+        "tour_polygon_sides": 6,
+        "tour_polygon_radius_m": 1150.0,
+        "tour_scan_origin": true,
+        "tour_target_radius_m": 150.0,
+        "route_aligned_polygon_sides": 7,
+        "route_aligned_polygon_radius_m": 1050.0,
+        "tour_channel_order": "legacy",
+        "tour_endgame_mode": "probe",
+        "seed": 1,
+        "channels": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "arena_radius_m": 1800.0,
+        "guaranteed_radius_m": 1000.0,
+        "robust_polygon_sides": 6,
+        "robust_polygon_radius_m": 1200.0,
+        "robust_polygon_rotation_deg": 0.0,
+        "robust_scan_origin": true,
+        "robust_clear_radius_m": 19.8,
+        "fallback_grid_step_m": 28.0,
+        "scan_origin": false,
+        "polygon_sides": 7,
+        "polygon_radius_m": 1000.0,
+        "polygon_rotation_deg": 0.0,
+        "robustness_margin_m": 0.0,
+        "optimize_polygon": true,
+        "polygon_side_candidates": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "polygon_radius_candidates_m": [
+          750.0,
+          800.0,
+          850.0,
+          900.0,
+          950.0,
+          1000.0
+        ],
+        "polygon_rotation_candidates_deg": [
+          0.0,
+          7.5,
+          15.0,
+          22.5
+        ],
+        "scan_origin_candidates": [
+          false,
+          true
+        ],
+        "coverage_grid_step_m": 40.0,
+        "coverage_validation_step_m": 20.0,
+        "localization_max_measurements": 6,
+        "insertion_time_limit_s": 420.0,
+        "particle_count_per_channel": 480,
+        "existence_prior": 0.65,
+        "direction_bin_deg": 5.0,
+        "entropy_clear_threshold_bits": 0.2,
+        "mean_information_gain_floor_bits": 0.05,
+        "p0": 0.8,
+        "g0": 0.5,
+        "candidate_action_limit": 30,
+        "coverage_lookahead_nodes": 4,
+        "detected_candidate_count": 3,
+        "horizon": 3,
+        "beam_width": 20,
+        "maximum_noncoverage_actions": 6,
+        "start_position": [
+          0.0,
+          0.0
+        ],
+        "start_channel": 1,
+        "clearance_radius_m": 20.0,
+        "directional_mesh_layout": "concentric_ring",
+        "directional_grid_spacing_m": 1000.0,
+        "directional_grid_rotation_deg": 0.0,
+        "directional_grid_offset_x_m": 0.0,
+        "directional_grid_offset_y_m": 433.0127018922193,
+        "opportunistic_bearing_limit": 5,
+        "directional_clear_radius_m": 19.8,
+        "route_clear_insertion_limit_m": 300.0,
+        "route_probe_insertion_limit_m": 0.0
+      },
+      "mean": {
+        "completion_rate": 0.0,
+        "all_sources_cleared_rate": 0.0,
+        "mean_source_clearance_ratio": 0.4666666666666667,
+        "total_time_s": 7192.652685,
+        "median_time_s": 7192.652685,
+        "p90_time_s": 7192.652685,
+        "movement_distance_m": 32513.263427173635,
+        "measure_count": 111.0,
+        "clear_failure_count": 0.0,
+        "time_breakdown": {
+          "movement_s": 6502.652685434727,
+          "measurement_s": 555.0,
+          "switching_s": 100.0,
+          "clearance_other_s": 35.0,
+          "total_s": 7192.652685434727,
+          "percentages": [
+            90.40687726522282,
+            7.716207417103383,
+            1.3903076427213301,
+            0.48660767495246554
+          ]
+        }
+      },
+      "samples": [
+        {
+          "seed": 2026,
+          "complete": false,
+          "all_sources_cleared": false,
+          "source_clearance_ratio": 0.4666666666666667,
+          "source_count": 15,
+          "directional_source_count": 10,
+          "omnidirectional_source_count": 5,
+          "total_time_s": 7192.652685,
+          "station_count": 13,
+          "movement_distance_m": 32513.263427173635,
+          "measure_count": 111,
+          "switch_count": 100,
+          "clear_success_count": 7,
+          "clear_failure_count": 0,
+          "time_breakdown": {
+            "movement_s": 6502.652685434727,
+            "measurement_s": 555.0,
+            "switching_s": 100.0,
+            "clearance_other_s": 35.0,
+            "total_s": 7192.652685434727,
+            "percentages": [
+              90.40687726522282,
+              7.716207417103383,
+              1.3903076427213301,
+              0.48660767495246554
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

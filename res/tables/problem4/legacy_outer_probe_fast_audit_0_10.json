@@ -1,0 +1,440 @@
+{
+  "data_kind": "local_simulator_measurement",
+  "problem": 4,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "priority": "completion rate first, mean virtual time second",
+  "variants": {
+    "legacy_outer_probe_fast": {
+      "settings": {
+        "tour_polygon_sides": 6,
+        "tour_polygon_radius_m": 1150.0,
+        "tour_scan_origin": true,
+        "tour_target_radius_m": 150.0,
+        "route_aligned_polygon_sides": 7,
+        "route_aligned_polygon_radius_m": 1050.0,
+        "tour_channel_order": "legacy",
+        "tour_endgame_mode": "probe",
+        "seed": 1,
+        "channels": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "arena_radius_m": 1800.0,
+        "guaranteed_radius_m": 1000.0,
+        "robust_polygon_sides": 6,
+        "robust_polygon_radius_m": 1200.0,
+        "robust_polygon_rotation_deg": 0.0,
+        "robust_scan_origin": true,
+        "robust_clear_radius_m": 19.8,
+        "fallback_grid_step_m": 28.0,
+        "scan_origin": false,
+        "polygon_sides": 7,
+        "polygon_radius_m": 1000.0,
+        "polygon_rotation_deg": 0.0,
+        "robustness_margin_m": 0.0,
+        "optimize_polygon": true,
+        "polygon_side_candidates": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "polygon_radius_candidates_m": [
+          750.0,
+          800.0,
+          850.0,
+          900.0,
+          950.0,
+          1000.0
+        ],
+        "polygon_rotation_candidates_deg": [
+          0.0,
+          7.5,
+          15.0,
+          22.5
+        ],
+        "scan_origin_candidates": [
+          false,
+          true
+        ],
+        "coverage_grid_step_m": 40.0,
+        "coverage_validation_step_m": 20.0,
+        "localization_max_measurements": 6,
+        "insertion_time_limit_s": 420.0,
+        "particle_count_per_channel": 480,
+        "existence_prior": 0.65,
+        "direction_bin_deg": 5.0,
+        "entropy_clear_threshold_bits": 0.2,
+        "mean_information_gain_floor_bits": 0.05,
+        "p0": 0.8,
+        "g0": 0.5,
+        "candidate_action_limit": 30,
+        "coverage_lookahead_nodes": 4,
+        "detected_candidate_count": 3,
+        "horizon": 3,
+        "beam_width": 20,
+        "maximum_noncoverage_actions": 6,
+        "start_position": [
+          0.0,
+          0.0
+        ],
+        "start_channel": 1,
+        "clearance_radius_m": 20.0,
+        "directional_mesh_layout": "concentric_ring",
+        "directional_grid_spacing_m": 1000.0,
+        "directional_grid_rotation_deg": 0.0,
+        "directional_grid_offset_x_m": 0.0,
+        "directional_grid_offset_y_m": 433.0127018922193,
+        "opportunistic_bearing_limit": 5,
+        "directional_clear_radius_m": 19.8,
+        "route_clear_insertion_limit_m": 300.0,
+        "route_probe_insertion_limit_m": 0.0
+      },
+      "mean": {
+        "completion_rate": 0.0,
+        "all_sources_cleared_rate": 0.9,
+        "mean_source_clearance_ratio": 0.9933333333333334,
+        "total_time_s": 13540.5412329,
+        "median_time_s": 13667.169678999999,
+        "p90_time_s": 15457.6325004,
+        "movement_distance_m": 58622.20616491368,
+        "measure_count": 188.1,
+        "clear_failure_count": 222.1,
+        "time_breakdown": {
+          "movement_s": 11724.441232982737,
+          "measurement_s": 940.5,
+          "switching_s": 138.3,
+          "clearance_other_s": 737.3,
+          "total_s": 13540.541232982738,
+          "percentages": [
+            86.58768531662344,
+            6.945808028035707,
+            1.0213771932773401,
+            5.4451294620635045
+          ]
+        }
+      },
+      "samples": [
+        {
+          "seed": 0,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 15,
+          "directional_source_count": 12,
+          "omnidirectional_source_count": 3,
+          "total_time_s": 15441.51973,
+          "station_count": 13,
+          "movement_distance_m": 65007.598652329194,
+          "measure_count": 202,
+          "switch_count": 137,
+          "clear_success_count": 15,
+          "clear_failure_count": 406,
+          "time_breakdown": {
+            "movement_s": 13001.51973046584,
+            "measurement_s": 1010.0,
+            "switching_s": 137.0,
+            "clearance_other_s": 1293.0,
+            "total_s": 15441.51973046584,
+            "percentages": [
+              84.19844650921293,
+              6.540806977743831,
+              0.8872183722286187,
+              8.373528140814626
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 13,
+          "directional_source_count": 6,
+          "omnidirectional_source_count": 7,
+          "total_time_s": 12927.995587,
+          "station_count": 13,
+          "movement_distance_m": 54304.97793691729,
+          "measure_count": 192,
+          "switch_count": 145,
+          "clear_success_count": 13,
+          "clear_failure_count": 299,
+          "time_breakdown": {
+            "movement_s": 10860.995587383459,
+            "measurement_s": 960.0,
+            "switching_s": 145.0,
+            "clearance_other_s": 962.0,
+            "total_s": 12927.995587383459,
+            "percentages": [
+              84.01144256254851,
+              7.425745108830887,
+              1.1215969174796652,
+              7.44121541114095
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 15,
+          "directional_source_count": 4,
+          "omnidirectional_source_count": 11,
+          "total_time_s": 13503.809549,
+          "station_count": 13,
+          "movement_distance_m": 59704.04774484348,
+          "measure_count": 171,
+          "switch_count": 135,
+          "clear_success_count": 15,
+          "clear_failure_count": 166,
+          "time_breakdown": {
+            "movement_s": 11940.809548968697,
+            "measurement_s": 855.0,
+            "switching_s": 135.0,
+            "clearance_other_s": 573.0,
+            "total_s": 13503.809548968697,
+            "percentages": [
+              88.42548841990023,
+              6.3315466417052475,
+              0.9997178907955654,
+              4.243247047598955
+            ]
+          }
+        },
+        {
+          "seed": 3,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 15,
+          "directional_source_count": 11,
+          "omnidirectional_source_count": 4,
+          "total_time_s": 14041.289075,
+          "station_count": 13,
+          "movement_distance_m": 61901.44537316092,
+          "measure_count": 192,
+          "switch_count": 140,
+          "clear_success_count": 15,
+          "clear_failure_count": 162,
+          "time_breakdown": {
+            "movement_s": 12380.289074632183,
+            "measurement_s": 960.0,
+            "switching_s": 140.0,
+            "clearance_other_s": 561.0,
+            "total_s": 14041.289074632183,
+            "percentages": [
+              88.17060177900005,
+              6.836979104250424,
+              0.9970594527031867,
+              3.995359664046341
+            ]
+          }
+        },
+        {
+          "seed": 4,
+          "complete": false,
+          "all_sources_cleared": false,
+          "source_clearance_ratio": 0.9333333333333333,
+          "source_count": 15,
+          "directional_source_count": 14,
+          "omnidirectional_source_count": 1,
+          "total_time_s": 14678.346561,
+          "station_count": 13,
+          "movement_distance_m": 63006.7328035945,
+          "measure_count": 175,
+          "switch_count": 115,
+          "clear_success_count": 14,
+          "clear_failure_count": 339,
+          "time_breakdown": {
+            "movement_s": 12601.346560718901,
+            "measurement_s": 875.0,
+            "switching_s": 115.0,
+            "clearance_other_s": 1087.0,
+            "total_s": 14678.346560718901,
+            "percentages": [
+              85.84990488262274,
+              5.961161881417965,
+              0.7834669901292183,
+              7.405466245830089
+            ]
+          }
+        },
+        {
+          "seed": 5,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 14,
+          "directional_source_count": 3,
+          "omnidirectional_source_count": 11,
+          "total_time_s": 10808.374515,
+          "station_count": 13,
+          "movement_distance_m": 48361.87257600034,
+          "measure_count": 164,
+          "switch_count": 135,
+          "clear_success_count": 14,
+          "clear_failure_count": 37,
+          "time_breakdown": {
+            "movement_s": 9672.374515200068,
+            "measurement_s": 820.0,
+            "switching_s": 135.0,
+            "clearance_other_s": 181.0,
+            "total_s": 10808.374515200068,
+            "percentages": [
+              89.48963141125044,
+              7.58670972075232,
+              1.2490314784165404,
+              1.674627389580695
+            ]
+          }
+        },
+        {
+          "seed": 6,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 13,
+          "directional_source_count": 12,
+          "omnidirectional_source_count": 1,
+          "total_time_s": 13830.529809,
+          "station_count": 13,
+          "movement_distance_m": 59497.64904629396,
+          "measure_count": 201,
+          "switch_count": 141,
+          "clear_success_count": 13,
+          "clear_failure_count": 240,
+          "time_breakdown": {
+            "movement_s": 11899.529809258793,
+            "measurement_s": 1005.0,
+            "switching_s": 141.0,
+            "clearance_other_s": 785.0,
+            "total_s": 13830.529809258793,
+            "percentages": [
+              86.03813428240977,
+              7.2665329084299195,
+              1.0194837214812127,
+              5.675849087679092
+            ]
+          }
+        },
+        {
+          "seed": 7,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 16,
+          "directional_source_count": 8,
+          "omnidirectional_source_count": 8,
+          "total_time_s": 15602.647434,
+          "station_count": 13,
+          "movement_distance_m": 68033.23716971032,
+          "measure_count": 172,
+          "switch_count": 126,
+          "clear_success_count": 16,
+          "clear_failure_count": 310,
+          "time_breakdown": {
+            "movement_s": 13606.647433942064,
+            "measurement_s": 860.0,
+            "switching_s": 126.0,
+            "clearance_other_s": 1010.0,
+            "total_s": 15602.647433942064,
+            "percentages": [
+              87.2072992198882,
+              5.511885105659393,
+              0.8075552596663761,
+              6.47326041478603
+            ]
+          }
+        },
+        {
+          "seed": 8,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 15,
+          "directional_source_count": 12,
+          "omnidirectional_source_count": 3,
+          "total_time_s": 13434.7687,
+          "station_count": 13,
+          "movement_distance_m": 58278.843499015056,
+          "measure_count": 194,
+          "switch_count": 143,
+          "clear_success_count": 15,
+          "clear_failure_count": 197,
+          "time_breakdown": {
+            "movement_s": 11655.768699803011,
+            "measurement_s": 970.0,
+            "switching_s": 143.0,
+            "clearance_other_s": 666.0,
+            "total_s": 13434.768699803011,
+            "percentages": [
+              86.75823871812483,
+              7.22007219978579,
+              1.0644023964632658,
+              4.957286685626119
+            ]
+          }
+        },
+        {
+          "seed": 9,
+          "complete": false,
+          "all_sources_cleared": true,
+          "source_clearance_ratio": 1.0,
+          "source_count": 12,
+          "directional_source_count": 8,
+          "omnidirectional_source_count": 4,
+          "total_time_s": 11136.131369,
+          "station_count": 13,
+          "movement_distance_m": 48125.65684727172,
+          "measure_count": 218,
+          "switch_count": 166,
+          "clear_success_count": 12,
+          "clear_failure_count": 65,
+          "time_breakdown": {
+            "movement_s": 9625.131369454344,
+            "measurement_s": 1090.0,
+            "switching_s": 166.0,
+            "clearance_other_s": 255.0,
+            "total_s": 11136.131369454344,
+            "percentages": [
+              86.43155374276051,
+              9.787959245791553,
+              1.4906433346801815,
+              2.289843676767749
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
