@@ -9,6 +9,9 @@ import os
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from problems.problem3.config import STRATEGIES as PROBLEM3_STRATEGIES
+from problems.problem4.config import PROBLEM4_STRATEGIES
+
 
 def main() -> None:
     """解析命令行，并转发至数值问题或本地模拟器入口。"""
@@ -40,16 +43,7 @@ def main() -> None:
     )
     problem3_parser.add_argument(
         "--strategy",
-        choices=(
-            "robust_polygon_rolling",
-            "belief_mpc",
-            "cooperative_bearing_tour",
-            "integrated_bearing_tour",
-            "distance_optimized_bearing_tour",
-            "route_aligned_bearing_tour",
-            "safe_clear_route_aligned_tour",
-            "dynamic_coverage_route_aligned_tour",
-        ),
+        choices=PROBLEM3_STRATEGIES,
         required=True,
         help="问题3策略",
     )
@@ -57,7 +51,9 @@ def main() -> None:
     problem3_parser.add_argument("--host", default=default_url.hostname or "127.0.0.1")
     problem3_parser.add_argument("--port", type=int, default=default_url.port or 2026)
     problem3_parser.add_argument(
-        "--robot-id", default=os.getenv("CUMCM_ROBOT_ID", ""), help="参赛队号/本地demo标识"
+        "--robot-id",
+        default=os.getenv("CUMCM_ROBOT_ID", ""),
+        help="参赛队号/本地demo标识",
     )
     problem3_parser.add_argument(
         "--timeout", type=float, default=float(os.getenv("CUMCM_HTTP_TIMEOUT_S", "5"))
@@ -68,8 +64,18 @@ def main() -> None:
         default=Path(__file__).resolve().parents[2] / "config" / "problem3.yaml",
         help="算法YAML配置（默认使用项目内配置，与启动目录无关）",
     )
-    problem3_parser.add_argument("--endgame", dest="tour_endgame_mode", choices=("legacy", "exact", "probe"), help="小规模路线与末段粗定位处理模式")
-    problem3_parser.add_argument("--tour-radius", dest="tour_polygon_radius_m", type=float, help="联合巡回覆盖多边形半径/m")
+    problem3_parser.add_argument(
+        "--endgame",
+        dest="tour_endgame_mode",
+        choices=("legacy", "exact", "probe"),
+        help="小规模路线与末段粗定位处理模式",
+    )
+    problem3_parser.add_argument(
+        "--tour-radius",
+        dest="tour_polygon_radius_m",
+        type=float,
+        help="联合巡回覆盖多边形半径/m",
+    )
     problem3_parser.add_argument(
         "--route-aligned-sides",
         dest="route_aligned_polygon_sides",
@@ -82,7 +88,12 @@ def main() -> None:
         type=float,
         help="路线对齐策略的保证覆盖多边形半径/m",
     )
-    problem3_parser.add_argument("--channel-order", dest="tour_channel_order", choices=("legacy", "alternating"), help="共享测站频道顺序")
+    problem3_parser.add_argument(
+        "--channel-order",
+        dest="tour_channel_order",
+        choices=("legacy", "alternating"),
+        help="共享测站频道顺序",
+    )
     problem3_parser.add_argument("--seed", type=int)
     problem3_parser.add_argument("--grid-step", dest="coverage_grid_step_m", type=float)
     problem3_parser.add_argument(
@@ -112,7 +123,9 @@ def main() -> None:
         "--scan-origin", action=argparse.BooleanOptionalAction, default=None
     )
     problem3_parser.add_argument(
-        "--fixed-polygon", action="store_true", help="使用指定n=7/rho=1000等参数而不搜索"
+        "--fixed-polygon",
+        action="store_true",
+        help="使用指定n=7/rho=1000等参数而不搜索",
     )
     problem3_parser.add_argument("--runs", type=int, choices=(1, 3), default=1)
     problem3_parser.add_argument(
@@ -147,10 +160,8 @@ def main() -> None:
         "problem4", help="运行全向/定向混合源的保证发现、定位与清除策略"
     )
     problem4_parser.add_argument(
-        "--strategy", choices=(
-            "guaranteed_directional_lattice", "optimized_guaranteed_lattice",
-            "problem4_fast", "legacy_outer_probe_fast",
-        ),
+        "--strategy",
+        choices=PROBLEM4_STRATEGIES,
         default="guaranteed_directional_lattice",
     )
     problem4_parser.add_argument("--host", default=default_url.hostname or "127.0.0.1")
@@ -177,18 +188,14 @@ def main() -> None:
         required=True,
         help="仿真题号",
     )
-    simulator_parser.add_argument(
-        "--seed", type=int, default=2026, help="案例随机种子"
-    )
+    simulator_parser.add_argument("--seed", type=int, default=2026, help="案例随机种子")
     simulator_parser.add_argument(
         "--robot-id", default="demo", help="接口逐字节校验的本地机器狗标识"
     )
     simulator_parser.add_argument(
         "--host", default="127.0.0.1", help="监听地址，默认仅本机回环"
     )
-    simulator_parser.add_argument(
-        "--port", type=int, default=2026, help="监听端口"
-    )
+    simulator_parser.add_argument("--port", type=int, default=2026, help="监听端口")
     simulator_parser.add_argument(
         "--truth-output",
         type=Path,
@@ -213,12 +220,25 @@ def main() -> None:
         )
 
         override_names = (
-            "tour_polygon_radius_m", "route_aligned_polygon_sides",
-            "route_aligned_polygon_radius_m", "tour_channel_order", "tour_endgame_mode",
-            "seed", "coverage_grid_step_m", "coverage_validation_step_m",
-            "particle_count_per_channel", "candidate_action_limit", "horizon",
-            "beam_width", "p0", "g0", "polygon_sides", "polygon_radius_m",
-            "polygon_rotation_deg", "robustness_margin_m", "scan_origin",
+            "tour_polygon_radius_m",
+            "route_aligned_polygon_sides",
+            "route_aligned_polygon_radius_m",
+            "tour_channel_order",
+            "tour_endgame_mode",
+            "seed",
+            "coverage_grid_step_m",
+            "coverage_validation_step_m",
+            "particle_count_per_channel",
+            "candidate_action_limit",
+            "horizon",
+            "beam_width",
+            "p0",
+            "g0",
+            "polygon_sides",
+            "polygon_radius_m",
+            "polygon_rotation_deg",
+            "robustness_margin_m",
+            "scan_origin",
         )
         overrides = {name: getattr(arguments, name) for name in override_names}
         if arguments.fixed_polygon:

@@ -27,12 +27,13 @@ def main() -> None:
         "shifted_triangular_lattice",
         "concentric_ring_no_insertion",
         "concentric_ring_joint",
-        "problem4_fast",
         "legacy_outer_probe_fast",
     ]
     labels = [
-        "平移三角格", "同心环\n无顺路清除", "同心环\n联合插入",
-        "父项目\n高速有限定位", "外侧补测\n安全兜底",
+        "平移三角格",
+        "同心环\n无顺路清除",
+        "同心环\n联合插入",
+        "外侧补测\n安全兜底",
     ]
     means = [document["variants"][name]["mean"] for name in names]
     times = np.asarray([item["total_time_s"] for item in means])
@@ -42,11 +43,17 @@ def main() -> None:
     figure, axis = plt.subplots(figsize=(10.2, 5.3))
     x = np.arange(len(labels))
     bars = axis.bar(
-        x, times, width=0.62,
-        color=("#8CB9D9", "#6EA6D7", "#3E7CB1", "#E0A458", "#C98773"),
-        edgecolor="black", linewidth=0.9, label="平均总耗时",
+        x,
+        times,
+        width=0.62,
+        color=("#8CB9D9", "#6EA6D7", "#3E7CB1", "#C98773"),
+        edgecolor="black",
+        linewidth=0.9,
+        label="平均总耗时",
     )
-    axis.bar_label(bars, labels=[f"{value:.0f} s" for value in times], padding=4, fontsize=8.5)
+    axis.bar_label(
+        bars, labels=[f"{value:.0f} s" for value in times], padding=4, fontsize=8.5
+    )
     axis.set_ylabel("平均总耗时 / s")
     axis.set_xticks(x, labels)
     axis.set_ylim(0.0, max(times) * 1.18)
@@ -55,13 +62,23 @@ def main() -> None:
 
     rate_axis = axis.twinx()
     rate_axis.plot(
-        x, success, color="#9C2F2F", marker="D", markersize=5.5,
-        linewidth=1.6, label="实际全源清除率",
+        x,
+        success,
+        color="#9C2F2F",
+        marker="D",
+        markersize=5.5,
+        linewidth=1.6,
+        label="实际全源清除率",
     )
     for x_value, value in zip(x, success, strict=True):
         rate_axis.annotate(
-            f"{value:.0f}%", (x_value, value), xytext=(0, 8),
-            textcoords="offset points", ha="center", color="#822626", fontsize=8.5,
+            f"{value:.0f}%",
+            (x_value, value),
+            xytext=(0, 8),
+            textcoords="offset points",
+            ha="center",
+            color="#822626",
+            fontsize=8.5,
         )
     rate_axis.set_ylabel("实际全源清除率 / %", color="#822626")
     rate_axis.tick_params(axis="y", labelcolor="#822626")
@@ -71,8 +88,12 @@ def main() -> None:
     handles2, labels2 = rate_axis.get_legend_handles_labels()
     figure.subplots_adjust(top=0.82)
     figure.legend(
-        handles1 + handles2, labels1 + labels2, ncol=2,
-        loc="upper center", bbox_to_anchor=(0.5, 0.965), frameon=False,
+        handles1 + handles2,
+        labels1 + labels2,
+        ncol=2,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.965),
+        frameon=False,
     )
     for current_axis in (axis, rate_axis):
         for spine in current_axis.spines.values():
@@ -81,7 +102,9 @@ def main() -> None:
     style_figure_for_paper(figure)
     output = PROBLEM4_FIGURES_DIR / "problem4_strategy_time_and_clearance.png"
     output.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(output, dpi=300, bbox_inches="tight", facecolor="white", edgecolor="black")
+    figure.savefig(
+        output, dpi=300, bbox_inches="tight", facecolor="white", edgecolor="black"
+    )
     pdf = paired_pdf_path(output)
     pdf.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(pdf, bbox_inches="tight", facecolor="white", edgecolor="black")

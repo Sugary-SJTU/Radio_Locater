@@ -1,0 +1,222 @@
+% 附录正文：在论文正文末尾使用 \input{appendix_code_body}。
+% 使用本文件前，须先在论文导言区载入 appendix_code_preamble.tex。
+
+\appendix
+\section{项目目录与源代码}
+
+本附录给出参赛程序的目录结构、文件职责以及完整源码。自动生成的日志、仿真真值、
+轨迹图片、统计结果、题目附件和论文 PDF 不属于程序源码，故不重复列入代码附录。
+代码中的路径均相对于项目根目录。
+
+\tableofcontents
+\clearpage
+
+\subsection{项目目录树}
+
+\begin{Verbatim}[fontsize=\small,frame=single,breaklines=true,breakanywhere=true]
+Radio_Locater/
+|-- main.py                         兼容命令行入口
+|-- run.py                          带程序墙钟计时的推荐入口
+|-- pyproject.toml                  Python 包、依赖和工具配置
+|-- environment.yml                Windows/Conda 复现环境
+|-- .env.example                    官方接口环境变量示例
+|-- .gitignore                      缓存与运行产物排除规则
+|-- config/                         全局常量、路径和模拟器参数
+|   |-- constants.py                题面物理常量
+|   |-- paths.py                    统一结果路径
+|   |-- simulator.py                HTTP 接口默认配置
+|   |-- local_simulator.py          本地模拟器配置
+|   |-- problem3.yaml               问题三算法参数
+|   `-- __init__.py                 配置包声明
+|-- problems/
+|   |-- problem1/                   多站示向交会与几何验证
+|   |   |-- config.py               案例、容差与输出配置
+|   |   |-- model.py                半平面交会与区域直径模型
+|   |   |-- examples.py             典型几何案例
+|   |   |-- plotting.py             问题一绘图
+|   |   |-- main.py                 问题一运行编排
+|   |   `-- __init__.py             子包声明
+|   |-- problem2/                   第二检测点选址
+|   |   |-- config.py               候选筛选参数
+|   |   |-- model.py                后验网格与候选评分
+|   |   |-- plotting.py             问题二绘图
+|   |   |-- main.py                 问题二运行编排
+|   |   `-- __init__.py             子包声明
+|   |-- problem3/                   全向源搜索、定位、路径与清除
+|   |   |-- config.py               策略注册与算法配置
+|   |   |-- model.py                基础数学模型
+|   |   |-- belief.py               粒子信念状态
+|   |   |-- coverage.py             保证覆盖与开放路径
+|   |   |-- shared.py               公共状态、执行器与定位清除
+|   |   |-- strategies.py           六种现行策略
+|   |   |-- plotting.py             轨迹、清除及耗时图
+|   |   |-- main.py                 在线运行与结果汇总
+|   |   `-- __init__.py             子包声明
+|   |-- problem4/                   混合源保证发现与优化清除
+|   |   |-- config.py               定向策略与参数
+|   |   |-- model.py                保证网格构造与验证
+|   |   |-- strategies.py           三种现行策略
+|   |   |-- main.py                 问题四运行与汇总
+|   |   `-- __init__.py             子包声明
+|   `-- __init__.py                 问题模块包声明
+|-- src/radio_locator/              公共运行时与模拟器客户端
+|   |-- cli.py                      统一命令行解析
+|   |-- client.py                   四端点 HTTP 客户端
+|   |-- local_simulator.py          本地 HTTP 模拟器引擎
+|   |-- geometry.py                 公共凸几何算法
+|   |-- runtime.py                  Windows 绘图运行时适配
+|   `-- __init__.py                 公共包声明
+|-- scripts/                        审计、基准、绘图和回放工具
+|   |-- attachment_protocol_demo.py 附件协议固定序列复核
+|   |-- audit_four_practices.py     四份演练日志审计
+|   |-- audit_p5.py                 特定案例审计
+|   |-- benchmark_problem3.py       问题三模拟基准
+|   |-- benchmark_distance_tour.py  联合巡回配对比较
+|   |-- benchmark_endgame.py        末段模式比较
+|   |-- benchmark_radius_channels.py 覆盖半径与频道顺序消融
+|   |-- benchmark_problem4.py       问题四十局快速审计
+|   |-- tune_route_aligned_tour.py  路线对齐参数搜索
+|   |-- plot_strategy_time_comparison.py 问题三耗时图
+|   |-- plot_problem4_strategy_performance.py 问题四表现图
+|   |-- build_practice_replay.py    演练回放数据生成
+|   |-- replay_template.html        浏览器回放模板
+|   `-- check_replay.cjs            回放页面自动检查
+|-- tests/                          自动化回归测试
+|   |-- test_problem1.py            问题一测试
+|   |-- test_problem2.py            问题二测试
+|   |-- test_problem3.py            问题三基础测试
+|   |-- test_problem3_tour.py       联合巡回测试
+|   |-- test_problem4.py            问题四测试
+|   |-- test_local_simulator.py     本地协议测试
+|   |-- test_run_entrypoint.py      程序计时测试
+|   `-- test_strategy_registry.py   策略注册表测试
+|-- paper/
+|   `-- appendix_code_template.tex  本项目源码附录模板
+|-- reference/                      题目与接口附件（不列源码）
+`-- res/                            运行结果（不列源码）
+\end{Verbatim}
+
+\subsection{文件职责总表}
+
+\begin{longtable}{p{0.36\textwidth}p{0.57\textwidth}}
+\toprule
+\textbf{文件或目录} & \textbf{作用} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{文件或目录} & \textbf{作用} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{续下页} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\texttt{main.py} & 保留题目示例习惯的根入口，转发至统一 CLI。 \\
+\texttt{run.py} & 推荐运行入口；无论成功或异常退出均报告程序实际墙钟时间。 \\
+\texttt{config/} & 集中管理题面常量、路径、接口地址及算法参数，避免策略内散落硬编码。 \\
+\texttt{problems/problem1/} & 实现示向半平面交会、可行域、最小覆盖圆、区域直径和验证绘图。 \\
+\texttt{problems/problem2/} & 实现后验候选域、第二检测点筛选、评分和论文图表。 \\
+\texttt{problems/problem3/} & 实现六种全向源在线策略以及状态、信念、覆盖、日志和结果汇总。 \\
+\texttt{problems/problem4/} & 实现三种全向/定向混合源策略、保证网格及运行汇总。 \\
+\texttt{src/radio_locator/} & 提供 CLI、HTTP 客户端、本地模拟器、几何工具和跨平台运行时。 \\
+\texttt{scripts/} & 提供协议复核、10 局快速审计、消融比较、绘图及演练回放。 \\
+\texttt{tests/} & 覆盖问题一至四、模拟器协议、策略注册表及入口计时的回归测试。 \\
+\texttt{pyproject.toml} & 声明可编辑安装、依赖、命令行脚本、测试和格式化配置。 \\
+\texttt{environment.yml} & 固定 Conda 环境组成，供 Windows 用户一条命令复现。 \\
+\texttt{.gitignore} & 排除虚拟环境、缓存、密钥、本地真值、日志及带时间戳运行产物。 \\
+\end{longtable}
+
+\clearpage
+\section{根入口与工程配置}
+
+\CodeFile{main.py}{兼容根入口，将参数处理转交给统一命令行模块。}
+\CodeFile{run.py}{推荐根入口，调用统一命令行并统计程序实际运行时间。}
+\CodeFile{pyproject.toml}{定义项目元数据、Python 依赖、可编辑安装、命令和开发工具。}
+\CodeFile{environment.yml}{定义 Windows 上可复现的 Conda 环境及测试依赖。}
+\CodeFile{.env.example}{给出接口地址、机器狗编号和超时参数的环境变量示例。}
+\CodeFile{.gitignore}{过滤不应提交的缓存、环境、密钥和自动生成结果。}
+
+\section{公共配置模块}
+
+\CodeFile{config/__init__.py}{声明公共配置包。}
+\CodeFile{config/constants.py}{集中保存题面给定的场地、速度、时间、频道和半径常量。}
+\CodeFile{config/paths.py}{统一创建和管理表格、日志、图片及模拟器案例路径。}
+\CodeFile{config/simulator.py}{读取官方或本地 HTTP 服务的默认连接配置。}
+\CodeFile{config/local_simulator.py}{保存本地模拟器场景生成和服务端参数。}
+\CodeFile{config/problem3.yaml}{保存问题三覆盖、定位、信念和路径算法的可调默认值。}
+
+\section{问题一：交会定位与区域直径}
+
+\CodeFile{problems/__init__.py}{声明四个问题共用的顶层包。}
+\CodeFile{problems/problem1/__init__.py}{声明问题一模块。}
+\CodeFile{problems/problem1/config.py}{定义问题一输入案例、容差和输出位置。}
+\CodeFile{problems/problem1/model.py}{实现示向约束、凸区域交会、定位圆和区域直径计算。}
+\CodeFile{problems/problem1/examples.py}{构造论文和回归测试使用的典型几何案例。}
+\CodeFile{problems/problem1/plotting.py}{生成问题一几何原理、边界情况和验证图。}
+\CodeFile{problems/problem1/main.py}{组织问题一计算、表格写出和批量绘图。}
+
+\section{问题二：第二检测点选址}
+
+\CodeFile{problems/problem2/__init__.py}{声明问题二模块。}
+\CodeFile{problems/problem2/config.py}{定义候选域、距离门槛、评分权重和输出路径。}
+\CodeFile{problems/problem2/model.py}{实现后验网格、接收概率、候选筛选和综合评分。}
+\CodeFile{problems/problem2/plotting.py}{生成四项筛选原则、候选区域和直径分布图。}
+\CodeFile{problems/problem2/main.py}{组织问题二候选搜索、结果输出和绘图。}
+
+\section{问题三：全向源搜索、定位与清除}
+
+\CodeFile{problems/problem3/__init__.py}{声明问题三模块。}
+\CodeFile{problems/problem3/config.py}{定义六个现行策略名称、算法设置和结果路径。}
+\CodeFile{problems/problem3/model.py}{实现问题三使用的基础数学模型和数据结构。}
+\CodeFile{problems/problem3/belief.py}{维护各频道存在性、位置和接收半径的粒子信念。}
+\CodeFile{problems/problem3/coverage.py}{生成保证覆盖多边形并实现开放路径优化算法。}
+\CodeFile{problems/problem3/shared.py}{实现策略共享状态、执行器、日志、定位和安全清除。}
+\CodeFile{problems/problem3/strategies.py}{实现全局覆盖、信念 MPC 和联合巡回优化策略。}
+\CodeFile{problems/problem3/plotting.py}{生成单局轨迹、清除细节和分项耗时图。}
+\CodeFile{problems/problem3/main.py}{连接模拟器、运行策略并保存日志、汇总和正式测试结果。}
+
+\section{问题四：定向/全向混合源}
+
+\CodeFile{problems/problem4/__init__.py}{声明问题四模块。}
+\CodeFile{problems/problem4/config.py}{定义三个现行策略及定向网格、清除和输出参数。}
+\CodeFile{problems/problem4/model.py}{构造并解析验证三角格和同心环保证发现网格。}
+\CodeFile{problems/problem4/strategies.py}{实现保证扫描、优化收尾和历史外侧补测对照策略。}
+\CodeFile{problems/problem4/main.py}{运行问题四并输出动作日志、统计和复盘图。}
+
+\section{公共客户端、模拟器与命令行}
+
+\CodeFile{src/radio_locator/__init__.py}{声明项目公共 Python 包及版本信息。}
+\CodeFile{src/radio_locator/cli.py}{注册问题一至四和本地模拟器的统一命令行参数。}
+\CodeFile{src/radio_locator/client.py}{封装附件规定的四个 HTTP 端点及异常语义。}
+\CodeFile{src/radio_locator/local_simulator.py}{实现随机案例、动作计时、测量响应和本地 HTTP 服务。}
+\CodeFile{src/radio_locator/geometry.py}{提供半平面裁剪、凸包、最小覆盖圆和旋转卡壳算法。}
+\CodeFile{src/radio_locator/runtime.py}{配置无界面绘图后端和可写缓存目录，适配 Windows。}
+
+\section{审计、基准、绘图与回放脚本}
+
+\CodeFile{scripts/attachment_protocol_demo.py}{按附件固定动作序列验证接口字段和虚拟计时。}
+\CodeFile{scripts/audit_four_practices.py}{汇总并审计四份官方演练日志。}
+\CodeFile{scripts/audit_p5.py}{复核特定演练案例的定位与末段动作。}
+\CodeFile{scripts/benchmark_problem3.py}{为问题三提供本地模拟器批量运行基准。}
+\CodeFile{scripts/benchmark_distance_tour.py}{按相同种子配对比较四个联合巡回策略。}
+\CodeFile{scripts/benchmark_endgame.py}{比较问题三不同末段定位和排路模式。}
+\CodeFile{scripts/benchmark_radius_channels.py}{比较覆盖半径与频道扫描顺序。}
+\CodeFile{scripts/benchmark_problem4.py}{以 10 局为默认快速审计问题四策略变体。}
+\CodeFile{scripts/tune_route_aligned_tour.py}{搜索安全路线对齐策略的多边形边数与半径。}
+\CodeFile{scripts/plot_strategy_time_comparison.py}{生成问题三策略分项耗时叠加柱状图。}
+\CodeFile{scripts/plot_problem4_strategy_performance.py}{生成问题四候选策略耗时与清除表现图。}
+\CodeFile{scripts/build_practice_replay.py}{把演练日志整理为可交互回放数据。}
+\CodeFile{scripts/replay_template.html}{定义演练轨迹的浏览器回放界面。}
+\CodeFile{scripts/check_replay.cjs}{使用浏览器自动检查桌面和移动端回放页面。}
+
+\section{自动化回归测试}
+
+\CodeFile{tests/test_problem1.py}{验证问题一几何结果及双格式图片输出。}
+\CodeFile{tests/test_problem2.py}{验证候选选址、筛选原则和问题二绘图。}
+\CodeFile{tests/test_problem3.py}{验证问题三覆盖、状态更新和策略基础行为。}
+\CodeFile{tests/test_problem3_tour.py}{验证联合巡回、路线优化、安全清除和动态覆盖。}
+\CodeFile{tests/test_problem4.py}{验证定向保证网格及问题四现行策略。}
+\CodeFile{tests/test_local_simulator.py}{验证本地模拟器协议、随机场景和动作计时。}
+\CodeFile{tests/test_run_entrypoint.py}{验证 run.py 在成功和异常退出时均报告墙钟时间。}
+\CodeFile{tests/test_strategy_registry.py}{确保三个废弃策略不会重新进入命令行注册表。}

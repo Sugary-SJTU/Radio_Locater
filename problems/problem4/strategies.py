@@ -5,8 +5,6 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-import numpy as np
-
 from config.constants import SOURCE_COUNT_MAX
 from problems.problem3.coverage import (
     held_karp_open_path,
@@ -17,7 +15,6 @@ from problems.problem3.coverage import (
 from problems.problem3.shared import (
     Problem3Executor,
     Problem3State,
-    choose_localization_point,
     localize_channel,
     route_aligned_clearance_point,
 )
@@ -25,7 +22,6 @@ from problems.problem4.config import (
     GUARANTEED_DIRECTIONAL_LATTICE,
     LEGACY_OUTER_PROBE_FAST,
     OPTIMIZED_GUARANTEED_LATTICE,
-    PARENT_FAST_STRATEGY,
     Problem4Settings,
 )
 from problems.problem4.model import (
@@ -74,7 +70,10 @@ class GuaranteedDirectionalLatticeStrategy:
         self.settings = settings
 
     def _opportunistic_measurement_is_useful(
-        self, state: Problem4State, channel: int, station: tuple[float, float],
+        self,
+        state: Problem4State,
+        channel: int,
+        station: tuple[float, float],
     ) -> bool:
         return True
 
@@ -86,7 +85,8 @@ class GuaranteedDirectionalLatticeStrategy:
 
     @staticmethod
     def _pending_reference_point(
-        state: Problem4State, channel: int,
+        state: Problem4State,
+        channel: int,
     ) -> tuple[float, float]:
         track = state.tracks[channel]
         if track.clear_circle is not None:
@@ -94,12 +94,18 @@ class GuaranteedDirectionalLatticeStrategy:
         return track.measurements[-1].station
 
     def _finish_pending_channels(
-        self, executor: Problem3Executor, pending: list[int],
+        self,
+        executor: Problem3Executor,
+        pending: list[int],
     ) -> None:
         state = executor.state
-        pending_points = [self._pending_reference_point(state, channel) for channel in pending]
+        pending_points = [
+            self._pending_reference_point(state, channel) for channel in pending
+        ]
         if pending_points:
-            ordered_points = optimize_remaining_route_multistart(state.position, pending_points)
+            ordered_points = optimize_remaining_route_multistart(
+                state.position, pending_points
+            )
             point_channels: dict[tuple[float, float], list[int]] = {}
             for point, channel in zip(pending_points, pending, strict=True):
                 point_channels.setdefault(point, []).append(channel)
@@ -120,7 +126,8 @@ class GuaranteedDirectionalLatticeStrategy:
 
         state = executor.state
         localized = [
-            channel for channel, track in state.tracks.items()
+            channel
+            for channel, track in state.tracks.items()
             if track.status == "localized" and track.clear_circle is not None
         ]
         localized_points = [
@@ -128,7 +135,9 @@ class GuaranteedDirectionalLatticeStrategy:
             for channel in localized
         ]
         if localized_points:
-            order = optimize_remaining_route_multistart(state.position, localized_points)
+            order = optimize_remaining_route_multistart(
+                state.position, localized_points
+            )
             point_channels = {
                 point: channel
                 for point, channel in zip(localized_points, localized, strict=True)
@@ -138,7 +147,8 @@ class GuaranteedDirectionalLatticeStrategy:
                     point, point_channels[point], "定向格多站交会后开放路线安全清除"
                 )
         pending = [
-            channel for channel, track in state.tracks.items()
+            channel
+            for channel, track in state.tracks.items()
             if track.status in {"detected", "localized"}
         ]
         self._finish_pending_channels(executor, pending)
@@ -166,7 +176,9 @@ class GuaranteedDirectionalLatticeStrategy:
                 ),
             )
         else:
-            raise ValueError(f"unknown directional mesh: {self.settings.directional_mesh_layout}")
+            raise ValueError(
+                f"unknown directional mesh: {self.settings.directional_mesh_layout}"
+            )
         audit = validate_directional_lattice(
             stations,
             self.settings.arena_radius_m,
@@ -175,7 +187,9 @@ class GuaranteedDirectionalLatticeStrategy:
         if not audit["valid"]:
             raise ValueError("finite directional lattice failed coverage audit")
 
-        initial_route = optimize_remaining_route_multistart(state.position, list(stations))
+        initial_route = optimize_remaining_route_multistart(
+            state.position, list(stations)
+        )
         planned_route_length = route_length(tuple(initial_route), state.position)
         remaining = list(stations)
         station_index = 0
@@ -194,8 +208,11 @@ class GuaranteedDirectionalLatticeStrategy:
                 if track.status == "unknown"
                 or (
                     track.status == "detected"
-                    and len(track.measurements) < self.settings.opportunistic_bearing_limit
-                    and self._opportunistic_measurement_is_useful(state, channel, station)
+                    and len(track.measurements)
+                    < self.settings.opportunistic_bearing_limit
+                    and self._opportunistic_measurement_is_useful(
+                        state, channel, station
+                    )
                 )
             ]
             for channel in _channel_order(state, channels):
@@ -213,7 +230,8 @@ class GuaranteedDirectionalLatticeStrategy:
                     if (
                         track.status != "localized"
                         or track.clear_circle is None
-                        or track.clear_circle.radius > self.settings.directional_clear_radius_m
+                        or track.clear_circle.radius
+                        > self.settings.directional_clear_radius_m
                     ):
                         continue
                     point = route_aligned_clearance_point(
@@ -224,7 +242,9 @@ class GuaranteedDirectionalLatticeStrategy:
                     )
                     extra = math_distance(state.position, point)
                     if following is not None:
-                        extra += math_distance(point, following) - math_distance(state.position, following)
+                        extra += math_distance(point, following) - math_distance(
+                            state.position, following
+                        )
                     candidates.append((extra, channel, point))
                 if not candidates:
                     break
@@ -250,7 +270,9 @@ class GuaranteedDirectionalLatticeStrategy:
                 point = tuple(float(value) for value in track.clear_circle.center)
                 extra = math_distance(state.position, point)
                 if following is not None:
-                    extra += math_distance(point, following) - math_distance(state.position, following)
+                    extra += math_distance(point, following) - math_distance(
+                        state.position, following
+                    )
                 probe_candidates.append((extra, channel, point))
             if probe_candidates:
                 extra, channel, point = min(probe_candidates)
@@ -266,7 +288,9 @@ class GuaranteedDirectionalLatticeStrategy:
         self._finish_endgame(executor)
         if not state.all_resolved():
             unresolved = state.unresolved_channels()
-            raise RuntimeError(f"problem4 finished with unresolved channels: {unresolved}")
+            raise RuntimeError(
+                f"problem4 finished with unresolved channels: {unresolved}"
+            )
         plan = {
             "name": self.name,
             "stations": [list(point) for point in stations],
@@ -285,7 +309,8 @@ class OptimizedGuaranteedLatticeStrategy(GuaranteedDirectionalLatticeStrategy):
     def _finish_endgame(self, executor: Problem3Executor) -> None:
         state = executor.state
         channels = [
-            channel for channel, track in state.tracks.items()
+            channel
+            for channel, track in state.tracks.items()
             if track.status in {"detected", "localized"}
         ]
         points = [self._pending_reference_point(state, channel) for channel in channels]
@@ -293,7 +318,9 @@ class OptimizedGuaranteedLatticeStrategy(GuaranteedDirectionalLatticeStrategy):
         ordered_channels = [channels[index] for index in order]
         ordered_points = [points[index] for index in order]
         for index, channel in enumerate(ordered_channels):
-            following = ordered_points[index + 1] if index + 1 < len(ordered_points) else None
+            following = (
+                ordered_points[index + 1] if index + 1 < len(ordered_points) else None
+            )
             track = state.tracks[channel]
             if track.status == "localized" and track.clear_circle is not None:
                 point = route_aligned_clearance_point(
@@ -350,14 +377,15 @@ class LegacyOuterProbeFastStrategy:
         route = optimize_remaining_route_multistart(state.position, points)
         for station_index, point in enumerate(route, start=1):
             channels = [
-                channel for channel, track in state.tracks.items()
+                channel
+                for channel, track in state.tracks.items()
                 if track.status == "unknown"
             ]
             for channel in _channel_order(state, channels):
                 executor.measure(
                     point,
                     channel,
-                    f"父目录problem4_fast复现：{phase}第{station_index}/{len(route)}站",
+                    f"历史外侧补测策略：{phase}第{station_index}/{len(route)}站",
                 )
 
     def run(self, executor: Problem3Executor) -> Problem4RunResult:
@@ -381,7 +409,7 @@ class LegacyOuterProbeFastStrategy:
                 localize_channel(
                     executor,
                     channel,
-                    "父目录problem4_fast集中定位清除",
+                    "历史外侧补测策略集中定位清除",
                     clear_when_ready=True,
                     clear_radius_m=self.settings.directional_clear_radius_m,
                     use_grid_fallback=True,
@@ -395,109 +423,5 @@ class LegacyOuterProbeFastStrategy:
             "base_points": [list(point) for point in base],
             "outer_points": [list(point) for point in outer],
             "directional_guarantee": False,
-        }
-        return Problem4RunResult(state, plan)
-
-
-class ParentProblem4FastStrategy(LegacyOuterProbeFastStrategy):
-    """忠实保留父项目的高速有限定位版本，不执行密集网格兜底。"""
-
-    name = PARENT_FAST_STRATEGY
-
-    def _scan_base_like_parent(
-        self,
-        executor: Problem3Executor,
-        points: list[tuple[float, float]],
-    ) -> None:
-        """复现父实现按1000m阴性圆裁剪候选域的快速调度。
-
-        该裁剪对定向源并不严格成立，正是原策略速度高但可能漏检的原因；只在显式
-        ``problem4_fast`` 中使用，不污染保证策略的状态规则。
-        """
-
-        state = executor.state
-        route = optimize_remaining_route_multistart(state.position, points)
-        for station_index, point in enumerate(route, start=1):
-            distances = np.linalg.norm(
-                state.coverage_grid - np.asarray(point, dtype=float), axis=1
-            )
-            covered = distances <= self.settings.guaranteed_radius_m + 1e-9
-            channels = [
-                channel for channel, track in state.tracks.items()
-                if track.status == "unknown"
-                and bool(np.any(state.uncovered[channel] & covered))
-            ]
-            for channel in _channel_order(state, channels):
-                executor.measure(
-                    point,
-                    channel,
-                    f"父项目problem4_fast基础覆盖第{station_index}/{len(route)}站",
-                )
-                if state.tracks[channel].status == "unknown":
-                    state.uncovered[channel] &= ~covered
-                    if not np.any(state.uncovered[channel]):
-                        state.tracks[channel].status = "absent"
-
-    def _localize_and_clear_fast(
-        self, executor: Problem3Executor, channel: int,
-    ) -> None:
-        state = executor.state
-        attempted_points: set[tuple[float, float]] = set()
-        measured_points = {
-            measurement.station for measurement in state.tracks[channel].measurements
-        }
-        for _ in range(state.settings.localization_max_measurements):
-            track = state.tracks[channel]
-            if track.status == "cleared":
-                return
-            if track.status == "localized" and track.clear_circle is not None:
-                center = tuple(float(value) for value in track.clear_circle.center)
-                executor.clear(
-                    center,
-                    channel,
-                    "父项目problem4_fast有限定位清除；"
-                    f"最小覆盖圆rho={track.clear_circle.radius:.2f}<=20",
-                )
-                return
-            point, reason = choose_localization_point(state, channel)
-            if point in attempted_points or point in measured_points:
-                return
-            attempted_points.add(point)
-            measured_points.add(point)
-            executor.measure(
-                point,
-                channel,
-                f"父项目problem4_fast有限定位；{reason}",
-                information_gain_bits=state.beliefs[channel].information_gain_bits(point),
-            )
-
-    def run(self, executor: Problem3Executor) -> Problem4RunResult:
-        state = executor.state
-        if not isinstance(state, Problem4State):
-            raise TypeError("problem4 strategy requires Problem4State")
-        base = [
-            (
-                1_000.0 * math.cos(math.radians(7.5 + index * 360.0 / 7.0)),
-                1_000.0 * math.sin(math.radians(7.5 + index * 360.0 / 7.0)),
-            )
-            for index in range(7)
-        ]
-        outer = self._outer_probe_points()
-        self._scan_base_like_parent(executor, base)
-        self._scan_phase(executor, outer, "外侧定向补测")
-        for channel in sorted(self.settings.channels):
-            if state.tracks[channel].status in {"detected", "localized"}:
-                self._localize_and_clear_fast(executor, channel)
-        plan = {
-            "name": self.name,
-            "source_project": "../p4 ",
-            "base_station_count": len(base),
-            "outer_station_count": len(outer),
-            "station_count": len(base) + len(outer),
-            "base_points": [list(point) for point in base],
-            "outer_points": [list(point) for point in outer],
-            "directional_guarantee": False,
-            "grid_fallback": False,
-            "completion_required": False,
         }
         return Problem4RunResult(state, plan)

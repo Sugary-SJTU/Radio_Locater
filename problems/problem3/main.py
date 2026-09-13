@@ -26,11 +26,12 @@ from problems.problem3.config import (
     DISTANCE_TOUR_STRATEGY,
     DYNAMIC_COVERAGE_TOUR_STRATEGY,
     FORMAL_RESULTS_TABLE,
+    MPC_STRATEGY,
     ROBUST_STRATEGY,
-    ROUTE_ALIGNED_TOUR_STRATEGY,
     SAFE_CLEAR_TOUR_STRATEGY,
     STRATEGIES,
     SUMMARY_DIR,
+    TOUR_STRATEGY,
     Problem3Settings,
 )
 from problems.problem3.shared import (
@@ -40,11 +41,12 @@ from problems.problem3.shared import (
     summarize_state,
 )
 from problems.problem3.strategies import (
-    BeliefMPCStrategy, RobustPolygonRollingStrategy,
-    CooperativeBearingTourStrategy, DistanceOptimizedBearingTourStrategy,
-    IntegratedBearingTourStrategy, RouteAlignedBearingTourStrategy,
-    SafeClearRouteAlignedTourStrategy,
+    BeliefMPCStrategy,
+    DistanceOptimizedBearingTourStrategy,
     DynamicCoverageRouteAlignedTourStrategy,
+    IntegratedBearingTourStrategy,
+    RobustPolygonRollingStrategy,
+    SafeClearRouteAlignedTourStrategy,
 )
 from radio_locator.client import AmbiguousActionError, SimulatorClient
 
@@ -87,7 +89,9 @@ def _validate_settings(settings: Problem3Settings) -> None:
     if settings.tour_channel_order not in {"legacy", "alternating"}:
         raise ValueError("tour_channel_order must be legacy or alternating")
     if settings.tour_polygon_sides < 3 or settings.tour_polygon_radius_m <= 0:
-        raise ValueError("tour polygon requires at least three sides and positive radius")
+        raise ValueError(
+            "tour polygon requires at least three sides and positive radius"
+        )
     if (
         settings.route_aligned_polygon_sides < 3
         or settings.route_aligned_polygon_radius_m <= 0
@@ -109,16 +113,17 @@ def _validate_settings(settings: Problem3Settings) -> None:
         raise ValueError("beam_width must be between 10 and 30")
     if settings.coverage_grid_step_m <= 0 or settings.coverage_validation_step_m <= 0:
         raise ValueError("coverage grid steps must be positive")
-    if (
-        settings.robust_polygon_sides < 3
-        or settings.robust_polygon_radius_m <= 0
-    ):
-        raise ValueError("robust polygon must have at least three sides and positive radius")
+    if settings.robust_polygon_sides < 3 or settings.robust_polygon_radius_m <= 0:
+        raise ValueError(
+            "robust polygon must have at least three sides and positive radius"
+        )
     if not 0.0 < settings.robust_clear_radius_m <= settings.clearance_radius_m:
         raise ValueError("robust_clear_radius_m must lie in (0, clearance_radius_m]")
     fallback_cover_radius = settings.fallback_grid_step_m * 2**0.5 / 2.0
     if fallback_cover_radius >= settings.clearance_radius_m:
-        raise ValueError("fallback grid cells are too large for the 20 m clearance radius")
+        raise ValueError(
+            "fallback grid cells are too large for the 20 m clearance radius"
+        )
 
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:
@@ -136,22 +141,41 @@ def _write_plan_search(path: Path, plans: tuple[Any, ...]) -> None:
         writer = csv.writer(file)
         writer.writerow(
             [
-                "sides", "radius_m", "rotation_deg", "scan_origin",
-                "route_length_m", "measure_count", "switch_count",
-                "estimated_base_time_s", "analytic_max_distance_m",
-                "numerical_max_distance_m", "coverage_ratio", "worst_x",
-                "worst_y", "achieved_margin_m", "valid",
+                "sides",
+                "radius_m",
+                "rotation_deg",
+                "scan_origin",
+                "route_length_m",
+                "measure_count",
+                "switch_count",
+                "estimated_base_time_s",
+                "analytic_max_distance_m",
+                "numerical_max_distance_m",
+                "coverage_ratio",
+                "worst_x",
+                "worst_y",
+                "achieved_margin_m",
+                "valid",
             ]
         )
         for plan in plans:
             metric = plan.coverage
             writer.writerow(
                 [
-                    plan.sides, plan.radius_m, plan.rotation_deg, plan.scan_origin,
-                    plan.route_length_m, plan.measure_count, plan.switch_count,
-                    plan.estimated_base_time_s, metric.analytic_max_distance_m,
-                    metric.numerical_max_distance_m, metric.coverage_ratio,
-                    *metric.worst_point, metric.achieved_margin_m, metric.valid,
+                    plan.sides,
+                    plan.radius_m,
+                    plan.rotation_deg,
+                    plan.scan_origin,
+                    plan.route_length_m,
+                    plan.measure_count,
+                    plan.switch_count,
+                    plan.estimated_base_time_s,
+                    metric.analytic_max_distance_m,
+                    metric.numerical_max_distance_m,
+                    metric.coverage_ratio,
+                    *metric.worst_point,
+                    metric.achieved_margin_m,
+                    metric.valid,
                 ]
             )
 
@@ -175,9 +199,7 @@ def summarize_action_times(
             record = json.loads(line)
             breakdown = record.get("time_breakdown_s") or {}
             totals["movement"] += float(breakdown.get("movement", 0.0))
-            totals["channel_switch"] += float(
-                breakdown.get("channel_switch", 0.0)
-            )
+            totals["channel_switch"] += float(breakdown.get("channel_switch", 0.0))
             operation = float(breakdown.get("measure_or_clear", 0.0))
             if record.get("action_type") == "measure":
                 totals["detection"] += operation
@@ -234,7 +256,9 @@ def format_run_report(summary: dict[str, Any]) -> str:
         return "未知" if value is None else f"{float(value):.2f} s"
 
     source_count = summary.get("source_count")
-    source_text = "未知（未提供事后真值）" if source_count is None else str(source_count)
+    source_text = (
+        "未知（未提供事后真值）" if source_count is None else str(source_count)
+    )
     lines = [
         f"\n===== 问题 {summary.get('problem_number', 3)} 单次测试汇总 =====",
         f"策略：{summary.get('strategy', 'unknown')}",
@@ -250,8 +274,7 @@ def format_run_report(summary: dict[str, Any]) -> str:
         )
     lines.extend(
         [
-            "平均单个源耗时："
-            f"{seconds(summary.get('average_time_per_source_s'))}",
+            f"平均单个源耗时：{seconds(summary.get('average_time_per_source_s'))}",
             "平均每个已清除源耗时："
             f"{seconds(summary.get('average_time_per_cleared_source_s'))}",
             "平均定位至清除耗时："
@@ -290,16 +313,33 @@ def _append_formal_result(path: Path, summary: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     exists = path.exists()
     columns = [
-        "run_index", "case_code", "strategy", "seed", "problem_number",
-        "source_count", "omnidirectional_source_count",
-        "directional_source_count", "cleared_count",
-        "clearance_ratio", "total_virtual_time_s", "program_wall_time_s",
-        "average_time_per_source_s", "average_time_per_cleared_source_s",
-        "movement_time_s", "channel_switch_time_s", "detection_time_s",
-        "clearance_time_s", "other_time_s",
-        "action_log", "summary_file", "official_log_original_names",
-        "figure_directory_png", "figure_directory_pdf", "trajectory_figure",
-        "clearance_detail_figure", "time_breakdown_figure",
+        "run_index",
+        "case_code",
+        "strategy",
+        "seed",
+        "problem_number",
+        "source_count",
+        "omnidirectional_source_count",
+        "directional_source_count",
+        "cleared_count",
+        "clearance_ratio",
+        "total_virtual_time_s",
+        "program_wall_time_s",
+        "average_time_per_source_s",
+        "average_time_per_cleared_source_s",
+        "movement_time_s",
+        "channel_switch_time_s",
+        "detection_time_s",
+        "clearance_time_s",
+        "other_time_s",
+        "action_log",
+        "summary_file",
+        "official_log_original_names",
+        "figure_directory_png",
+        "figure_directory_pdf",
+        "trajectory_figure",
+        "clearance_detail_figure",
+        "time_breakdown_figure",
     ]
     with path.open("a", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=columns)
@@ -313,9 +353,17 @@ def _append_formal_result(path: Path, summary: dict[str, Any]) -> None:
 
 
 def run_once(
-    *, strategy_name: str, host: str, port: int, robot_id: str,
-    timeout_s: float, settings: Problem3Settings, run_index: int,
-    case_code: str | None, official_log_names: list[str], formal: bool,
+    *,
+    strategy_name: str,
+    host: str,
+    port: int,
+    robot_id: str,
+    timeout_s: float,
+    settings: Problem3Settings,
+    run_index: int,
+    case_code: str | None,
+    official_log_names: list[str],
+    formal: bool,
     truth_file: Path | None = None,
 ) -> dict[str, Any]:
     """连接一局模拟器、运行策略并保存动作日志和汇总。"""
@@ -332,17 +380,17 @@ def run_once(
     logger = JsonlRunLogger(action_log)
     state = Problem3State(settings)
     client = SimulatorClient(
-        base_url=f"http://{host}:{port}", robot_id=robot_id, timeout_s=timeout_s,
+        base_url=f"http://{host}:{port}",
+        robot_id=robot_id,
+        timeout_s=timeout_s,
         request_prefix=f"p3-{strategy_name}-s{settings.seed}-r{run_index}",
     )
     executor = Problem3Executor(client, state, logger, strategy_name)
     strategy_types = {
-        "robust_polygon_rolling": RobustPolygonRollingStrategy,
-        "belief_mpc": BeliefMPCStrategy,
-        "cooperative_bearing_tour": CooperativeBearingTourStrategy,
-        "integrated_bearing_tour": IntegratedBearingTourStrategy,
+        ROBUST_STRATEGY: RobustPolygonRollingStrategy,
+        MPC_STRATEGY: BeliefMPCStrategy,
+        TOUR_STRATEGY: IntegratedBearingTourStrategy,
         DISTANCE_TOUR_STRATEGY: DistanceOptimizedBearingTourStrategy,
-        ROUTE_ALIGNED_TOUR_STRATEGY: RouteAlignedBearingTourStrategy,
         SAFE_CLEAR_TOUR_STRATEGY: SafeClearRouteAlignedTourStrategy,
         DYNAMIC_COVERAGE_TOUR_STRATEGY: DynamicCoverageRouteAlignedTourStrategy,
     }
@@ -353,7 +401,9 @@ def run_once(
         result = strategy.run(executor)
         executor.exit()
         summary = summarize_state(
-            result.state, strategy_name, result.selected_plan.as_dict(),
+            result.state,
+            strategy_name,
+            result.selected_plan.as_dict(),
             official_log_names,
         )
         truth_statistics = load_truth_statistics(truth_file)
@@ -425,12 +475,19 @@ def run_once(
         _write_plan_search(plan_path, result.compared_plans)
         summary.update(
             {
-                "run_index": run_index, "case_code": case_code,
-                "seed": settings.seed, "host": host, "port": port,
+                "run_index": run_index,
+                "case_code": case_code,
+                "seed": settings.seed,
+                "host": host,
+                "port": port,
                 "program_wall_time_s": time.monotonic() - start,
-                "action_log": str(action_log), "summary_file": str(summary_path),
-                "polygon_search_file": str(plan_path), "settings": asdict(settings),
-                "postrun_truth_file": str(truth_file) if truth_file is not None else None,
+                "action_log": str(action_log),
+                "summary_file": str(summary_path),
+                "polygon_search_file": str(plan_path),
+                "settings": asdict(settings),
+                "postrun_truth_file": str(truth_file)
+                if truth_file is not None
+                else None,
                 "plotting_error": plotting_error,
                 "figure_directory_png": str(figure_directory),
                 "figure_directory_pdf": str(pdf_figure_directory),
@@ -449,10 +506,18 @@ def run_once(
 
 
 def run_problem3(
-    *, strategy: str, host: str, port: int, robot_id: str, timeout_s: float,
-    settings: Problem3Settings, runs: int = 1,
-    case_codes: list[str] | None = None, official_logs: list[Path] | None = None,
-    truth_files: list[Path] | None = None, formal: bool = False,
+    *,
+    strategy: str,
+    host: str,
+    port: int,
+    robot_id: str,
+    timeout_s: float,
+    settings: Problem3Settings,
+    runs: int = 1,
+    case_codes: list[str] | None = None,
+    official_logs: list[Path] | None = None,
+    truth_files: list[Path] | None = None,
+    formal: bool = False,
     next_run_wait_s: float = 0.0,
 ) -> list[dict[str, Any]]:
     """连续执行1或3局；正式模式强制3局并保留原始日志文件名。"""
@@ -470,7 +535,8 @@ def run_problem3(
             # 下一局由附件GUI启动；这里只等待端口重新可用，不执行模拟动作。
             deadline = time.monotonic() + next_run_wait_s
             probe = SimulatorClient(
-                base_url=f"http://{host}:{port}", robot_id=robot_id,
+                base_url=f"http://{host}:{port}",
+                robot_id=robot_id,
                 timeout_s=timeout_s,
             )
             while True:
@@ -479,10 +545,15 @@ def run_problem3(
                     break
                 except Exception:
                     if time.monotonic() >= deadline:
-                        raise TimeoutError("next simulator run did not become available")
+                        raise TimeoutError(
+                            "next simulator run did not become available"
+                        )
                     time.sleep(min(1.0, max(deadline - time.monotonic(), 0.0)))
         summary = run_once(
-            strategy_name=strategy, host=host, port=port, robot_id=robot_id,
+            strategy_name=strategy,
+            host=host,
+            port=port,
+            robot_id=robot_id,
             timeout_s=timeout_s,
             settings=replace(settings, seed=settings.seed + index - 1),
             run_index=index,

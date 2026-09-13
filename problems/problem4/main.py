@@ -21,7 +21,6 @@ from problems.problem4.config import (
     GUARANTEED_DIRECTIONAL_LATTICE,
     LEGACY_OUTER_PROBE_FAST,
     OPTIMIZED_GUARANTEED_LATTICE,
-    PARENT_FAST_STRATEGY,
     SUMMARY_DIR,
     Problem4Settings,
 )
@@ -29,7 +28,6 @@ from problems.problem4.strategies import (
     GuaranteedDirectionalLatticeStrategy,
     LegacyOuterProbeFastStrategy,
     OptimizedGuaranteedLatticeStrategy,
-    ParentProblem4FastStrategy,
     Problem4State,
 )
 from radio_locator.client import SimulatorClient
@@ -37,12 +35,19 @@ from radio_locator.client import SimulatorClient
 
 def _write_json(path: Path, document: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
+    path.write_text(
+        json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
 
 def run_once(
-    *, host: str, port: int, robot_id: str, timeout_s: float,
-    settings: Problem4Settings, run_index: int = 1,
+    *,
+    host: str,
+    port: int,
+    robot_id: str,
+    timeout_s: float,
+    settings: Problem4Settings,
+    run_index: int = 1,
     strategy_name: str = GUARANTEED_DIRECTIONAL_LATTICE,
     truth_file: Path | None = None,
 ) -> dict[str, Any]:
@@ -54,7 +59,6 @@ def run_once(
     strategy_types = {
         GUARANTEED_DIRECTIONAL_LATTICE: GuaranteedDirectionalLatticeStrategy,
         OPTIMIZED_GUARANTEED_LATTICE: OptimizedGuaranteedLatticeStrategy,
-        PARENT_FAST_STRATEGY: ParentProblem4FastStrategy,
         LEGACY_OUTER_PROBE_FAST: LegacyOuterProbeFastStrategy,
     }
     if strategy_name not in strategy_types:
@@ -65,7 +69,9 @@ def run_once(
     logger = JsonlRunLogger(action_log)
     state = Problem4State(settings)
     client = SimulatorClient(
-        base_url=f"http://{host}:{port}", robot_id=robot_id, timeout_s=timeout_s,
+        base_url=f"http://{host}:{port}",
+        robot_id=robot_id,
+        timeout_s=timeout_s,
         request_prefix=f"p4-{strategy_name}-s{settings.seed}-r{run_index}",
     )
     executor = Problem3Executor(client, state, logger, strategy_name)
@@ -101,10 +107,14 @@ def run_once(
             "clearance_time_s": timing["clearance"],
             "other_time_s": timing["other"],
             "average_time_per_source_s": (
-                float(summary["total_virtual_time_s"]) / source_count if source_count else None
+                float(summary["total_virtual_time_s"]) / source_count
+                if source_count
+                else None
             ),
             "average_time_per_cleared_source_s": (
-                float(summary["total_virtual_time_s"]) / cleared_count if cleared_count else None
+                float(summary["total_virtual_time_s"]) / cleared_count
+                if cleared_count
+                else None
             ),
             "action_log": str(action_log),
             "summary_file": str(summary_path),
@@ -118,8 +128,10 @@ def run_once(
         from problems.problem3.plotting import plot_run_replay
 
         figures = plot_run_replay(
-            action_log, figure_directory / "trajectory.png",
-            figure_directory / "clearance_details.png", truth_file,
+            action_log,
+            figure_directory / "trajectory.png",
+            figure_directory / "clearance_details.png",
+            truth_file,
             time_breakdown_s=timing,
             timing_output=figure_directory / "time_breakdown.png",
         )
@@ -140,8 +152,13 @@ def run_once(
 
 
 def run_problem4(
-    *, host: str, port: int, robot_id: str, timeout_s: float,
-    settings: Problem4Settings, runs: int = 1,
+    *,
+    host: str,
+    port: int,
+    robot_id: str,
+    timeout_s: float,
+    settings: Problem4Settings,
+    runs: int = 1,
     strategy: str = GUARANTEED_DIRECTIONAL_LATTICE,
     truth_files: list[Path] | None = None,
 ) -> list[dict[str, Any]]:
@@ -152,8 +169,12 @@ def run_problem4(
     truths = truth_files or []
     return [
         run_once(
-            host=host, port=port, robot_id=robot_id, timeout_s=timeout_s,
-            settings=replace(settings, seed=settings.seed + index), run_index=index + 1,
+            host=host,
+            port=port,
+            robot_id=robot_id,
+            timeout_s=timeout_s,
+            settings=replace(settings, seed=settings.seed + index),
+            run_index=index + 1,
             strategy_name=strategy,
             truth_file=truths[index] if index < len(truths) else None,
         )

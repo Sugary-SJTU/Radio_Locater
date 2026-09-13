@@ -1,4 +1,4 @@
-"""问题 3 两种在线策略的集中配置。
+"""问题 3 在线策略的集中配置。
 
 题面物理常量仍保存在 ``config.constants``；本文件只定义路径搜索、粒子近似、MPC
 规模及输出路径等算法参数，避免硬编码散落在策略实现中。
@@ -28,19 +28,15 @@ ROBUST_STRATEGY: Final[str] = "robust_polygon_rolling"
 MPC_STRATEGY: Final[str] = "belief_mpc"
 TOUR_STRATEGY: Final[str] = "integrated_bearing_tour"
 DISTANCE_TOUR_STRATEGY: Final[str] = "distance_optimized_bearing_tour"
-ROUTE_ALIGNED_TOUR_STRATEGY: Final[str] = "route_aligned_bearing_tour"
 SAFE_CLEAR_TOUR_STRATEGY: Final[str] = "safe_clear_route_aligned_tour"
 DYNAMIC_COVERAGE_TOUR_STRATEGY: Final[str] = "dynamic_coverage_route_aligned_tour"
-SHARED_STRATEGY: Final[str] = "cooperative_bearing_tour"
 STRATEGIES: Final[tuple[str, ...]] = (
     ROBUST_STRATEGY,
     MPC_STRATEGY,
     TOUR_STRATEGY,
     DISTANCE_TOUR_STRATEGY,
-    ROUTE_ALIGNED_TOUR_STRATEGY,
     SAFE_CLEAR_TOUR_STRATEGY,
     DYNAMIC_COVERAGE_TOUR_STRATEGY,
-    SHARED_STRATEGY,
 )
 
 

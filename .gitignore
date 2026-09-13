@@ -1,13 +1,77 @@
-.venv/
-*.egg-info/
+# Python bytecode, test and analysis caches
 __pycache__/
+*.py[cod]
+*$py.class
 .pytest_cache/
 .ruff_cache/
-*.py[cod]
-.vscode
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Packaging and local environments
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+.conda/
+
+# Local configuration and credentials
 .env
+.env.*
+!.env.example
+
+# Editors, notebooks and operating-system files
+.vscode/
+.idea/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*.tmp
+*.bak
+*~
 .~lock.*#
-res/logs/*
+
+# Runtime caches
+.matplotlib/
+.mplconfig*/
+fontlist-v*.json
+
+# LaTeX build products
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+paper/appendix_code_template.pdf
+
+# Per-run logs and local simulator truth (keep directory placeholders)
+res/logs/**
 !res/logs/.gitkeep
-res/tables/*.xlsx
-!res/tables/.gitkeep
+res/simulator/**
+!res/simulator/.gitkeep
+
+# Per-run trajectories and diagnostics; curated pic1-pic4 figures remain trackable
+res/figures/png/problem3/**
+res/figures/png/problem4/**
+res/figures/pdf/problem3/**
+res/figures/pdf/problem4/**
+res/figures/png/opt/**
+res/figures/pdf/opt/**
+
+# Per-run summaries and office lock/output files; curated comparison data remain trackable
+res/tables/problem3/*_seed*_run*.json
+res/tables/problem3/*_seed*_run*_polygon_search.csv
+res/tables/problem4/*_seed*_run*.json
+res/tables/problem3/formal_runs.csv
+res/tables/**/*.xlsx

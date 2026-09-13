@@ -10,16 +10,25 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 
-from benchmark_distance_tour import run_one, summarize  # noqa: E402
-from problems.problem3.config import Problem3Settings  # noqa: E402
-from problems.problem3.coverage import evaluate_polygon_plan  # noqa: E402
+from benchmark_distance_tour import run_one, summarize
 
+from problems.problem3.config import Problem3Settings
+from problems.problem3.coverage import evaluate_polygon_plan
 
 COARSE_CONFIGURATIONS = (
-    (6, 1125.0), (6, 1150.0), (6, 1175.0), (6, 1200.0),
-    (7, 1000.0), (7, 1025.0), (7, 1050.0), (7, 1075.0),
-    (8, 950.0), (8, 975.0), (8, 1000.0),
-    (9, 925.0), (9, 950.0),
+    (6, 1125.0),
+    (6, 1150.0),
+    (6, 1175.0),
+    (6, 1200.0),
+    (7, 1000.0),
+    (7, 1025.0),
+    (7, 1050.0),
+    (7, 1075.0),
+    (8, 950.0),
+    (8, 975.0),
+    (8, 1000.0),
+    (9, 925.0),
+    (9, 950.0),
 )
 FINE_CONFIGURATIONS = tuple((7, float(radius)) for radius in range(1025, 1076, 5))
 
@@ -47,7 +56,7 @@ def main() -> None:
         rows = [
             run_one(
                 seed,
-                "route_aligned_bearing_tour",
+                "safe_clear_route_aligned_tour",
                 tour_polygon_sides=sides,
                 tour_polygon_radius_m=radius,
             )
@@ -83,11 +92,16 @@ def main() -> None:
         "runs": all_rows,
     }
     output = (
-        ROOT / "res" / "tables" / "problem3"
+        ROOT
+        / "res"
+        / "tables"
+        / "problem3"
         / f"route_aligned_polygon_{arguments.stage}_tuning_{arguments.start}_{arguments.count}.json"
     )
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
+    output.write_text(
+        json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     print(f"output={output}")
 
 

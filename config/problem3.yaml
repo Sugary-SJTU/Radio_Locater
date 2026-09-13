@@ -6,7 +6,7 @@ algorithm:
   tour_polygon_radius_m: 1150.0
   tour_scan_origin: true
   tour_target_radius_m: 150.0
-  # route_aligned 独立调优结果；不改变原 integrated 策略的六边形。
+  # safe/dynamic 路线对齐策略的独立调优结果；不改变 integrated 的六边形。
   route_aligned_polygon_sides: 7
   route_aligned_polygon_radius_m: 1050.0
   # legacy优先当前频道；alternating每个非空扫描批次交替升降序。

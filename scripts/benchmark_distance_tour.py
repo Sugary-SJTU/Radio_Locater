@@ -13,15 +13,28 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 
-from benchmark_problem3 import EngineClient  # noqa: E402
-from problems.problem3.config import Problem3Settings  # noqa: E402
-from problems.problem3.shared import Problem3Executor, Problem3State  # noqa: E402
-from problems.problem3.strategies import (  # noqa: E402
+from benchmark_problem3 import EngineClient
+
+from problems.problem3.config import (
+    DISTANCE_TOUR_STRATEGY,
+    DYNAMIC_COVERAGE_TOUR_STRATEGY,
+    SAFE_CLEAR_TOUR_STRATEGY,
+    TOUR_STRATEGY,
+    Problem3Settings,
+)
+from problems.problem3.shared import Problem3Executor, Problem3State
+from problems.problem3.strategies import (
     DistanceOptimizedBearingTourStrategy,
-    IntegratedBearingTourStrategy,
-    RouteAlignedBearingTourStrategy,
-    SafeClearRouteAlignedTourStrategy,
     DynamicCoverageRouteAlignedTourStrategy,
+    IntegratedBearingTourStrategy,
+    SafeClearRouteAlignedTourStrategy,
+)
+
+TOUR_VARIANTS = (
+    TOUR_STRATEGY,
+    DISTANCE_TOUR_STRATEGY,
+    SAFE_CLEAR_TOUR_STRATEGY,
+    DYNAMIC_COVERAGE_TOUR_STRATEGY,
 )
 
 
@@ -43,10 +56,10 @@ def run_one(
     if tour_polygon_sides is not None:
         key = (
             "route_aligned_polygon_sides"
-            if variant in {
-                "route_aligned_bearing_tour",
-                "safe_clear_route_aligned_tour",
-                "dynamic_coverage_route_aligned_tour",
+            if variant
+            in {
+                SAFE_CLEAR_TOUR_STRATEGY,
+                DYNAMIC_COVERAGE_TOUR_STRATEGY,
             }
             else "tour_polygon_sides"
         )
@@ -54,10 +67,10 @@ def run_one(
     if tour_polygon_radius_m is not None:
         key = (
             "route_aligned_polygon_radius_m"
-            if variant in {
-                "route_aligned_bearing_tour",
-                "safe_clear_route_aligned_tour",
-                "dynamic_coverage_route_aligned_tour",
+            if variant
+            in {
+                SAFE_CLEAR_TOUR_STRATEGY,
+                DYNAMIC_COVERAGE_TOUR_STRATEGY,
             }
             else "tour_polygon_radius_m"
         )
@@ -66,11 +79,10 @@ def run_one(
     state = Problem3State(settings)
     client = EngineClient(seed)
     strategy_type = {
-        "integrated_bearing_tour": IntegratedBearingTourStrategy,
-        "distance_optimized_bearing_tour": DistanceOptimizedBearingTourStrategy,
-        "route_aligned_bearing_tour": RouteAlignedBearingTourStrategy,
-        "safe_clear_route_aligned_tour": SafeClearRouteAlignedTourStrategy,
-        "dynamic_coverage_route_aligned_tour": DynamicCoverageRouteAlignedTourStrategy,
+        TOUR_STRATEGY: IntegratedBearingTourStrategy,
+        DISTANCE_TOUR_STRATEGY: DistanceOptimizedBearingTourStrategy,
+        SAFE_CLEAR_TOUR_STRATEGY: SafeClearRouteAlignedTourStrategy,
+        DYNAMIC_COVERAGE_TOUR_STRATEGY: DynamicCoverageRouteAlignedTourStrategy,
     }[variant]
     error: str | None = None
     started = time.monotonic()
@@ -104,9 +116,7 @@ def summarize(rows: list[dict[str, object]]) -> dict[str, object]:
         "mean_measure_count": statistics.mean(
             int(row["measure_count"]) for row in rows
         ),
-        "mean_wall_time_s": statistics.mean(
-            float(row["wall_time_s"]) for row in rows
-        ),
+        "mean_wall_time_s": statistics.mean(float(row["wall_time_s"]) for row in rows),
         "clear_failures": sum(int(row["clear_failure_count"]) for row in rows),
     }
 
@@ -114,25 +124,16 @@ def summarize(rows: list[dict[str, object]]) -> dict[str, object]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--start", type=int, default=0)
-    parser.add_argument("--count", type=int, default=60)
+    parser.add_argument("--count", type=int, default=10)
     parser.add_argument(
         "--baseline",
-        choices=(
-            "integrated_bearing_tour",
-            "route_aligned_bearing_tour",
-            "safe_clear_route_aligned_tour",
-        ),
-        default="integrated_bearing_tour",
+        choices=TOUR_VARIANTS,
+        default=TOUR_STRATEGY,
     )
     parser.add_argument(
         "--candidate",
-        choices=(
-            "distance_optimized_bearing_tour",
-            "route_aligned_bearing_tour",
-            "safe_clear_route_aligned_tour",
-            "dynamic_coverage_route_aligned_tour",
-        ),
-        default="distance_optimized_bearing_tour",
+        choices=TOUR_VARIANTS,
+        default=DISTANCE_TOUR_STRATEGY,
     )
     parser.add_argument("--candidate-tour-sides", type=int)
     parser.add_argument("--candidate-tour-radius", type=float)
@@ -144,10 +145,11 @@ def main() -> None:
     ):
         raise ValueError("candidate tour sides and radius must be provided together")
     if arguments.candidate_tour_sides is not None and (
-        arguments.candidate_tour_sides < 3
-        or arguments.candidate_tour_radius <= 0.0
+        arguments.candidate_tour_sides < 3 or arguments.candidate_tour_radius <= 0.0
     ):
-        raise ValueError("candidate polygon requires at least 3 sides and positive radius")
+        raise ValueError(
+            "candidate polygon requires at least 3 sides and positive radius"
+        )
 
     variants = (arguments.baseline, arguments.candidate)
     rows: list[dict[str, object]] = []
@@ -176,25 +178,18 @@ def main() -> None:
     }
     paired = []
     for seed in range(arguments.start, arguments.start + arguments.count):
-        original = next(
-            row for row in grouped[variants[0]] if row["seed"] == seed
-        )
-        optimized = next(
-            row for row in grouped[variants[1]] if row["seed"] == seed
-        )
+        original = next(row for row in grouped[variants[0]] if row["seed"] == seed)
+        optimized = next(row for row in grouped[variants[1]] if row["seed"] == seed)
         paired.append(
             {
                 "seed": seed,
-                "time_saved_s": float(original["time_s"])
-                - float(optimized["time_s"]),
+                "time_saved_s": float(original["time_s"]) - float(optimized["time_s"]),
                 "distance_saved_m": float(original["movement_distance_m"])
                 - float(optimized["movement_distance_m"]),
             }
         )
     mean_time_saved = statistics.mean(row["time_saved_s"] for row in paired)
-    mean_distance_saved = statistics.mean(
-        row["distance_saved_m"] for row in paired
-    )
+    mean_distance_saved = statistics.mean(row["distance_saved_m"] for row in paired)
     original_summary = summarize(grouped[variants[0]])
     optimized_summary = summarize(grouped[variants[1]])
     document = {
@@ -242,7 +237,9 @@ def main() -> None:
         / f"{arguments.candidate}{parameter_suffix}_comparison_{arguments.start}_{arguments.count}.json"
     )
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
+    output.write_text(
+        json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     print(json.dumps(document["summary"], ensure_ascii=False, indent=2))
     print(json.dumps(document["paired_summary"], ensure_ascii=False, indent=2))
     print(f"output={output}")

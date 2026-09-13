@@ -46,8 +46,12 @@ TRAJECTORY_FIGURE_DIR = PROBLEM4_TRAJECTORY_FIGURES_DIR
 
 GUARANTEED_DIRECTIONAL_LATTICE: Final[str] = "guaranteed_directional_lattice"
 OPTIMIZED_GUARANTEED_LATTICE: Final[str] = "optimized_guaranteed_lattice"
-PARENT_FAST_STRATEGY: Final[str] = "problem4_fast"
 LEGACY_OUTER_PROBE_FAST: Final[str] = "legacy_outer_probe_fast"
+PROBLEM4_STRATEGIES: Final[tuple[str, ...]] = (
+    GUARANTEED_DIRECTIONAL_LATTICE,
+    OPTIMIZED_GUARANTEED_LATTICE,
+    LEGACY_OUTER_PROBE_FAST,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -67,6 +71,7 @@ class Problem4Settings(Problem3Settings):
     route_clear_insertion_limit_m: float = 300.0
     route_probe_insertion_limit_m: float = 0.0
 
+
 # 对外只暴露运行问题 4 必需的配置名称。
 __all__ = [
     "ACTION_LOG",
@@ -80,7 +85,7 @@ __all__ = [
     "HTTP_TIMEOUT_S",
     "LEGACY_OUTER_PROBE_FAST",
     "OPTIMIZED_GUARANTEED_LATTICE",
-    "PARENT_FAST_STRATEGY",
+    "PROBLEM4_STRATEGIES",
     "ROBOT_ID",
     "SOURCE_COUNT_RANGE",
     "SOURCE_COVERAGE_HALF_ANGLE_DEG",

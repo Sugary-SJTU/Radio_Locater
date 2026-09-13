@@ -1,0 +1,12 @@
+% !TeX program = xelatex
+% 独立编译入口；宏包设置与附录正文分别存放。
+% 在 PowerShell 中进入 paper 目录后运行两次 xelatex。
+
+\documentclass[UTF8,a4paper,zihao=-4]{ctexart}
+\usepackage[left=2.2cm,right=2.2cm,top=2.3cm,bottom=2.3cm]{geometry}
+
+\input{appendix_code_preamble}
+
+\begin{document}
+\input{appendix_code_body}
+\end{document}

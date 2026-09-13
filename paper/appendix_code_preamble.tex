@@ -1,0 +1,61 @@
+% 源代码附录所需宏包与命令。
+% 将本文件放在 \begin{document} 之前：\input{appendix_code_preamble}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{fvextra}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  urlcolor=blue!55!black,
+  bookmarksopen=true
+}
+
+\definecolor{coderule}{RGB}{185,185,185}
+
+% 从 paper/ 目录编译时，项目根目录是“..”。
+% 若论文主文件位于其他目录，只需修改这一行。
+\newcommand{\ProjectRoot}{..}
+
+% 自动读取一个项目文件并形成独立、可跨页的代码块。
+% 参数 1：相对项目根目录的文件名；参数 2：文件作用。
+\newcommand{\CodeFile}[2]{%
+  \clearpage
+  \subsection*{\texttt{\detokenize{#1}}}
+  \addcontentsline{toc}{subsection}{\detokenize{#1}}
+  \noindent\textbf{文件作用：}#2\par\smallskip
+  \VerbatimInput[
+    fontsize=\scriptsize,
+    numbers=left,
+    numbersep=6pt,
+    frame=lines,
+    framesep=3mm,
+    rulecolor=\color{coderule},
+    formatcom=\color{black},
+    breaklines=true,
+    breakanywhere=true,
+    breaksymbolleft={},
+    tabsize=4
+  ]{\ProjectRoot/#1}
+}
+
+% 需要手工内嵌某个文件时，将其内容粘贴到 CodeBlock 环境中。
+\DefineVerbatimEnvironment{CodeBlock}{Verbatim}{
+  fontsize=\scriptsize,
+  numbers=left,
+  numbersep=6pt,
+  frame=lines,
+  framesep=3mm,
+  rulecolor=\color{coderule},
+  breaklines=true,
+  breakanywhere=true,
+  breaksymbolleft={},
+  tabsize=4
+}
+
+\setlength{\LTpre}{0.5em}
+\setlength{\LTpost}{0.5em}
+\setlength{\emergencystretch}{3em}
